@@ -1,0 +1,56 @@
+{
+  "name": "@fightmegg/riot-api",
+  "version": "1.0.0",
+  "description": "Client for for interactacting with Riot Games API",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "test:e2e": "jest __tests__/e2e",
+    "test": "jest __tests__/unit",
+    "version": "npm run build",
+    "build": "tsc && tsc -p ./tsconfig.cjs.json",
+    "lint": "eslint ./src/ --ext .ts --quiet",
+    "prettier": "prettier ./src/ --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fightmegg/riot-api.git"
+  },
+  "keywords": [
+    "riot",
+    "riot api",
+    "riot games",
+    "league of legends"
+  ],
+  "author": "Ollie Jennings <ollie@fightme.gg>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fightmegg/riot-api/issues"
+  },
+  "homepage": "https://github.com/fightmegg/riot-api#readme",
+  "dependencies": {
+    "@fightmegg/riot-rate-limiter": "0.0.7",
+    "debug": "^4.1.1",
+    "ioredis": "^4.17.3",
+    "path-to-regexp": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.17.4",
+    "@types/jest": "^26.0.13",
+    "@types/node": "^14.10.2",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "bottleneck": "^2.19.5",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.4.2",
+    "jest-extended": "^0.11.5",
+    "jest-junit": "^11.1.0",
+    "prettier": "^2.1.1",
+    "ts-jest": "^26.3.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}

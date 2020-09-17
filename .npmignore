@@ -1,0 +1,13 @@
+.circleci
+.github
+.jest
+.prettierrc
+.eslintignore
+.eslintrc.json
+.npmrc
+jest.config.js
+tsconfig.json
+tsconfig.cjs.json
+src
+__tests__
+__mocks__
