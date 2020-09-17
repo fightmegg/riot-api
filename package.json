@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/ioredis": "^4.17.4",
     "@types/jest": "^26.0.13",
-    "@types/node": "^14.10.2",
+    "@types/node": "^14.11.1",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "bottleneck": "^2.19.5",
