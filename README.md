@@ -1,8 +1,8 @@
 # RiotAPI
 
-[![Version](https://img.shields.io/npm/v/@fightmegg/riot-rate-limiter.svg)](https://www.npmjs.com/package/@fightmegg/riot-rate-limiter)
-[![Downloads](https://img.shields.io/npm/dm/@fightmegg/riot-rate-limiter.svg)](https://www.npmjs.com/package/@fightmegg/riot-rate-limiter)
-[![CircleCI](https://circleci.com/gh/fightmegg/riot-rate-limiter/tree/master.svg?style=svg)](https://circleci.com/gh/fightmegg/riot-rate-limiter/tree/master)
+[![Version](https://img.shields.io/npm/v/@fightmegg/riot-api.svg)](https://www.npmjs.com/package/@fightmegg/riot-api)
+[![Downloads](https://img.shields.io/npm/dm/@fightmegg/riot-api.svg)](https://www.npmjs.com/package/@fightmegg/riot-api)
+[![CircleCI](https://circleci.com/gh/fightmegg/riot-api/tree/master.svg?style=svg)](https://circleci.com/gh/fightmegg/riot-api/tree/master)
 
 > Node.JS minimal Riot API client written in Typescript
 
