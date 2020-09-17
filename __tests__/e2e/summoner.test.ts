@@ -3,7 +3,7 @@ jest.unmock("@fightmegg/riot-rate-limiter");
 import "jest-extended";
 import { PlatformId, RiotAPI } from "../../src/index";
 
-const riotAPIKey = process.env.X_RIOT_API_KEY;
+const riotAPIKey = process.env.X_RIOT_API_KEY || "";
 
 describe("E2E", () => {
   describe("Summoner", () => {
