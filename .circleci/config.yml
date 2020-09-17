@@ -1,0 +1,196 @@
+# CircleCI configuration
+version: 2.1
+
+# Filters
+filters:
+  - &branch-ignore
+    branches:
+      ignore: /.*/
+  - &filter-all
+    tags:
+      only: /.*/
+  - &filter-alpha
+    <<: *branch-ignore
+    tags:
+      only: /^\d+\.\d+\.\d+-alpha\.\d+$/
+  - &filter-beta
+    <<: *branch-ignore
+    tags:
+      only: /^\d+\.\d+\.\d+-beta\.\d+$/
+  - &filter-prod
+    <<: *branch-ignore
+    tags:
+      only: /^\d+\.\d+\.\d+$/
+
+# Aliases
+aliases:
+  # Caching
+  - &restore-npm-cache
+    keys:
+      - dependency-cache-{{ checksum "package.json" }}
+  - &save-npm-cache
+    key: dependency-cache-{{ checksum "package.json" }}
+    paths:
+      - node_modules
+
+  - &authenticate-github-registry
+    name: Authenticate with Github Package Registry
+    command: |
+      echo "//npm.pkg.github.com/:_authToken=${GITHUB_REGISTRY_TOKEN}" > ~/riot-api/.npmrc
+      echo "git-tag-version=false" >> ~/riot-api/.npmrc
+      echo "allow-same-version=true" >> ~/riot-api/.npmrc
+
+  - &authenticate-npm-registry
+    name: Authenticate with NPM Package Registry
+    command: |
+      echo "//registry.npmjs.org/:_authToken=${NPM_REGISTRY_TOKEN}" > ~/riot-api/.npmrc
+      echo "git-tag-version=false" >> ~/riot-api/.npmrc
+      echo "allow-same-version=true" >> ~/riot-api/.npmrc
+
+  - &update-pkg-version
+    name: Updating Package Version
+    command: npm version $CIRCLE_TAG
+
+  - &publish-to-github
+    name: Publish to Github Package Registry
+    command: npm publish --tag $PKG_TAG --access public --registry https://npm.pkg.github.com
+
+  - &publish-to-npm
+    name: Publish to NPM Package Registry
+    command: npm publish --tag $PKG_TAG --access public --registry https://registry.npmjs.org
+
+# Defaults
+defaults: &defaults
+  working_directory: ~/riot-api
+
+js_defaults: &js_defaults
+  <<: *defaults
+  docker:
+    - image: circleci/node:14.5.0-buster
+
+jobs:
+  prepare:
+    <<: *js_defaults
+    steps:
+      - checkout
+      - restore_cache: *restore-npm-cache
+      - run:
+          name: Installing dependencies
+          command: npm install
+      - save_cache: *save-npm-cache
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  tests-unit:
+    <<: *js_defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running Unit Tests
+          command: npm test -- --ci --runInBand --reporters=default --reporters=jest-junit --coverage
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./test-results/jest
+            JEST_JUNIT_OUTPUT_NAME: results.xml
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+      - store_artifacts:
+          path: .jest/coverage
+
+  tests-e2e:
+    <<: *js_defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running E2E Tests
+          command: npm run test:e2e -- --ci --runInBand --reporters=default
+
+  prettier:
+    <<: *js_defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running Prettier
+          command: npm run prettier
+
+  linter:
+    <<: *js_defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running Linter
+          command: npm run lint
+
+  publish:
+    <<: *js_defaults
+    parameters:
+      PKG_TAG:
+        type: enum
+        default: "dev"
+        description: NPM pkg tag. Must be one of dev, beta, latest
+        enum: ["dev", "beta", "latest"]
+    environment:
+      PKG_TAG: << parameters.PKG_TAG >>
+    steps:
+      - attach_workspace:
+          at: .
+      - run: *authenticate-github-registry
+      - run: *update-pkg-version
+      - deploy: *publish-to-github
+      - run: *authenticate-npm-registry
+      - deploy: *publish-to-npm
+
+workflows:
+  test-publish:
+    jobs:
+      - prepare:
+          filters: *filter-all
+      - tests-unit:
+          requires:
+            - prepare
+          filters: *filter-all
+      - tests-e2e:
+          requires:
+            - prepare
+          filters: *filter-all
+      - prettier:
+          requires:
+            - prepare
+          filters: *filter-all
+      - linter:
+          requires:
+            - prepare
+          filters: *filter-all
+      - publish:
+          name: publish-alpha
+          PKG_TAG: dev
+          requires:
+            - tests-unit
+            - tests-e2e
+            - prettier
+            - linter
+          filters: *filter-alpha
+      - publish:
+          name: publish-beta
+          PKG_TAG: beta
+          requires:
+            - tests-unit
+            - tests-e2e
+            - prettier
+            - linter
+          filters: *filter-beta
+      - publish:
+          name: publish-prod
+          PKG_TAG: latest
+          requires:
+            - tests-unit
+            - tests-e2e
+            - prettier
+            - linter
+          filters: *filter-prod
