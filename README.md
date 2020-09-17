@@ -59,7 +59,7 @@ const rAPI = new RiotAPI('RGAPI-TOKEN', config);
 
 ## Caching
 
-Caching is support by methods only, we provide a complete map of all `METHOD_KEY`'s for setting up your cache config. The list of keys can be found in the [types file]().
+Caching is support by methods only, we provide a complete map of all `METHOD_KEY`'s for setting up your cache config. The list of keys can be found in the [types file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
 
 
 ## TypeScript typing
