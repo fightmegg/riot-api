@@ -57,9 +57,17 @@ const config: RiotAPITypes.Config = {
 const rAPI = new RiotAPI('RGAPI-TOKEN', config);
 ```
 
+## Error handling
+
+If you use `Promises` then any error will reject the promise, this can either be an error value, or the response from the API.
+
+Same as above with `async/await`, where the error thrown will be the response from the API if the error occured at that level.
+
 ## Caching
 
-Caching is support by methods only, we provide a complete map of all `METHOD_KEY`'s for setting up your cache config. The list of keys can be found in the [types file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
+Caching is turned off by default, but with the cache property in the config you can enable it with various settings. For now we only support local (in memory) or [ioredis](https://github.com/luin/ioredis) caches, will potential support for custom caches in future.
+
+When setting up the cache, you can change the `ttl` of each method / endpoint individually. This is done through the `METHOD_KEY` type which can be found in the [typings file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
 
 
 ## TypeScript typing
@@ -86,6 +94,13 @@ DEBUG=riotapi* node ...
 Unit tests: `npm test`
 
 E2E tests: `npm run test:e2e`
+
+
+## Planned features
+
+- [ ] Custom Caches
+- [ ] Interceptors (before request & on response)
+- [ ] Support DDragon and other static data endpoints
 
 ## Maintainers
 
