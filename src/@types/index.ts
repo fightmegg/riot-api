@@ -1176,7 +1176,10 @@ export namespace RiotAPITypes {
       name: string;
       /** This field is excluded from the response when a locale is set */
       localizedNames?: ValContent.LocalizedNamesDTO | null;
+      id: string;
       assetName: string;
+      /** This field is only included for maps and game modes. These values are used in the match response */
+      assetPath?: string | null;
     }
 
     export interface LocalizedNamesDTO {
