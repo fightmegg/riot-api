@@ -1,6 +1,7 @@
 import { RiotRateLimiter } from "@fightmegg/riot-rate-limiter";
 import { RiotAPI, RiotAPITypes, PlatformId } from "../../src/index";
 import { MemoryCache, RedisCache } from "../../src/cache";
+import { DDragon } from "../../src/ddragon";
 
 jest.mock("../../src/cache", () => {
   return {
@@ -48,6 +49,7 @@ describe("RiotAPI", () => {
       expect(rAPI.riotRateLimiter).toBeTruthy();
       expect(rAPI.token).toEqual("1234");
       expect(rAPI.config).toEqual({ debug: false });
+      expect(rAPI.ddragon).toBeInstanceOf(DDragon);
     });
 
     test("should initialize MemoryCache if config set to local cache", () => {
@@ -93,7 +95,7 @@ describe("RiotAPI", () => {
           url:
             "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
-            body: null,
+            body: undefined,
             headers: { "X-Riot-Token": "1234" },
           },
         },
