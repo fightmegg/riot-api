@@ -1316,6 +1316,21 @@ describe("RiotAPI", () => {
           },
         ],
       ],
+      [
+        "getRecentMatchesByQueue",
+        {
+          region: PlatformId.EU,
+          queue: RiotAPITypes.VAL_QUEUE.COMPETITIVE,
+        },
+        [
+          PlatformId.EU,
+          RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
+          { queue: RiotAPITypes.VAL_QUEUE.COMPETITIVE },
+          {
+            id: "eu.valMatch.getRecentMatchesByQueue.competitive",
+          },
+        ],
+      ],
     ])(
       "%s - calls request with correct params",
       async (name, input, params) => {

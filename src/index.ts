@@ -1055,6 +1055,19 @@ export class RiotAPI {
           { puuid },
           { id: `${region}.valMatch.getMatchlistByPUUID.${puuid}` }
         ),
+      getRecentMatchesByQueue: ({
+        region,
+        queue,
+      }: {
+        region: RiotAPITypes.VALCluster;
+        queue: RiotAPITypes.VAL_QUEUE;
+      }): Promise<RiotAPITypes.ValMatch.RecentMatchesDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
+          { queue },
+          { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` }
+        ),
     };
   }
 }
