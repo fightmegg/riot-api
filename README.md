@@ -91,7 +91,7 @@ const ddragon = new DDragon();
 const champs = await ddragon.champion.all();
 ```
 
-Just like the main API, we have full TypeScript typings for DDragon endpoints.
+Just like the main API, we have full TypeScript typings for DDragon endpoints. Please note we **do not** support caching for DDragon endpoints.
 
 ## TypeScript typing
 
