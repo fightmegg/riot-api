@@ -40,7 +40,7 @@ export class DDragon {
         locale?: RiotAPITypes.DDragon.LOCALE;
         version?: string;
       } = {}): Promise<RiotAPITypes.DDragon.DDragonChampionListDTO> => {
-        let v = version || (await this.versions.latest());
+        const v = version || (await this.versions.latest());
         return await this.request(`/cdn/${v}/data/${locale}/champion.json`);
       },
       byName: async ({
@@ -53,7 +53,7 @@ export class DDragon {
         championName: string;
       }): Promise<RiotAPITypes.DDragon.DDragonChampionDTO> => {
         if (!championName) throw new Error("championName is required");
-        let v = version || (await this.versions.latest());
+        const v = version || (await this.versions.latest());
         return await this.request(
           `/cdn/${v}/data/${locale}/champion/${championName}.json`
         );
@@ -76,7 +76,7 @@ export class DDragon {
     locale?: RiotAPITypes.DDragon.LOCALE;
     version?: string;
   } = {}): Promise<RiotAPITypes.DDragon.DDragonItemWrapperDTO> {
-    let v = version || (await this.versions.latest());
+    const v = version || (await this.versions.latest());
     return await this.request(`/cdn/${v}/data/${locale}/item.json`);
   }
 
@@ -87,7 +87,7 @@ export class DDragon {
     locale?: RiotAPITypes.DDragon.LOCALE;
     version?: string;
   } = {}): Promise<RiotAPITypes.DDragon.DDragonRunesReforgedDTO[]> {
-    let v = version || (await this.versions.latest());
+    const v = version || (await this.versions.latest());
     return await this.request(`/cdn/${v}/data/${locale}/runesReforged.json`);
   }
 
@@ -98,7 +98,7 @@ export class DDragon {
     locale?: RiotAPITypes.DDragon.LOCALE;
     version?: string;
   } = {}): Promise<RiotAPITypes.DDragon.DDragonSummonerSpellDTO> {
-    let v = version || (await this.versions.latest());
+    const v = version || (await this.versions.latest());
     return await this.request(`/cdn/${v}/data/${locale}/summoner.json`);
   }
 
@@ -109,7 +109,7 @@ export class DDragon {
     locale?: RiotAPITypes.DDragon.LOCALE;
     version?: string;
   } = {}): Promise<RiotAPITypes.DDragon.DDragonProfileIconDTO> {
-    let v = version || (await this.versions.latest());
+    const v = version || (await this.versions.latest());
     return await this.request(`/cdn/${v}/data/${locale}/profileicon.json`);
   }
 
@@ -120,7 +120,7 @@ export class DDragon {
     locale?: RiotAPITypes.DDragon.LOCALE;
     version?: string;
   } = {}): Promise<RiotAPITypes.DDragon.DDragonMapDTO> {
-    let v = version || (await this.versions.latest());
+    const v = version || (await this.versions.latest());
     return await this.request(`/cdn/${v}/data/${locale}/map.json`);
   }
 }
