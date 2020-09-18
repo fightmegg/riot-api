@@ -10,6 +10,7 @@ import { compile } from "path-to-regexp";
 import qs from "querystring";
 import { RiotAPITypes } from "./@types";
 import { MemoryCache, RedisCache } from "./cache";
+import { DDragon } from "./ddragon";
 
 const debugCache = require("debug")("riotapi:cache");
 
@@ -25,7 +26,7 @@ const getPath = (key: string): any => {
   return path;
 };
 
-export { RiotAPITypes, PlatformId };
+export { RiotAPITypes, PlatformId, DDragon };
 
 export class RiotAPI {
   readonly cache?: MemoryCache | RedisCache;
@@ -38,6 +39,8 @@ export class RiotAPI {
     debug: false,
   };
 
+  ddragon: DDragon;
+
   constructor(token: string, config: RiotAPITypes.Config = {}) {
     if (!token) throw new Error("token is missing");
 
@@ -49,6 +52,7 @@ export class RiotAPI {
       datastore: this.config.cache?.cacheType || "local",
       redis: this.config.cache?.client as Bottleneck.RedisConnectionOptions,
     });
+    this.ddragon = new DDragon();
 
     if (this.config.cache?.cacheType === "local")
       this.cache = new MemoryCache();
@@ -70,7 +74,7 @@ export class RiotAPI {
   }: { body?: object; method?: string } = {}) {
     return {
       headers: this.getHeaders(),
-      body: body ? JSON.stringify(body) : null,
+      body: body ? JSON.stringify(body) : undefined,
       method,
     };
   }
