@@ -12,7 +12,7 @@
 * Rate limiting through [@fightmegg/riot-rate-limiter](https://github.com/fightmegg/riot-rate-limiter)
 * Automatic retries
 * TypeScript typings
-* 100% endpoint coverage
+* 100% endpoint coverage (incl. DDragon)
 * Caching with custom ttls per endpoint
 * Request prioritization
 
@@ -69,6 +69,29 @@ Caching is turned off by default, but with the cache property in the config you 
 
 When setting up the cache, you can change the `ttl` of each method / endpoint individually. This is done through the `METHOD_KEY` type which can be found in the [typings file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
 
+
+## DDragon
+
+We also fully support [DataDragon](https://developer.riotgames.com/docs/lol#data-dragon) which can be accessed in two ways:
+
+```ts
+// ...
+const rAPI = new RiotAPI('RGAPI-KEY');
+
+const latestV = await rAPI.ddragon.versions.latest();
+const champs = await rAPI.ddragon.champion.all();
+```
+
+If you want to just use static data only, then you can do the following:
+
+```ts
+import { DDragon } from '@fightmegg/riot-api';
+
+const ddragon = new DDragon();
+const champs = await ddragon.champion.all();
+```
+
+Just like the main API, we have full TypeScript typings for DDragon endpoints.
 
 ## TypeScript typing
 
