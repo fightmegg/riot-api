@@ -123,7 +123,6 @@ E2E tests: `npm run test:e2e`
 
 - [ ] Custom Caches
 - [ ] Interceptors (before request & on response)
-- [ ] Support DDragon and other static data endpoints
 
 ## Maintainers
 
