@@ -57,6 +57,12 @@ export namespace RiotAPITypes {
     IV = "IV",
   }
 
+  export enum VAL_QUEUE {
+    COMPETITIVE = "competitive",
+    UNRATED = "unrated",
+    SPIKERUSH = "spikerush",
+  }
+
   export type VALCluster =
     | PlatformId.AP
     | PlatformId.BR
@@ -193,6 +199,8 @@ export namespace RiotAPITypes {
     export namespace VAL_MATCH {
       export const GET_MATCH_BY_ID = "VAL_MATCH.GET_MATCH_BY_ID";
       export const GET_MATCHLIST_BY_PUUID = "VAL_MATCH.GET_MATCHLIST_BY_PUUID";
+      export const GET_RECENT_MATCHES_BY_QUEUE =
+        "VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE";
     }
   }
 
@@ -1349,6 +1357,11 @@ export namespace RiotAPITypes {
       matchId: string;
       gameStartTimeMillis: number;
       teamId: string;
+    }
+
+    export interface RecentMatchesDTO {
+      currentTime: number;
+      matchIds: string[];
     }
   }
 
