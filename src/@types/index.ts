@@ -1,5 +1,6 @@
 import { PlatformId } from "@fightmegg/riot-rate-limiter";
 import Redis from "ioredis";
+import { Headers } from "node-fetch";
 
 export namespace RiotAPITypes {
   export interface Config {
@@ -20,6 +21,7 @@ export namespace RiotAPITypes {
     params?: { [key: string]: string | number | number[] | undefined };
     body?: object;
     method?: "POST" | "GET" | "PUT";
+    headers?: { [key: string]: string | number };
   }
 
   export enum QUEUE {
@@ -152,6 +154,7 @@ export namespace RiotAPITypes {
       export const GET_BY_SUMMONER_NAME = "SUMMONER.GET_BY_SUMMONER_NAME";
       export const GET_BY_PUUID = "SUMMONER.GET_BY_PUUID";
       export const GET_BY_SUMMONER_ID = "SUMMONER.GET_BY_SUMMONER_ID";
+      export const GET_BY_ACCESS_TOKEN = "SUMMONER.GET_BY_ACCESS_TOKEN";
     }
     export namespace TFT_LEAGUE {
       export const GET_CHALLENGER = "TFT_LEAGUE.GET_CHALLENGER";

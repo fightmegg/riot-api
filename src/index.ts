@@ -6,6 +6,7 @@ import {
 } from "@fightmegg/riot-rate-limiter";
 import Bottleneck from "bottleneck";
 import Redis from "ioredis";
+import { Headers } from "node-fetch";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
 import { RiotAPITypes } from "./@types";
@@ -62,18 +63,24 @@ export class RiotAPI {
       );
   }
 
-  private getHeaders() {
+  private getHeaders(headers?: { [key: string]: string | number }) {
     return {
       "X-Riot-Token": this.token,
+      ...(headers || {}),
     };
   }
 
   private getOptions({
     body,
     method,
-  }: { body?: object; method?: string } = {}) {
+    headers,
+  }: {
+    body?: object;
+    method?: string;
+    headers?: { [key: string]: string | number };
+  } = {}) {
     return {
-      headers: this.getHeaders(),
+      headers: this.getHeaders(headers),
       body: body ? JSON.stringify(body) : undefined,
       method,
     };
@@ -630,6 +637,22 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_ID,
           { summonerId },
           { id: `${region}.summoner.getBySummonerId.${summonerId}` }
+        ),
+      getByAccessToken: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        accessToken: string;
+      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: `${region}.summoner.getByAccessToken`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         ),
     };
   }

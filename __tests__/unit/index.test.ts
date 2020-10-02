@@ -155,6 +155,41 @@ describe("RiotAPI", () => {
       );
     });
 
+    test("should call rrl.execute with custom headers", async () => {
+      const rAPI = new RiotAPI("1234");
+      const mockExecute = rAPI.riotRateLimiter.execute as jest.Mock;
+
+      await rAPI.request(
+        PlatformId.EUW1,
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
+        { summonerName: "Demos" },
+        {
+          id: "10",
+          body: { name: "kratos" },
+          method: "POST",
+          headers: { Authorization: "me" },
+        }
+      );
+
+      expect(mockExecute).toHaveBeenCalledWith(
+        {
+          url:
+            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          options: {
+            body: JSON.stringify({ name: "kratos" }),
+            method: "POST",
+            headers: {
+              "X-Riot-Token": "1234",
+              Authorization: "me",
+            },
+          },
+        },
+        {
+          id: "10",
+        }
+      );
+    });
+
     test("should call rrl.execute with custom priority and expiration", async () => {
       const rAPI = new RiotAPI("1234");
       const mockExecute = rAPI.riotRateLimiter.execute as jest.Mock;
@@ -786,6 +821,24 @@ describe("RiotAPI", () => {
           { summonerId: "1" },
           {
             id: "euw1.summoner.getBySummonerId.1",
+          },
+        ],
+      ],
+      [
+        "getByAccessToken",
+        {
+          region: PlatformId.EUW1,
+          accessToken: "12222",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: "euw1.summoner.getByAccessToken",
+            headers: {
+              Authorization: "Bearer 12222",
+            },
           },
         ],
       ],
