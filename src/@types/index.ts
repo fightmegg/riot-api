@@ -1,6 +1,5 @@
 import { PlatformId } from "@fightmegg/riot-rate-limiter";
 import Redis from "ioredis";
-import { Headers } from "node-fetch";
 
 export namespace RiotAPITypes {
   export interface Config {

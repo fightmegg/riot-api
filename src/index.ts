@@ -6,7 +6,6 @@ import {
 } from "@fightmegg/riot-rate-limiter";
 import Bottleneck from "bottleneck";
 import Redis from "ioredis";
-import { Headers } from "node-fetch";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
 import { RiotAPITypes } from "./@types";
