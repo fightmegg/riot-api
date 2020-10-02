@@ -599,6 +599,50 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("lorMatch", () => {
+    test.each([
+      [
+        "getMatchIdsByPUUID",
+        {
+          region: PlatformId.EUROPE,
+          puuid: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_IDS_BY_PUUID,
+          { puuid: "1234" },
+          {
+            id: "europe.lorMatch.getMatchIdsByPUUID.1234",
+          },
+        ],
+      ],
+      [
+        "getById",
+        {
+          region: PlatformId.EUROPE,
+          matchId: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_BY_ID,
+          { matchId: "1234" },
+          {
+            id: "europe.lorMatch.getById.1234",
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lorMatch)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
   describe("lorRanked", () => {
     test.each([
       [

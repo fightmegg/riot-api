@@ -131,6 +131,11 @@ export namespace RiotAPITypes {
       export const GET_LEAGUE_BY_ID = "LEAGUE.GET_LEAGUE_BY_ID";
       export const GET_MASTER_BY_QUEUE = "LEAGUE.GET_MASTER_BY_QUEUE";
     }
+
+    export namespace LOR_MATCH {
+      export const GET_MATCH_IDS_BY_PUUID = "LOR_RANKED.GET_MATCH_IDS_BY_PUUID";
+      export const GET_MATCH_BY_ID = "LOR_RANKED.GET_MATCH_BY_ID";
+    }
     export namespace LOR_RANKED {
       export const GET_MASTER_TIER = "LOR_RANKED.GET_MASTER_TIER";
     }
@@ -329,6 +334,32 @@ export namespace RiotAPITypes {
       tier: string;
       name: string;
       queue: string;
+    }
+  }
+
+  export namespace LorMatch {
+    export interface PlayerDTO {
+      puuid: string;
+      deck_id: string;
+      deck_code: string;
+      factions: string[];
+      game_outcome: "win" | "loss";
+      order_of_play: 1 | 2;
+    }
+    export interface MatchDTO {
+      metadata: {
+        data_version: string;
+        match_id: string;
+        participants: string[];
+      };
+      info: {
+        game_mode: string;
+        game_type: string;
+        game_start_time_utc: string;
+        game_version: string;
+        players: LorMatch.PlayerDTO[];
+        total_turn_count: number;
+      };
     }
   }
 

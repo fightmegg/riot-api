@@ -449,6 +449,37 @@ export class RiotAPI {
     };
   }
 
+  get lorMatch() {
+    return {
+      getMatchIdsByPUUID: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        puuid: string;
+      }): Promise<string[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_IDS_BY_PUUID,
+          { puuid },
+          { id: `${region}.lorMatch.getMatchIdsByPUUID.${puuid}` }
+        ),
+      getById: ({
+        region,
+        matchId,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        matchId: string;
+      }): Promise<RiotAPITypes.LorMatch.MatchDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_BY_ID,
+          { matchId },
+          { id: `${region}.lorMatch.getById.${matchId}` }
+        ),
+    };
+  }
+
   get lorRanked() {
     return {
       getMasterTier: ({
