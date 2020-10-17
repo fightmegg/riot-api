@@ -343,8 +343,8 @@ export namespace RiotAPITypes {
       deck_id: string;
       deck_code: string;
       factions: string[];
-      game_outcome: "win" | "loss";
-      order_of_play: 1 | 2;
+      game_outcome: "win" | "loss" | string;
+      order_of_play: 1 | 2 | number;
     }
     export interface MatchDTO {
       metadata: {
@@ -353,8 +353,14 @@ export namespace RiotAPITypes {
         participants: string[];
       };
       info: {
-        game_mode: string;
-        game_type: string;
+        game_mode: "Constructed" | "Expeditions" | "Tutorial";
+        game_type:
+          | "Ranked"
+          | "Normal"
+          | "AI"
+          | "Tutorial"
+          | "Singleton"
+          | "StandardGauntlet";
         game_start_time_utc: string;
         game_version: string;
         players: LorMatch.PlayerDTO[];
