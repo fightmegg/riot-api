@@ -62,11 +62,8 @@ export class RiotAPI {
       );
   }
 
-  private getHeaders(headers?: { [key: string]: string | number }) {
-    return {
-      "X-Riot-Token": this.token,
-      ...(headers || {}),
-    };
+  private getHeaders(headers?: { [key: string]: string }) {
+    return headers || { "X-Riot-Token": this.token };
   }
 
   private getOptions({
@@ -76,7 +73,7 @@ export class RiotAPI {
   }: {
     body?: object;
     method?: string;
-    headers?: { [key: string]: string | number };
+    headers?: { [key: string]: string };
   } = {}) {
     return {
       headers: this.getHeaders(headers),

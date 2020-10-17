@@ -179,7 +179,6 @@ describe("RiotAPI", () => {
             body: JSON.stringify({ name: "kratos" }),
             method: "POST",
             headers: {
-              "X-Riot-Token": "1234",
               Authorization: "me",
             },
           },

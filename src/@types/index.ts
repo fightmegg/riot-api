@@ -20,7 +20,7 @@ export namespace RiotAPITypes {
     params?: { [key: string]: string | number | number[] | undefined };
     body?: object;
     method?: "POST" | "GET" | "PUT";
-    headers?: { [key: string]: string | number };
+    headers?: { [key: string]: string };
   }
 
   export enum QUEUE {
