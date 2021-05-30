@@ -1472,7 +1472,7 @@ export namespace RiotAPITypes {
         y: number;
         w: number;
         h: number;
-      }
+      };
     }
 
     export interface DDragonMapDTO
