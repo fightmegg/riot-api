@@ -151,7 +151,8 @@ export namespace RiotAPITypes {
     export namespace MATCH_V5 {
       export const GET_IDS_BY_PUUID = "MATCH_V5.GET_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "MATCH_V5.GET_MATCH_BY_ID";
-      export const GET_MATCH_TIMELINE_BY_ID = "MATCH_V5.GET_MATCH_TIMELINE_BY_ID";
+      export const GET_MATCH_TIMELINE_BY_ID =
+        "MATCH_V5.GET_MATCH_TIMELINE_BY_ID";
     }
     export namespace SPECTATOR {
       export const GET_GAME_BY_SUMMONER_ID =
@@ -759,10 +760,10 @@ export namespace RiotAPITypes {
 
   export namespace MatchV5 {
     export enum MatchType {
-       Ranked = "ranked",
-       Normal = "normal",
-       Tourney = "tourney",
-       Tutorial = "tutorial",
+      Ranked = "ranked",
+      Normal = "normal",
+      Tourney = "tourney",
+      Tutorial = "tutorial",
     }
 
     export interface StatPerksDTO {
@@ -772,23 +773,21 @@ export namespace RiotAPITypes {
     }
 
     export interface SelectionDTO {
-        perk: number;
-        var1: number;
-        var2: number;
-        var3: number;
+      perk: number;
+      var1: number;
+      var2: number;
+      var3: number;
     }
 
     export interface StyleDTO {
-        description: string;
-        selections: SelectionDTO[];
-        style: number;
+      description: string;
+      selections: SelectionDTO[];
+      style: number;
     }
 
     export interface PerksDTO {
-        statPerks: StatPerksDTO;
-        styles: StyleDTO[];
-
-
+      statPerks: StatPerksDTO;
+      styles: StyleDTO[];
     }
 
     export interface ParticipantDTO {
@@ -941,7 +940,7 @@ export namespace RiotAPITypes {
       tournamentCode: string;
     }
 
-    export interface MetadataDTO { 
+    export interface MetadataDTO {
       dataVersion: string;
       matchId: string;
       participants: string[];

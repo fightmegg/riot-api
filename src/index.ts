@@ -589,22 +589,22 @@ export class RiotAPI {
         puuid,
         params,
       }: {
-        cluster: RiotAPITypes.Cluster,
-        puuid: string,
+        cluster: RiotAPITypes.Cluster;
+        puuid: string;
         params?: {
-          queue?: number,
-          type?: RiotAPITypes.MatchV5.MatchType,
-          start?: number,
-          count?: number,
-        }
+          queue?: number;
+          type?: RiotAPITypes.MatchV5.MatchType;
+          start?: number;
+          count?: number;
+        };
       }): Promise<string[]> =>
         this.request(
           cluster,
           RiotAPITypes.METHOD_KEY.MATCH_V5.GET_IDS_BY_PUUID,
           { puuid },
-          { 
+          {
             id: `${cluster}.matchv5.getIdsByPuuid.${puuid}`,
-            params
+            params,
           }
         ),
       getMatchById: ({
@@ -612,13 +612,13 @@ export class RiotAPI {
         matchId,
       }: {
         cluster: RiotAPITypes.Cluster;
-        matchId: string
+        matchId: string;
       }): Promise<RiotAPITypes.MatchV5.MatchDTO> =>
         this.request(
           cluster,
           RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_BY_ID,
           { matchId },
-          { 
+          {
             id: `${cluster}.matchv5.getMatchById.${matchId}`,
           }
         ),
@@ -627,17 +627,17 @@ export class RiotAPI {
         matchId,
       }: {
         cluster: RiotAPITypes.Cluster;
-        matchId: string
+        matchId: string;
       }): Promise<RiotAPITypes.MatchV5.MatchTimelineDTO> =>
         this.request(
           cluster,
           RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_TIMELINE_BY_ID,
           { matchId },
-          { 
+          {
             id: `${cluster}.matchv5.getMatchTimelineById.${matchId}`,
           }
         ),
-    }
+    };
   }
 
   get spectator() {
