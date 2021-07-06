@@ -806,6 +806,21 @@ describe("RiotAPI", () => {
           },
         ],
       ],
+      [
+        "getMatchById",
+        {
+          cluster: PlatformId.EUROPE,
+          matchId: "123",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_BY_ID,
+          { matchId: "123" },
+          {
+            id: `${PlatformId.EUROPE}.matchv5.getMatchById.123`,
+          },
+        ],
+      ],
     ])(
       "%s - calls request with correct params",
       async (name, input, params) => {

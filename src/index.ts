@@ -582,7 +582,6 @@ export class RiotAPI {
     };
   }
 
-  // To do: params
   get matchV5() {
     return {
       getIdsbyPuuid: ({
@@ -590,8 +589,8 @@ export class RiotAPI {
         puuid,
         params,
       }: {
-        cluster: RiotAPITypes.Cluster;
-        puuid: string;
+        cluster: RiotAPITypes.Cluster,
+        puuid: string,
         params?: {
           queue?: number,
           type?: RiotAPITypes.MatchV5.MatchType,
@@ -606,6 +605,21 @@ export class RiotAPI {
           { 
             id: `${cluster}.matchv5.getIdsByPuuid.${puuid}`,
             params
+          }
+        ),
+      getMatchById: ({
+        cluster,
+        matchId,
+      }: {
+        cluster: RiotAPITypes.Cluster;
+        matchId: string
+      }): Promise<RiotAPITypes.MatchV5.MatchDTO> =>
+        this.request(
+          cluster,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_BY_ID,
+          { matchId },
+          { 
+            id: `${cluster}.matchv5.getMatchById.${matchId}`,
           }
         ),
     }

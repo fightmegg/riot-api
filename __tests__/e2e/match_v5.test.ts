@@ -21,5 +21,21 @@ describe("E2E", () => {
       });
       expect(resp).toHaveLength(5)
     });
+
+    test("getMatchById", async () => {
+      const rAPI = new RiotAPI(riotAPIKey);
+
+      const matchId = "EUW1_5350514472"
+
+      const resp = await rAPI.matchV5.getMatchById({
+        cluster: PlatformId.EUROPE,
+        matchId,
+      });
+      expect(resp).toContainAllKeys([
+        "metadata",
+        "info"
+      ])
+      expect(resp.metadata.matchId).toEqual(matchId)
+    });
   });
 });
