@@ -151,7 +151,7 @@ export namespace RiotAPITypes {
     export namespace MATCH_V5 {
       export const GET_IDS_BY_PUUID = "MATCH_V5.GET_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "MATCH_V5.GET_MATCH_BY_ID";
-      export const GET_MATCH_TIMELINE_BY_ID = "MATCH.GET_MATCH_TIMELINE_BY_ID";
+      export const GET_MATCH_TIMELINE_BY_ID = "MATCH_V5.GET_MATCH_TIMELINE_BY_ID";
     }
     export namespace SPECTATOR {
       export const GET_GAME_BY_SUMMONER_ID =
@@ -950,6 +950,97 @@ export namespace RiotAPITypes {
     export interface MatchDTO {
       metadata: MetadataDTO;
       info: MatchInfoDTO;
+    }
+
+    export interface MatchTimelineParticipantDTO {
+      participantId: number;
+      puuid: string;
+    }
+
+    export interface PositionDTO {
+      x: number;
+      y: number;
+    }
+
+    export interface ParticipantFrameDTO {
+      championStats: { [key: string]: number };
+      currentGold: number;
+      damageStats: { [key: string]: number };
+      goldPerSecond: number;
+      jungleMinionsKilled: number;
+      level: number;
+      minionsKilled: number;
+      participantId: number;
+      position: PositionDTO;
+      timeEnemySpentControlled: number;
+      totalGold: number;
+      xp: number;
+    }
+
+    export interface VictimDamageDTO {
+      basic: boolean;
+      magicDamage: number;
+      name: string;
+      participantId: number;
+      physicalDamage: number;
+      spellName: string;
+      spellSlot: number;
+      trueDamage: number;
+      type: string;
+    }
+
+    export interface EventDTO {
+      realTimestamp?: number;
+      timestamp: number;
+      type: string;
+      itemId?: number;
+      participantId?: number;
+      levelUpType?: string;
+      skillSlot?: number;
+      creatorId?: number;
+      wardType?: string;
+      level?: number;
+      bounty?: number;
+      killStreakLength?: number;
+      killerId?: number;
+      position?: PositionDTO;
+      victimDamageDealt?: string[];
+      victimDamageReceived?: string[];
+      victimId?: number;
+      killType?: string;
+      afterId?: number;
+      beforeId?: number;
+      goldGain?: number;
+      assistingParticipantIds?: number[];
+      laneType?: string;
+      teamId?: number;
+      killerTeamId?: number;
+      monsterSubType?: string;
+      monsterType?: string;
+      buildingType?: string;
+      towerType?: string;
+      transformType?: string;
+      multiKillLength?: number;
+      gameId?: number;
+      winningTeam?: number;
+    }
+
+    export interface FrameDTO {
+      events: EventDTO[];
+      participantFrames: { [key: string]: ParticipantFrameDTO };
+      timestamp: number;
+    }
+
+    export interface MatchTimelineInfoDTO {
+      frameInterval: number;
+      frames: FrameDTO[];
+      gameId: number;
+      participants: MatchTimelineParticipantDTO[];
+    }
+
+    export interface MatchTimelineDTO {
+      metadata: MetadataDTO;
+      info: MatchTimelineInfoDTO;
     }
   }
 

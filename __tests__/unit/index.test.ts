@@ -821,6 +821,21 @@ describe("RiotAPI", () => {
           },
         ],
       ],
+      [
+        "getMatchTimelineById",
+        {
+          cluster: PlatformId.EUROPE,
+          matchId: "123",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_TIMELINE_BY_ID,
+          { matchId: "123" },
+          {
+            id: `${PlatformId.EUROPE}.matchv5.getMatchTimelineById.123`,
+          },
+        ],
+      ],
     ])(
       "%s - calls request with correct params",
       async (name, input, params) => {

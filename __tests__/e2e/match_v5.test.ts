@@ -34,8 +34,46 @@ describe("E2E", () => {
       expect(resp).toContainAllKeys([
         "metadata",
         "info"
-      ])
-      expect(resp.metadata.matchId).toEqual(matchId)
+      ]);
+      expect(resp.info).toContainAllKeys([
+        "gameCreation",
+        "gameDuration",
+        "gameId",
+        "gameMode",
+        "gameName",
+        "gameStartTimestamp",
+        "gameType",
+        "gameVersion",
+        "mapId",
+        "participants",
+        "platformId",
+        "queueId",
+        "teams",
+        "tournamentCode",
+      ]);
+      expect(resp.metadata.matchId).toEqual(matchId);
+    });
+
+    test("getMatchTimelineById", async () => {
+      const rAPI = new RiotAPI(riotAPIKey);
+
+      const matchId = "EUW1_5350514472"
+
+      const resp = await rAPI.matchV5.getMatchTimelineById({
+        cluster: PlatformId.EUROPE,
+        matchId,
+      });
+      expect(resp).toContainAllKeys([
+        "metadata",
+        "info",
+      ]);
+      expect(resp.info).toContainAnyKeys([
+        "frameInterval",
+        "frames",
+        "gameId",
+        "participants",
+      ]);
+      expect(resp.metadata.matchId).toEqual(matchId);
     });
   });
 });

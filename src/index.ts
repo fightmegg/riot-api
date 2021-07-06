@@ -622,6 +622,21 @@ export class RiotAPI {
             id: `${cluster}.matchv5.getMatchById.${matchId}`,
           }
         ),
+      getMatchTimelineById: ({
+        cluster,
+        matchId,
+      }: {
+        cluster: RiotAPITypes.Cluster;
+        matchId: string
+      }): Promise<RiotAPITypes.MatchV5.MatchTimelineDTO> =>
+        this.request(
+          cluster,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_MATCH_TIMELINE_BY_ID,
+          { matchId },
+          { 
+            id: `${cluster}.matchv5.getMatchTimelineById.${matchId}`,
+          }
+        ),
     }
   }
 
