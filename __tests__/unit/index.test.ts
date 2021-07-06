@@ -762,6 +762,62 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("match_v5", () => {
+    test.each([
+      [
+        "getIdsbyPuuid",
+        {
+          cluster: PlatformId.EUROPE,
+          puuid: "uuid",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_IDS_BY_PUUID,
+          { puuid: "uuid" },
+          {
+            id: `${PlatformId.EUROPE}.matchv5.getIdsByPuuid.uuid`,
+          },
+        ],
+      ],
+      [
+        "getIdsbyPuuid",
+        {
+          cluster: PlatformId.EUROPE,
+          puuid: "uuid",
+          params: {
+            queue: 1,
+            type: RiotAPITypes.MatchV5.MatchType.Ranked,
+            start: 0,
+            count: 20,
+          }
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_IDS_BY_PUUID,
+          { puuid: "uuid" },
+          {
+            id: `${PlatformId.EUROPE}.matchv5.getIdsByPuuid.uuid`,
+            params: {
+              queue: 1,
+              type: RiotAPITypes.MatchV5.MatchType.Ranked,
+              start: 0,
+              count: 20,
+            }
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.matchV5)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  })
+
   describe("spectator", () => {
     test.each([
       [

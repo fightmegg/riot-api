@@ -582,6 +582,35 @@ export class RiotAPI {
     };
   }
 
+  // To do: params
+  get matchV5() {
+    return {
+      getIdsbyPuuid: ({
+        cluster,
+        puuid,
+        params,
+      }: {
+        cluster: RiotAPITypes.Cluster;
+        puuid: string;
+        params?: {
+          queue?: number,
+          type?: RiotAPITypes.MatchV5.MatchType,
+          start?: number,
+          count?: number,
+        }
+      }): Promise<string[]> =>
+        this.request(
+          cluster,
+          RiotAPITypes.METHOD_KEY.MATCH_V5.GET_IDS_BY_PUUID,
+          { puuid },
+          { 
+            id: `${cluster}.matchv5.getIdsByPuuid.${puuid}`,
+            params
+          }
+        ),
+    }
+  }
+
   get spectator() {
     return {
       getBySummonerId: ({
