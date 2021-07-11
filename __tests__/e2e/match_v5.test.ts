@@ -13,28 +13,26 @@ describe("E2E", () => {
 
       const resp = await rAPI.matchV5.getIdsbyPuuid({
         cluster: PlatformId.EUROPE,
-        puuid: "iGWKyE9MjG-aUw0KaYRvH4V2iEZwM14fbDr4Qlx0JVLOzlMqSbmQWpfbOsJPFK_dZabRH9cP7kqz5g",
+        puuid:
+          "8bJQbDi6uFIgefQA6Y79yxff_1bCHNopb1eHlq3p7Ic2oeXgYTvNnfGahtWyJ6qqAue3uK6wiZmMWQ",
         params: {
           start: 0,
-          count: 5
-        }
+          count: 5,
+        },
       });
-      expect(resp).toHaveLength(5)
+      expect(resp).toHaveLength(5);
     });
 
     test("getMatchById", async () => {
       const rAPI = new RiotAPI(riotAPIKey);
 
-      const matchId = "EUW1_5350514472"
+      const matchId = "EUW1_5350514472";
 
       const resp = await rAPI.matchV5.getMatchById({
         cluster: PlatformId.EUROPE,
         matchId,
       });
-      expect(resp).toContainAllKeys([
-        "metadata",
-        "info"
-      ]);
+      expect(resp).toContainAllKeys(["metadata", "info"]);
       expect(resp.info).toContainAllKeys([
         "gameCreation",
         "gameDuration",
@@ -57,16 +55,13 @@ describe("E2E", () => {
     test("getMatchTimelineById", async () => {
       const rAPI = new RiotAPI(riotAPIKey);
 
-      const matchId = "EUW1_5350514472"
+      const matchId = "EUW1_5350514472";
 
       const resp = await rAPI.matchV5.getMatchTimelineById({
         cluster: PlatformId.EUROPE,
         matchId,
       });
-      expect(resp).toContainAllKeys([
-        "metadata",
-        "info",
-      ]);
+      expect(resp).toContainAllKeys(["metadata", "info"]);
       expect(resp.info).toContainAnyKeys([
         "frameInterval",
         "frames",
