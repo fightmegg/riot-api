@@ -148,6 +148,12 @@ export namespace RiotAPITypes {
       export const GET_MATCHLIST_BY_ACCOUNT = "MATCH.GET_MATCHLIST_BY_ACCOUNT";
       export const GET_TIMELINE_BY_MATCH_ID = "MATCH.GET_TIMELINE_BY_MATCH_ID";
     }
+    export namespace MATCH_V5 {
+      export const GET_IDS_BY_PUUID = "MATCH_V5.GET_IDS_BY_PUUID";
+      export const GET_MATCH_BY_ID = "MATCH_V5.GET_MATCH_BY_ID";
+      export const GET_MATCH_TIMELINE_BY_ID =
+        "MATCH_V5.GET_MATCH_TIMELINE_BY_ID";
+    }
     export namespace SPECTATOR {
       export const GET_GAME_BY_SUMMONER_ID =
         "SPECTATOR.GET_GAME_BY_SUMMONER_ID";
@@ -749,6 +755,291 @@ export namespace RiotAPITypes {
       assistingParticipantIds?: number[] | null;
       buildingType?: string | null;
       victimId?: number | null;
+    }
+  }
+
+  export namespace MatchV5 {
+    export enum MatchType {
+      Ranked = "ranked",
+      Normal = "normal",
+      Tourney = "tourney",
+      Tutorial = "tutorial",
+    }
+
+    export interface StatPerksDTO {
+      defense: number;
+      flex: number;
+      offense: number;
+    }
+
+    export interface SelectionDTO {
+      perk: number;
+      var1: number;
+      var2: number;
+      var3: number;
+    }
+
+    export interface StyleDTO {
+      description: string;
+      selections: SelectionDTO[];
+      style: number;
+    }
+
+    export interface PerksDTO {
+      statPerks: StatPerksDTO;
+      styles: StyleDTO[];
+    }
+
+    export interface ParticipantDTO {
+      assists: number;
+      baronKills: number;
+      bountyLevel: number;
+      champExperience: number;
+      champLevel: number;
+      championId: number;
+      championName: string;
+      championTransform: number;
+      consumablesPurchased: number;
+      damageDealtToBuildings: number;
+      damageDealtToObjectives: number;
+      damageDealtToTurrets: number;
+      damageSelfMitigated: number;
+      deaths: number;
+      detectorWardsPlaced: number;
+      doubleKills: number;
+      dragonKills: number;
+      firstBloodAssist: boolean;
+      firstBloodKill: boolean;
+      firstTowerAssist: boolean;
+      firstTowerKill: boolean;
+      gameEndedInEarlySurrender: boolean;
+      gameEndedInSurrender: boolean;
+      goldEarned: number;
+      goldSpent: number;
+      individualPosition: string;
+      inhibitorKills: number;
+      inhibitorTakedowns: number;
+      inhibitorsLost: number;
+      item0: number;
+      item1: number;
+      item2: number;
+      item3: number;
+      item4: number;
+      item5: number;
+      item6: number;
+      itemsPurchased: number;
+      killingSprees: number;
+      kills: number;
+      lane: string;
+      largestCriticalStrike: number;
+      largestKillingSpree: number;
+      largestMultiKill: number;
+      longestTimeSpentLiving: number;
+      magicDamageDealt: number;
+      magicDamageDealtToChampions: number;
+      magicDamageTaken: number;
+      neutralMinionsKilled: number;
+      nexusKills: number;
+      nexusLost: number;
+      nexusTakedowns: number;
+      objectivesStolen: number;
+      objectivesStolenAssists: number;
+      participantId: number;
+      pentaKills: number;
+      perks: PerksDTO;
+      physicalDamageDealt: number;
+      physicalDamageDealtToChampions: number;
+      physicalDamageTaken: number;
+      profileIcon: number;
+      puuid: string;
+      quadraKills: number;
+      riotIdName: string;
+      riotIdTagline: string;
+      role: string;
+      sightWardsBoughtInGame: number;
+      spell1Casts: number;
+      spell2Casts: number;
+      spell3Casts: number;
+      spell4Casts: number;
+      summoner1Casts: number;
+      summoner1Id: number;
+      summoner2Casts: number;
+      summoner2Id: number;
+      summonerId: string;
+      summonerLevel: number;
+      summonerName: string;
+      teamEarlySurrendered: boolean;
+      teamId: number;
+      teamPosition: string;
+      timeCCingOthers: number;
+      timePlayed: number;
+      totalDamageDealt: number;
+      totalDamageDealtToChampions: number;
+      totalDamageShieldedOnTeammates: number;
+      totalDamageTaken: number;
+      totalHeal: number;
+      totalHealsOnTeammates: number;
+      totalMinionsKilled: number;
+      totalTimeCCDealt: number;
+      totalTimeSpentDead: number;
+      totalUnitsHealed: number;
+      tripleKills: number;
+      trueDamageDealt: number;
+      trueDamageDealtToChampions: number;
+      trueDamageTaken: number;
+      turretKills: number;
+      turretTakedowns: number;
+      turretsLost: number;
+      unrealKills: number;
+      visionScore: number;
+      visionWardsBoughtInGame: number;
+      wardsKilled: number;
+      wardsPlaced: number;
+      win: boolean;
+    }
+
+    export interface ObjectivesStatsDTO {
+      first: boolean;
+      kills: number;
+    }
+    export interface ObjectivesDTO {
+      baron: ObjectivesStatsDTO;
+      champion: ObjectivesStatsDTO;
+      dragon: ObjectivesStatsDTO;
+      inhibitor: ObjectivesStatsDTO;
+      riftHerald: ObjectivesStatsDTO;
+      tower: ObjectivesStatsDTO;
+    }
+
+    export interface BanDTO {
+      championId: number;
+      pickTurn: number;
+    }
+
+    export interface TeamDTO {
+      bans: BanDTO[];
+      objectives: ObjectivesDTO;
+      teamId: number;
+      win: boolean;
+    }
+
+    export interface MatchInfoDTO {
+      gameCreation: number;
+      gameDuration: number;
+      gameId: number;
+      gameMode: string;
+      gameName: string;
+      gameStartTimestamp: number;
+      gameType: string;
+      gameVersion: string;
+      mapId: number;
+      participants: ParticipantDTO[];
+      platformId: string;
+      queueId: number;
+      teams: TeamDTO[];
+      tournamentCode: string;
+    }
+
+    export interface MetadataDTO {
+      dataVersion: string;
+      matchId: string;
+      participants: string[];
+    }
+
+    export interface MatchDTO {
+      metadata: MetadataDTO;
+      info: MatchInfoDTO;
+    }
+
+    export interface MatchTimelineParticipantDTO {
+      participantId: number;
+      puuid: string;
+    }
+
+    export interface PositionDTO {
+      x: number;
+      y: number;
+    }
+
+    export interface ParticipantFrameDTO {
+      championStats: { [key: string]: number };
+      currentGold: number;
+      damageStats: { [key: string]: number };
+      goldPerSecond: number;
+      jungleMinionsKilled: number;
+      level: number;
+      minionsKilled: number;
+      participantId: number;
+      position: PositionDTO;
+      timeEnemySpentControlled: number;
+      totalGold: number;
+      xp: number;
+    }
+
+    export interface VictimDamageDTO {
+      basic: boolean;
+      magicDamage: number;
+      name: string;
+      participantId: number;
+      physicalDamage: number;
+      spellName: string;
+      spellSlot: number;
+      trueDamage: number;
+      type: string;
+    }
+
+    export interface EventDTO {
+      realTimestamp?: number;
+      timestamp: number;
+      type: string;
+      itemId?: number;
+      participantId?: number;
+      levelUpType?: string;
+      skillSlot?: number;
+      creatorId?: number;
+      wardType?: string;
+      level?: number;
+      bounty?: number;
+      killStreakLength?: number;
+      killerId?: number;
+      position?: PositionDTO;
+      victimDamageDealt?: string[];
+      victimDamageReceived?: string[];
+      victimId?: number;
+      killType?: string;
+      afterId?: number;
+      beforeId?: number;
+      goldGain?: number;
+      assistingParticipantIds?: number[];
+      laneType?: string;
+      teamId?: number;
+      killerTeamId?: number;
+      monsterSubType?: string;
+      monsterType?: string;
+      buildingType?: string;
+      towerType?: string;
+      transformType?: string;
+      multiKillLength?: number;
+      gameId?: number;
+      winningTeam?: number;
+    }
+
+    export interface FrameDTO {
+      events: EventDTO[];
+      participantFrames: { [key: string]: ParticipantFrameDTO };
+      timestamp: number;
+    }
+
+    export interface MatchTimelineInfoDTO {
+      frameInterval: number;
+      frames: FrameDTO[];
+      gameId: number;
+      participants: MatchTimelineParticipantDTO[];
+    }
+
+    export interface MatchTimelineDTO {
+      metadata: MetadataDTO;
+      info: MatchTimelineInfoDTO;
     }
   }
 
