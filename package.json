@@ -32,12 +32,12 @@
   "dependencies": {
     "@fightmegg/riot-rate-limiter": "0.0.14",
     "debug": "^4.3.2",
-    "ioredis": "^4.27.6",
+    "ioredis": "^5.2.3",
     "node-fetch": "^2.6.1",
     "path-to-regexp": "^6.2.0"
   },
   "devDependencies": {
-    "@types/ioredis": "^4.26.5",
+    "@types/ioredis": "^5.0.0",
     "@types/jest": "^26.0.24",
     "@types/node": "^15.14.2",
     "@types/node-fetch": "^2.5.11",
