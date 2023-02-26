@@ -1,12 +1,12 @@
 import { PlatformId } from "@fightmegg/riot-rate-limiter";
-import Redis from "ioredis";
+import { RedisOptions } from "ioredis";
 
 export namespace RiotAPITypes {
   export interface Config {
     debug?: boolean;
     cache?: {
       cacheType: "local" | "ioredis";
-      client?: Redis.RedisOptions | string;
+      client?: RedisOptions | string;
       ttls?: {
         byMethod: { [key: string]: number };
       };
