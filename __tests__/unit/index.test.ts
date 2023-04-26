@@ -23,9 +23,10 @@ describe("RiotAPI", () => {
     jest.clearAllMocks();
   });
 
-  const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (
-    key: U
-  ) => obj[key];
+  const getKeyValue =
+    <T extends object, U extends keyof T>(obj: T) =>
+    (key: U) =>
+      obj[key];
 
   describe("constructor", () => {
     test("should THROW if no token provided", () => {
@@ -92,8 +93,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: undefined,
             headers: { "X-Riot-Token": "1234" },
@@ -118,8 +118,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
           options: expect.anything(),
         },
         {
@@ -141,8 +140,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: JSON.stringify({ name: "kratos" }),
             method: "POST",
@@ -173,8 +171,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: JSON.stringify({ name: "kratos" }),
             method: "POST",
@@ -765,7 +762,7 @@ describe("RiotAPI", () => {
   describe("match_v5", () => {
     test.each([
       [
-        "getIdsbyPuuid",
+        "getIdsByPuuid",
         {
           cluster: PlatformId.EUROPE,
           puuid: "uuid",
@@ -780,7 +777,7 @@ describe("RiotAPI", () => {
         ],
       ],
       [
-        "getIdsbyPuuid",
+        "getIdsByPuuid",
         {
           cluster: PlatformId.EUROPE,
           puuid: "uuid",
@@ -789,7 +786,7 @@ describe("RiotAPI", () => {
             type: RiotAPITypes.MatchV5.MatchType.Ranked,
             start: 0,
             count: 20,
-          }
+          },
         },
         [
           PlatformId.EUROPE,
@@ -802,7 +799,7 @@ describe("RiotAPI", () => {
               type: RiotAPITypes.MatchV5.MatchType.Ranked,
               start: 0,
               count: 20,
-            }
+            },
           },
         ],
       ],
@@ -846,7 +843,7 @@ describe("RiotAPI", () => {
         expect(rAPI.request).toHaveBeenCalledWith(...params);
       }
     );
-  })
+  });
 
   describe("spectator", () => {
     test.each([

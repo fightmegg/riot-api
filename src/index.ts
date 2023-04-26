@@ -582,7 +582,7 @@ export class RiotAPI {
 
   get matchV5() {
     return {
-      getIdsbyPuuid: ({
+      getIdsByPuuid: ({
         cluster,
         puuid,
         params,
