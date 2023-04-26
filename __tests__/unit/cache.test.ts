@@ -1,7 +1,13 @@
 import { MemoryCache, RedisCache } from "../../src/cache";
-import Redis from "ioredis";
+import { Redis } from "ioredis";
 
-jest.mock("ioredis");
+jest.mock("ioredis", () => ({
+  Redis: jest.fn().mockImplementation(() => ({
+    get: jest.fn(),
+    setex: jest.fn(),
+    flushdb: jest.fn(),
+  })),
+}));
 
 describe("Cache", () => {
   describe("MemoryCache", () => {
@@ -58,6 +64,7 @@ describe("Cache", () => {
 
   describe("RedisCache", () => {
     let redCache: RedisCache;
+    let mockedRedis = jest.mocked(Redis);
 
     beforeEach(() => {
       jest.clearAllMocks();
@@ -66,8 +73,8 @@ describe("Cache", () => {
     });
 
     test("initialses & creates new redis client", () => {
-      expect(Redis).toHaveBeenCalled();
-      expect(Redis).toHaveBeenCalledWith("redis://localhost:6739");
+      expect(mockedRedis).toHaveBeenCalled();
+      expect(mockedRedis).toHaveBeenCalledWith("redis://localhost:6739");
 
       expect(redCache.client).toBeTruthy();
       expect(redCache.keyPrefix).toEqual("fm-riot-api-");
