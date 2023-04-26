@@ -786,6 +786,8 @@ describe("RiotAPI", () => {
             type: RiotAPITypes.MatchV5.MatchType.Ranked,
             start: 0,
             count: 20,
+            startTime: 100000,
+            endTime: 2000000,
           },
         },
         [
@@ -799,6 +801,8 @@ describe("RiotAPI", () => {
               type: RiotAPITypes.MatchV5.MatchType.Ranked,
               start: 0,
               count: 20,
+              startTime: 100000,
+              endTime: 2000000,
             },
           },
         ],

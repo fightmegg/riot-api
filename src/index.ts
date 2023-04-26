@@ -594,6 +594,8 @@ export class RiotAPI {
           type?: RiotAPITypes.MatchV5.MatchType;
           start?: number;
           count?: number;
+          startTime?: number;
+          endTime?: number;
         };
       }): Promise<string[]> =>
         this.request(
