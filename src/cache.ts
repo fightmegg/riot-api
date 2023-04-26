@@ -1,11 +1,11 @@
-import Redis from "ioredis";
+import { Redis, RedisOptions } from "ioredis";
 
 export class RedisCache {
-  readonly client: Redis.Redis;
+  readonly client: Redis;
   readonly keyPrefix: string = "fm-riot-api-";
 
-  constructor(redisClientOpts: Redis.RedisOptions | string) {
-    this.client = new Redis(redisClientOpts as Redis.RedisOptions);
+  constructor(redisClientOpts: RedisOptions | string) {
+    this.client = new Redis(redisClientOpts as RedisOptions);
   }
 
   async get<T>(key: string): Promise<T | null> {

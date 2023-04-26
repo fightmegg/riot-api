@@ -1,4 +1,3 @@
-import { mocked } from "ts-jest/utils";
 import { RiotAPITypes, DDragon } from "../../src";
 import fetch from "node-fetch";
 
@@ -9,11 +8,12 @@ describe("DDragon", () => {
     jest.clearAllMocks();
   });
 
-  const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (
-    key: U
-  ) => obj[key];
+  const getKeyValue =
+    <T extends object, U extends keyof T>(obj: T) =>
+    (key: U) =>
+      obj[key];
 
-  const mockedFetch = mocked(fetch);
+  const mockedFetch = jest.mocked(fetch);
 
   describe("constructor", () => {
     test("should set defaults when initalized", () => {

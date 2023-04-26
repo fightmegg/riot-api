@@ -5,7 +5,7 @@ import {
   PlatformId,
 } from "@fightmegg/riot-rate-limiter";
 import Bottleneck from "bottleneck";
-import Redis from "ioredis";
+import { RedisOptions } from "ioredis";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
 import { RiotAPITypes } from "./@types";
@@ -57,9 +57,7 @@ export class RiotAPI {
     if (this.config.cache?.cacheType === "local")
       this.cache = new MemoryCache();
     else if (this.config.cache?.cacheType === "ioredis")
-      this.cache = new RedisCache(
-        this.config.cache?.client as Redis.RedisOptions
-      );
+      this.cache = new RedisCache(this.config.cache?.client as RedisOptions);
   }
 
   private getHeaders(headers?: { [key: string]: string }) {
