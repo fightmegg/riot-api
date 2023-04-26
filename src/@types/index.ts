@@ -81,7 +81,8 @@ export namespace RiotAPITypes {
   export type Cluster =
     | PlatformId.EUROPE
     | PlatformId.AMERICAS
-    | PlatformId.ASIA;
+    | PlatformId.ASIA
+    | PlatformId.SEA;
 
   export type LoLRegion =
     | PlatformId.BR1
