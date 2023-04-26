@@ -1,18 +1,10 @@
 {
-  "display": "Node 14",
+  "display": "Node 20",
   "compilerOptions": {
-    "lib": [
-      "es2019",
-      "es2020.promise",
-      "es2020.bigint",
-      "es2020.string",
-      "DOM"
-    ],
+    "lib": ["esnext"],
     "module": "ESNEXT",
-    "target": "ES2019",
+    "target": "ES2020",
     "outDir": "./dist/esm",
-
-    // "declaration": true,
     "declaration": true,
     "strict": true,
     "esModuleInterop": true,
@@ -22,7 +14,7 @@
     "moduleResolution": "node"
   },
   "include": ["./src", "./@types"],
-  "exclude": ["**/__tests__/**"],
+  "exclude": ["**.test.ts"],
   "ts-node": {
     "compilerOptions": {
       "module": "commonjs"
