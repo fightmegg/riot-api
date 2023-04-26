@@ -101,6 +101,7 @@ export namespace RiotAPITypes {
     export namespace ACCOUNT {
       export const GET_BY_PUUID = "ACCOUNT.GET_BY_PUUID";
       export const GET_BY_RIOT_ID = "ACCOUNT.GET_BY_RIOT_ID";
+      export const GET_BY_ACCESS_TOKEN = "ACCOUNT.GET_BY_ACCESS_TOKEN";
       export const GET_ACTIVE_SHARD_FOR_PLAYER =
         "ACCOUNT.GET_ACTIVE_SHARD_FOR_PLAYER";
     }
@@ -108,6 +109,7 @@ export namespace RiotAPITypes {
       export const GET_ALL_CHAMPIONS = "CHAMPION_MASTERY.GET_ALL_CHAMPIONS";
       export const GET_CHAMPION_MASTERY =
         "CHAMPION_MASTERY.GET_CHAMPION_MASTERY";
+      export const GET_TOP_CHAMPIONS = "CHAMPION_MASTERY.GET_TOP_CHAMPIONS";
       export const GET_CHAMPION_MASTERY_SCORE =
         "CHAMPION_MASTERY.GET_CHAMPION_MASTERY_SCORE";
     }

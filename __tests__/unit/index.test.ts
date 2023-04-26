@@ -289,6 +289,19 @@ describe("RiotAPI", () => {
         ],
       ],
       [
+        "getByAccessToken",
+        { region: PlatformId.EUROPE, accessToken: "12234" },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: "europe.account.getByAccessToken",
+            headers: { Authorization: "Bearer 12234" },
+          },
+        ],
+      ],
+      [
         "getActiveShardForPlayer",
         { region: PlatformId.EUROPE, game: "val", puuid: "1" },
         [
@@ -330,6 +343,19 @@ describe("RiotAPI", () => {
           RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_CHAMPION_MASTERY,
           { championId: 1, summonerId: "1" },
           { id: "euw1.championMastery.getChampion.1.1" },
+        ],
+      ],
+      [
+        "getTopChampions",
+        { region: PlatformId.EUW1, summonerId: "1", params: { count: 5 } },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_TOP_CHAMPIONS,
+          { summonerId: "1" },
+          {
+            id: "euw1.championMastery.getTopChampions.1",
+            params: { count: 5 },
+          },
         ],
       ],
       [

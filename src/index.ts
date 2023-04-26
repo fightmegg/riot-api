@@ -171,6 +171,22 @@ export class RiotAPI {
             priority: 4,
           }
         ),
+      getByAccessToken: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.Cluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.Account.AccountDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: `${region}.account.getByAccessToken`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
       getActiveShardForPlayer: ({
         region,
         game,
@@ -219,6 +235,26 @@ export class RiotAPI {
           { championId, summonerId },
           {
             id: `${region}.championMastery.getChampion.${championId}.${summonerId}`,
+          }
+        ),
+      getTopChampions: ({
+        region,
+        summonerId,
+        params,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        summonerId: string;
+        params?: {
+          count?: number;
+        };
+      }): Promise<RiotAPITypes.ChampionMastery.ChampionMasteryDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_TOP_CHAMPIONS,
+          { summonerId },
+          {
+            id: `${region}.championMastery.getTopChampions.${summonerId}`,
+            params,
           }
         ),
       getMasteryScore: ({
