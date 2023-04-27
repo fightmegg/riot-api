@@ -291,6 +291,19 @@ export class RiotAPI {
 
   get clash() {
     return {
+      getPlayersByPUUID: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        puuid: string;
+      }): Promise<RiotAPITypes.Clash.PlayerDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
+          { puuid },
+          { id: `${region}.clash.getPlayersByPUUID.${puuid}` }
+        ),
       getPlayersBySummonerId: ({
         region,
         summonerId,
@@ -572,7 +585,7 @@ export class RiotAPI {
         region,
         accessToken,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: RiotAPITypes.LORCluster;
         accessToken: string;
       }): Promise<RiotAPITypes.LorDeck.DeckDTO[]> =>
         this.request(
@@ -589,7 +602,7 @@ export class RiotAPI {
         accessToken,
         body,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: RiotAPITypes.LORCluster;
         accessToken: string;
         body: RiotAPITypes.LorDeck.NewDeckDTO;
       }): Promise<string> =>
@@ -601,6 +614,27 @@ export class RiotAPI {
             id: `${region}.lorDeck.createDeck`,
             body,
             method: "POST",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
+    };
+  }
+
+  get lorInventory() {
+    return {
+      getCardsOwnedByPlayer: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.LorInventory.CardDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER,
+          {},
+          {
+            id: `${region}.lorInventory.getCardsOwnedByPlayer`,
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         ),

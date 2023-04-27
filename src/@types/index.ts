@@ -117,6 +117,7 @@ export namespace RiotAPITypes {
       export const GET_CHAMPION_ROTATIONS = "CHAMPION.GET_CHAMPION_ROTATIONS";
     }
     export namespace CLASH {
+      export const GET_PLAYERS_BY_PUUID = "CLASH.GET_PLAYERS_BY_PUUID";
       export const GET_PLAYERS_BY_SUMMONER = "CLASH.GET_PLAYERS_BY_SUMMONER";
       export const GET_TEAM = "CLASH.GET_TEAM";
       export const GET_TOURNAMENTS = "CLASH.GET_TOURNAMENTS";
@@ -151,6 +152,11 @@ export namespace RiotAPITypes {
       export const GET_DECKS_FOR_PLAYER = "LOR_DECK.GET_DECKS_FOR_PLAYER";
       export const POST_CREATE_DECK_FOR_PLAYER =
         "LOR_DECK.POST_CREATE_DECK_FOR_PLAYER";
+    }
+
+    export namespace LOR_INVENTORY {
+      export const GET_CARDS_OWNED_BY_PLAYER =
+        "LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER";
     }
 
     export namespace LOR_MATCH {
@@ -447,6 +453,13 @@ export namespace RiotAPITypes {
     export interface NewDeckDTO {
       name: string;
       code: string;
+    }
+  }
+
+  export namespace LorInventory {
+    export interface CardDTO {
+      code: string;
+      count: string;
     }
   }
 

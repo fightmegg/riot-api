@@ -407,6 +407,16 @@ describe("RiotAPI", () => {
   describe("clash", () => {
     test.each([
       [
+        "getPlayersByPUUID",
+        { region: PlatformId.EUW1, puuid: "2" },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
+          { puuid: "2" },
+          { id: "euw1.clash.getPlayersByPUUID.2" },
+        ],
+      ],
+      [
         "getPlayersBySummonerId",
         { region: PlatformId.EUW1, summonerId: "1" },
         [
@@ -643,7 +653,101 @@ describe("RiotAPI", () => {
           { id: "euw1.lolChallenges.getPercentiles" },
         ],
       ],
-    ]);
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lolChallenges)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("lorDeck", () => {
+    test.each([
+      [
+        "getDecksForPlayer",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.GET_DECKS_FOR_PLAYER,
+          {},
+          {
+            id: "europe.lorDeck.getDecksForPlayer",
+            headers: { Authorization: "Bearer 1234" },
+          },
+        ],
+      ],
+      [
+        "createDeck",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+          body: {
+            name: "new deck",
+            code: "A1",
+          },
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.POST_CREATE_DECK_FOR_PLAYER,
+          {},
+          {
+            id: "europe.lorDeck.createDeck",
+            headers: { Authorization: "Bearer 1234" },
+            method: "POST",
+            body: {
+              name: "new deck",
+              code: "A1",
+            },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lorDeck)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("lorInventory", () => {
+    test.each([
+      [
+        "getCardsOwnedByPlayer",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER,
+          {},
+          {
+            id: "europe.lorInventory.getCardsOwnedByPlayer",
+            headers: { Authorization: "Bearer 1234" },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lorInventory)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
   });
 
   describe("lorMatch", () => {
