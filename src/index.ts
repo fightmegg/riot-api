@@ -144,7 +144,7 @@ export class RiotAPI {
         region,
         puuid,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         puuid: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
         this.request(
@@ -158,7 +158,7 @@ export class RiotAPI {
         gameName,
         tagLine,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         gameName: string;
         tagLine: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
@@ -175,7 +175,7 @@ export class RiotAPI {
         region,
         accessToken,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         accessToken: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
         this.request(
@@ -192,7 +192,7 @@ export class RiotAPI {
         game,
         puuid,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         game: "val" | "lor";
         puuid: string;
       }): Promise<RiotAPITypes.Account.ActiveShardDTO> =>
@@ -585,7 +585,10 @@ export class RiotAPI {
         region,
         accessToken,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<
+          RiotAPITypes.LORCluster,
+          PlatformId.ASIA | PlatformId.APAC
+        >;
         accessToken: string;
       }): Promise<RiotAPITypes.LorDeck.DeckDTO[]> =>
         this.request(
@@ -602,7 +605,7 @@ export class RiotAPI {
         accessToken,
         body,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<RiotAPITypes.LORCluster, PlatformId.ASIA>;
         accessToken: string;
         body: RiotAPITypes.LorDeck.NewDeckDTO;
       }): Promise<string> =>
@@ -626,7 +629,10 @@ export class RiotAPI {
         region,
         accessToken,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<
+          RiotAPITypes.LORCluster,
+          PlatformId.ASIA | PlatformId.APAC
+        >;
         accessToken: string;
       }): Promise<RiotAPITypes.LorInventory.CardDTO[]> =>
         this.request(
@@ -647,7 +653,7 @@ export class RiotAPI {
         region,
         puuid,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<RiotAPITypes.LORCluster, PlatformId.ASIA>;
         puuid: string;
       }): Promise<string[]> =>
         this.request(
@@ -660,7 +666,7 @@ export class RiotAPI {
         region,
         matchId,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<RiotAPITypes.LORCluster, PlatformId.ASIA>;
         matchId: string;
       }): Promise<RiotAPITypes.LorMatch.MatchDTO> =>
         this.request(
@@ -677,7 +683,10 @@ export class RiotAPI {
       getMasterTier: ({
         region,
       }: {
-        region: RiotAPITypes.LORCluster;
+        region: Exclude<
+          RiotAPITypes.LORCluster,
+          PlatformId.ASIA | PlatformId.APAC
+        >;
       }): Promise<RiotAPITypes.LorRanked.LeaderboardDTO> =>
         this.request(
           region,
@@ -784,7 +793,7 @@ export class RiotAPI {
         puuid,
         params,
       }: {
-        cluster: RiotAPITypes.Cluster;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.ESPORTS>;
         puuid: string;
         params?: {
           queue?: number;
@@ -808,7 +817,7 @@ export class RiotAPI {
         cluster,
         matchId,
       }: {
-        cluster: RiotAPITypes.Cluster;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.ESPORTS>;
         matchId: string;
       }): Promise<RiotAPITypes.MatchV5.MatchDTO> =>
         this.request(
@@ -823,7 +832,7 @@ export class RiotAPI {
         cluster,
         matchId,
       }: {
-        cluster: RiotAPITypes.Cluster;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.ESPORTS>;
         matchId: string;
       }): Promise<RiotAPITypes.MatchV5.MatchTimelineDTO> =>
         this.request(
@@ -1058,9 +1067,12 @@ export class RiotAPI {
         puuid,
         params,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: RiotAPITypes.TFTCluster;
         puuid: string;
         params?: {
+          start?: number;
+          endTime?: number;
+          startTime?: number;
           count?: number;
         };
       }): Promise<string[]> =>
@@ -1074,7 +1086,7 @@ export class RiotAPI {
         region,
         matchId,
       }: {
-        region: RiotAPITypes.Cluster;
+        region: RiotAPITypes.TFTCluster;
         matchId: string;
       }): Promise<RiotAPITypes.TftMatch.MatchDTO> =>
         this.request(
@@ -1425,7 +1437,7 @@ export class RiotAPI {
         queue,
         params,
       }: {
-        region: RiotAPITypes.VALCluster;
+        region: Exclude<RiotAPITypes.VALCluster, PlatformId.ESPORTS>;
         queue: string;
         params?: {
           size?: number;

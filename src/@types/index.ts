@@ -74,9 +74,17 @@ export namespace RiotAPITypes {
     | PlatformId.EU
     | PlatformId.KR
     | PlatformId.LATAM
-    | PlatformId.NA;
+    | PlatformId.NA
+    | PlatformId.ESPORTS;
 
   export type LORCluster =
+    | PlatformId.AMERICAS
+    | PlatformId.ASIA
+    | PlatformId.EUROPE
+    | PlatformId.SEA
+    | PlatformId.APAC;
+
+  export type TFTCluster =
     | PlatformId.AMERICAS
     | PlatformId.ASIA
     | PlatformId.EUROPE
@@ -86,7 +94,8 @@ export namespace RiotAPITypes {
     | PlatformId.EUROPE
     | PlatformId.AMERICAS
     | PlatformId.ASIA
-    | PlatformId.SEA;
+    | PlatformId.SEA
+    | PlatformId.ESPORTS;
 
   export type LoLRegion =
     | PlatformId.BR1
@@ -99,7 +108,12 @@ export namespace RiotAPITypes {
     | PlatformId.NA1
     | PlatformId.OC1
     | PlatformId.RU
-    | PlatformId.TR1;
+    | PlatformId.TR1
+    | PlatformId.PH2
+    | PlatformId.SG2
+    | PlatformId.TH2
+    | PlatformId.TW2
+    | PlatformId.VN2;
 
   export namespace METHOD_KEY {
     export namespace ACCOUNT {

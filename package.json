@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/fightmegg/riot-api#readme",
   "dependencies": {
-    "@fightmegg/riot-rate-limiter": "0.0.16",
+    "@fightmegg/riot-rate-limiter": "0.0.18",
     "debug": "^4.3.4",
     "ioredis": "^5.3.2",
     "node-fetch": "^2.6.1",
