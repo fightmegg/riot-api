@@ -1952,16 +1952,13 @@ export namespace RiotAPITypes {
       data: { [key: string]: T };
     }
     export interface DDragonImageDTO {
-      id?: number; // Only really used for the ProfileIcon. Should we create an entire interface just for that or leave it here as an optional?
-      image: {
-        full: string;
-        sprite: string;
-        group: string;
-        x: number;
-        y: number;
-        w: number;
-        h: number;
-      };
+      full: string;
+      sprite: string;
+      group: string;
+      x: number;
+      y: number;
+      w: number;
+      h: number;
     }
 
     export interface DDragonMapDTO
@@ -1973,8 +1970,13 @@ export namespace RiotAPITypes {
       image: DDragonImageDTO;
     }
 
+    export interface DDragonImageWrapperDTO {
+      id: number;
+      image: DDragonImageDTO;
+    }
+
     export interface DDragonProfileIconDTO
-      extends DDragonDataWrapper<DDragonImageDTO> {}
+      extends DDragonDataWrapper<DDragonImageWrapperDTO> {}
 
     export interface DDragonSummonerSpellDTO
       extends DDragonDataWrapper<DDragonSummonerSpellDataDTO> {}
