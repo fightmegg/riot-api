@@ -202,6 +202,8 @@ export namespace RiotAPITypes {
       export const GET_GRANDMASTER = "TFT_LEAGUE.GET_GRANDMASTER";
       export const GET_LEAGUE_BY_ID = "TFT_LEAGUE.GET_LEAGUE_BY_ID";
       export const GET_MASTER = "TFT_LEAGUE.GET_MASTER";
+      export const GET_TOP_RATED_LADDER_BY_QUEUE =
+        "TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE";
     }
     export namespace TFT_MATCH {
       export const GET_MATCH_IDS_BY_PUUID = "TFT_MATCH.GET_MATCH_IDS_BY_PUUID";
@@ -210,6 +212,7 @@ export namespace RiotAPITypes {
     export namespace TFT_SUMMONER {
       export const GET_BY_ACCOUNT_ID = "TFT_SUMMONER.GET_BY_ACCOUNT_ID";
       export const GET_BY_SUMMONER_NAME = "TFT_SUMMONER.GET_BY_SUMMONER_NAME";
+      export const GET_BY_ACCESS_TOKEN = "TFT_SUMMONER.GET_BY_ACCESS_TOKEN";
       export const GET_BY_PUUID = "TFT_SUMMONER.GET_BY_PUUID";
       export const GET_BY_SUMMONER_ID = "TFT_SUMMONER.GET_BY_SUMMONER_ID";
     }
@@ -1316,6 +1319,13 @@ export namespace RiotAPITypes {
   }
 
   export namespace TftLeague {
+    export enum RatedTier {
+      ORANGE = "ORANGE",
+      PURPLE = "PURPLE",
+      BLUE = "BLUE",
+      GREEN = "GREEN",
+      GRAY = "GRAY",
+    }
     export interface LeagueListDTO {
       leagueId: string;
       entries: TftLeague.LeagueItemDTO[];
@@ -1366,6 +1376,15 @@ export namespace RiotAPITypes {
       freshBlood: boolean;
       inactive: boolean;
       miniSeries?: TftLeague.MiniSeriesDTO | null;
+    }
+
+    export interface TopRatedLadderEntryDTO {
+      summonerId: string;
+      summonerName: string;
+      ratedTier: RatedTier;
+      ratedRating: number;
+      wins: number; // first placement
+      previousUpdateLadderPosition: number;
     }
   }
 

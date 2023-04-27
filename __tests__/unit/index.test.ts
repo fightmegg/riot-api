@@ -1251,6 +1251,21 @@ describe("RiotAPI", () => {
           },
         ],
       ],
+      [
+        "getTopRatedLadderByQueue",
+        {
+          region: PlatformId.EUW1,
+          queue: "top",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE,
+          { queue: "top" },
+          {
+            id: "euw1.tftLeague.getTopRatedLadderByQueue.top",
+          },
+        ],
+      ],
     ])(
       "%s - calls request with correct params",
       async (name, input, params) => {
@@ -1338,6 +1353,22 @@ describe("RiotAPI", () => {
           { summonerName: "Demos" },
           {
             id: "euw1.tftSummoner.getBySummonerName.Demos",
+          },
+        ],
+      ],
+      [
+        "getByAccessToken",
+        {
+          region: PlatformId.EUW1,
+          accessToken: "12345",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: "euw1.tftSummoner.getByAccessToken",
+            headers: { Authorization: "Bearer 12345" },
           },
         ],
       ],

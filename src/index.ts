@@ -1035,6 +1035,19 @@ export class RiotAPI {
           {},
           { id: `${region}.tftLeague.getMaster` }
         ),
+      getTopRatedLadderByQueue: ({
+        region,
+        queue,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        queue: string;
+      }): Promise<RiotAPITypes.TftLeague.TopRatedLadderEntryDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE,
+          { queue },
+          { id: `${region}.tftLeague.getTopRatedLadderByQueue.${queue}` }
+        ),
     };
   }
 
@@ -1100,6 +1113,22 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
           { summonerName },
           { id: `${region}.tftSummoner.getBySummonerName.${summonerName}` }
+        ),
+      getByAccessToken: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        accessToken: string;
+      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: `${region}.tftSummoner.getByAccessToken`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         ),
       getByPUUID: ({
         region,
