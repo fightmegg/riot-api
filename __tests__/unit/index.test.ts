@@ -1285,7 +1285,7 @@ describe("RiotAPI", () => {
         {
           region: PlatformId.EUROPE,
           puuid: "1",
-          params: { count: 10 },
+          params: { count: 10, start: 10, endTime: 131311, startTime: 1111 },
         },
         [
           PlatformId.EUROPE,
@@ -1293,7 +1293,7 @@ describe("RiotAPI", () => {
           { puuid: "1" },
           {
             id: "europe.tftMatch.getMatchIdsByPUUID.1",
-            params: { count: 10 },
+            params: { count: 10, start: 10, endTime: 131311, startTime: 1111 },
           },
         ],
       ],

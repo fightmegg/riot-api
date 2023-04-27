@@ -8,10 +8,10 @@ describe("DDragon", () => {
     jest.clearAllMocks();
   });
 
-  const getKeyValue =
-    <T extends object, U extends keyof T>(obj: T) =>
-    (key: U) =>
-      obj[key];
+  // const getKeyValue =
+  //   <T extends object, U extends keyof T>(obj: T) =>
+  //   (key: U) =>
+  //     obj[key];
 
   const mockedFetch = jest.mocked(fetch);
 

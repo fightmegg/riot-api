@@ -1,4 +1,4 @@
-import { DDragon, RiotAPI } from "../../src/index";
+import { DDragon, RiotAPI, RiotAPITypes } from "../../src/index";
 
 describe("E2E", () => {
   describe("DDragon", () => {
@@ -9,9 +9,21 @@ describe("E2E", () => {
         const aatrox = await ddragon.champion.byName({
           championName: "Aatrox",
         });
+
+        const aatroxImage: RiotAPITypes.DDragon.DDragonImageDTO = {
+          full: "Aatrox.png",
+          sprite: "champion0.png",
+          group: "champion",
+          x: 0,
+          y: 0,
+          w: 48,
+          h: 48,
+        };
+
         expect(aatrox.type).toEqual("champion");
         expect(aatrox.format).toEqual("standAloneComplex");
         expect(aatrox.data.Aatrox.id).toEqual("Aatrox");
+        expect(aatrox.data.Aatrox.image).toEqual(aatroxImage);
       });
     });
   });
