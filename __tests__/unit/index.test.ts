@@ -1050,6 +1050,21 @@ describe("RiotAPI", () => {
   describe("summoner", () => {
     test.each([
       [
+        "getByRsoPUUID",
+        {
+          region: PlatformId.EUW1,
+          rsoPuuid: "1",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_RSO_PUUID,
+          { rsoPuuid: "1" },
+          {
+            id: "euw1.summoner.getByRsoPUUID.1",
+          },
+        ],
+      ],
+      [
         "getByAccountId",
         {
           region: PlatformId.EUW1,

@@ -187,6 +187,7 @@ export namespace RiotAPITypes {
       export const GET_FEATURED_GAMES = "SPECTATOR.GET_FEATURED_GAMES";
     }
     export namespace SUMMONER {
+      export const GET_BY_RSO_PUUID = "SUMMONER.GET_BY_RSO_PUUID";
       export const GET_BY_ACCOUNT_ID = "SUMMONER.GET_BY_ACCOUNT_ID";
       export const GET_BY_SUMMONER_NAME = "SUMMONER.GET_BY_SUMMONER_NAME";
       export const GET_BY_PUUID = "SUMMONER.GET_BY_PUUID";
