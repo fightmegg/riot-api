@@ -486,7 +486,7 @@ export class RiotAPI {
         region,
       }: {
         region: RiotAPITypes.LoLRegion;
-      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDto[]> =>
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDTO[]> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
@@ -510,7 +510,7 @@ export class RiotAPI {
       }: {
         region: RiotAPITypes.LoLRegion;
         challengeId: number;
-      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDto> =>
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDTO> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG_BY_ID,
@@ -527,7 +527,7 @@ export class RiotAPI {
         params?: {
           level?: number;
         };
-      }): Promise<RiotAPITypes.LolChallenges.ApexPlayerInfoDto> =>
+      }): Promise<RiotAPITypes.LolChallenges.ApexPlayerInfoDTO> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_LEADERBOARD_BY_ID,
@@ -556,12 +556,53 @@ export class RiotAPI {
       }: {
         region: RiotAPITypes.LoLRegion;
         puuid: string;
-      }): Promise<RiotAPITypes.LolChallenges.PlayerInfoDto> =>
+      }): Promise<RiotAPITypes.LolChallenges.PlayerInfoDTO> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID,
           { puuid },
           { id: `${region}.lolChallenges.getPlayerDataByPUUID.${puuid}` }
+        ),
+    };
+  }
+
+  get lorDeck() {
+    return {
+      getDecksForPlayer: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.Cluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.LorDeck.DeckDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.GET_DECKS_FOR_PLAYER,
+          {},
+          {
+            id: `${region}.lorDeck.getDecksForPlayer`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
+      createDeck: ({
+        region,
+        accessToken,
+        body,
+      }: {
+        region: RiotAPITypes.Cluster;
+        accessToken: string;
+        body: RiotAPITypes.LorDeck.NewDeckDTO;
+      }): Promise<string> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.POST_CREATE_DECK_FOR_PLAYER,
+          {},
+          {
+            id: `${region}.lorDeck.createDeck`,
+            body,
+            method: "POST",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         ),
     };
   }

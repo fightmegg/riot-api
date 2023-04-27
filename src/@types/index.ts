@@ -147,6 +147,12 @@ export namespace RiotAPITypes {
         "LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID";
     }
 
+    export namespace LOR_DECK {
+      export const GET_DECKS_FOR_PLAYER = "LOR_DECK.GET_DECKS_FOR_PLAYER";
+      export const POST_CREATE_DECK_FOR_PLAYER =
+        "LOR_DECK.POST_CREATE_DECK_FOR_PLAYER";
+    }
+
     export namespace LOR_MATCH {
       export const GET_MATCH_IDS_BY_PUUID = "LOR_RANKED.GET_MATCH_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "LOR_RANKED.GET_MATCH_BY_ID";
@@ -402,7 +408,7 @@ export namespace RiotAPITypes {
       prestigeCrestBorderLevel: number;
     }
 
-    export interface ChallengeConfigInfoDto {
+    export interface ChallengeConfigInfoDTO {
       id: number;
       localizedNames: Record<string, Record<string, string>>;
       state: lolChallengeState;
@@ -417,17 +423,30 @@ export namespace RiotAPITypes {
 
     export type ChallengePercentilesMap = Record<number, ChallengePercentiles>;
 
-    export interface ApexPlayerInfoDto {
+    export interface ApexPlayerInfoDTO {
       puuid: string;
       value: number;
       position: number;
     }
 
-    export interface PlayerInfoDto {
+    export interface PlayerInfoDTO {
       totalPoints: ChallengePoints;
       categoryPoints: Record<lolChallengeCategory, ChallengePoints>;
       challenges: ChallengeInfo[];
       preferences: PlayerClientPreferences;
+    }
+  }
+
+  export namespace LorDeck {
+    export interface DeckDTO {
+      id: string;
+      name: string;
+      code: string;
+    }
+
+    export interface NewDeckDTO {
+      name: string;
+      code: string;
     }
   }
 
