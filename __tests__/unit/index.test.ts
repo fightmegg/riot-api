@@ -23,9 +23,10 @@ describe("RiotAPI", () => {
     jest.clearAllMocks();
   });
 
-  const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (
-    key: U
-  ) => obj[key];
+  const getKeyValue =
+    <T extends object, U extends keyof T>(obj: T) =>
+    (key: U) =>
+      obj[key];
 
   describe("constructor", () => {
     test("should THROW if no token provided", () => {
@@ -92,8 +93,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: undefined,
             headers: { "X-Riot-Token": "1234" },
@@ -118,8 +118,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
           options: expect.anything(),
         },
         {
@@ -141,8 +140,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: JSON.stringify({ name: "kratos" }),
             method: "POST",
@@ -173,8 +171,7 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url:
-            "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
           options: {
             body: JSON.stringify({ name: "kratos" }),
             method: "POST",
@@ -292,6 +289,19 @@ describe("RiotAPI", () => {
         ],
       ],
       [
+        "getByAccessToken",
+        { region: PlatformId.EUROPE, accessToken: "12234" },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: "europe.account.getByAccessToken",
+            headers: { Authorization: "Bearer 12234" },
+          },
+        ],
+      ],
+      [
         "getActiveShardForPlayer",
         { region: PlatformId.EUROPE, game: "val", puuid: "1" },
         [
@@ -333,6 +343,19 @@ describe("RiotAPI", () => {
           RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_CHAMPION_MASTERY,
           { championId: 1, summonerId: "1" },
           { id: "euw1.championMastery.getChampion.1.1" },
+        ],
+      ],
+      [
+        "getTopChampions",
+        { region: PlatformId.EUW1, summonerId: "1", params: { count: 5 } },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_TOP_CHAMPIONS,
+          { summonerId: "1" },
+          {
+            id: "euw1.championMastery.getTopChampions.1",
+            params: { count: 5 },
+          },
         ],
       ],
       [
@@ -383,6 +406,16 @@ describe("RiotAPI", () => {
 
   describe("clash", () => {
     test.each([
+      [
+        "getPlayersByPUUID",
+        { region: PlatformId.EUW1, puuid: "2" },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
+          { puuid: "2" },
+          { id: "euw1.clash.getPlayersByPUUID.2" },
+        ],
+      ],
       [
         "getPlayersBySummonerId",
         { region: PlatformId.EUW1, summonerId: "1" },
@@ -598,6 +631,125 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("lolChallenges", () => {
+    test.each([
+      [
+        "getConfig",
+        { region: PlatformId.EUW1 },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
+          {},
+          { id: "euw1.lolChallenges.getConfig" },
+        ],
+      ],
+      [
+        "getPercentiles",
+        { region: PlatformId.EUW1 },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES,
+          {},
+          { id: "euw1.lolChallenges.getPercentiles" },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lolChallenges)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("lorDeck", () => {
+    test.each([
+      [
+        "getDecksForPlayer",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.GET_DECKS_FOR_PLAYER,
+          {},
+          {
+            id: "europe.lorDeck.getDecksForPlayer",
+            headers: { Authorization: "Bearer 1234" },
+          },
+        ],
+      ],
+      [
+        "createDeck",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+          body: {
+            name: "new deck",
+            code: "A1",
+          },
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.POST_CREATE_DECK_FOR_PLAYER,
+          {},
+          {
+            id: "europe.lorDeck.createDeck",
+            headers: { Authorization: "Bearer 1234" },
+            method: "POST",
+            body: {
+              name: "new deck",
+              code: "A1",
+            },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lorDeck)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("lorInventory", () => {
+    test.each([
+      [
+        "getCardsOwnedByPlayer",
+        {
+          region: PlatformId.EUROPE,
+          accessToken: "1234",
+        },
+        [
+          PlatformId.EUROPE,
+          RiotAPITypes.METHOD_KEY.LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER,
+          {},
+          {
+            id: "europe.lorInventory.getCardsOwnedByPlayer",
+            headers: { Authorization: "Bearer 1234" },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.lorInventory)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
   describe("lorMatch", () => {
     test.each([
       [
@@ -765,7 +917,7 @@ describe("RiotAPI", () => {
   describe("match_v5", () => {
     test.each([
       [
-        "getIdsbyPuuid",
+        "getIdsByPuuid",
         {
           cluster: PlatformId.EUROPE,
           puuid: "uuid",
@@ -780,7 +932,7 @@ describe("RiotAPI", () => {
         ],
       ],
       [
-        "getIdsbyPuuid",
+        "getIdsByPuuid",
         {
           cluster: PlatformId.EUROPE,
           puuid: "uuid",
@@ -789,7 +941,9 @@ describe("RiotAPI", () => {
             type: RiotAPITypes.MatchV5.MatchType.Ranked,
             start: 0,
             count: 20,
-          }
+            startTime: 100000,
+            endTime: 2000000,
+          },
         },
         [
           PlatformId.EUROPE,
@@ -802,7 +956,9 @@ describe("RiotAPI", () => {
               type: RiotAPITypes.MatchV5.MatchType.Ranked,
               start: 0,
               count: 20,
-            }
+              startTime: 100000,
+              endTime: 2000000,
+            },
           },
         ],
       ],
@@ -846,7 +1002,7 @@ describe("RiotAPI", () => {
         expect(rAPI.request).toHaveBeenCalledWith(...params);
       }
     );
-  })
+  });
 
   describe("spectator", () => {
     test.each([
@@ -893,6 +1049,21 @@ describe("RiotAPI", () => {
 
   describe("summoner", () => {
     test.each([
+      [
+        "getByRsoPUUID",
+        {
+          region: PlatformId.EUW1,
+          rsoPuuid: "1",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_RSO_PUUID,
+          { rsoPuuid: "1" },
+          {
+            id: "euw1.summoner.getByRsoPUUID.1",
+          },
+        ],
+      ],
       [
         "getByAccountId",
         {
@@ -1080,6 +1251,21 @@ describe("RiotAPI", () => {
           },
         ],
       ],
+      [
+        "getTopRatedLadderByQueue",
+        {
+          region: PlatformId.EUW1,
+          queue: "top",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE,
+          { queue: "top" },
+          {
+            id: "euw1.tftLeague.getTopRatedLadderByQueue.top",
+          },
+        ],
+      ],
     ])(
       "%s - calls request with correct params",
       async (name, input, params) => {
@@ -1167,6 +1353,22 @@ describe("RiotAPI", () => {
           { summonerName: "Demos" },
           {
             id: "euw1.tftSummoner.getBySummonerName.Demos",
+          },
+        ],
+      ],
+      [
+        "getByAccessToken",
+        {
+          region: PlatformId.EUW1,
+          accessToken: "12345",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: "euw1.tftSummoner.getByAccessToken",
+            headers: { Authorization: "Bearer 12345" },
           },
         ],
       ],
@@ -1520,6 +1722,43 @@ describe("RiotAPI", () => {
         rAPI.request = jest.fn().mockResolvedValue(null);
 
         await getKeyValue(rAPI.valMatch)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("valRanked", () => {
+    test.each([
+      [
+        "getLeaderboardByQueue",
+        {
+          region: PlatformId.EU,
+          queue: "1",
+          params: {
+            size: 200,
+            startIndex: 1,
+          },
+        },
+        [
+          PlatformId.EU,
+          RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
+          { actId: "1" },
+          {
+            id: "eu.valRanked.getLeaderboardByQueue.1",
+            params: {
+              size: 200,
+              startIndex: 1,
+            },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.valRanked)(name as any)(input as any);
         expect(rAPI.request).toHaveBeenCalledWith(...params);
       }
     );

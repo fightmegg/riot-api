@@ -62,6 +62,10 @@ export namespace RiotAPITypes {
     COMPETITIVE = "competitive",
     UNRATED = "unrated",
     SPIKERUSH = "spikerush",
+    TOURNAMENTMODE = "tournamentmode",
+    DEATHMATCH = "deathmatch",
+    ONEFA = "onefa",
+    GGTEAM = "ggteam",
   }
 
   export type VALCluster =
@@ -81,7 +85,8 @@ export namespace RiotAPITypes {
   export type Cluster =
     | PlatformId.EUROPE
     | PlatformId.AMERICAS
-    | PlatformId.ASIA;
+    | PlatformId.ASIA
+    | PlatformId.SEA;
 
   export type LoLRegion =
     | PlatformId.BR1
@@ -100,6 +105,7 @@ export namespace RiotAPITypes {
     export namespace ACCOUNT {
       export const GET_BY_PUUID = "ACCOUNT.GET_BY_PUUID";
       export const GET_BY_RIOT_ID = "ACCOUNT.GET_BY_RIOT_ID";
+      export const GET_BY_ACCESS_TOKEN = "ACCOUNT.GET_BY_ACCESS_TOKEN";
       export const GET_ACTIVE_SHARD_FOR_PLAYER =
         "ACCOUNT.GET_ACTIVE_SHARD_FOR_PLAYER";
     }
@@ -107,6 +113,7 @@ export namespace RiotAPITypes {
       export const GET_ALL_CHAMPIONS = "CHAMPION_MASTERY.GET_ALL_CHAMPIONS";
       export const GET_CHAMPION_MASTERY =
         "CHAMPION_MASTERY.GET_CHAMPION_MASTERY";
+      export const GET_TOP_CHAMPIONS = "CHAMPION_MASTERY.GET_TOP_CHAMPIONS";
       export const GET_CHAMPION_MASTERY_SCORE =
         "CHAMPION_MASTERY.GET_CHAMPION_MASTERY_SCORE";
     }
@@ -114,6 +121,7 @@ export namespace RiotAPITypes {
       export const GET_CHAMPION_ROTATIONS = "CHAMPION.GET_CHAMPION_ROTATIONS";
     }
     export namespace CLASH {
+      export const GET_PLAYERS_BY_PUUID = "CLASH.GET_PLAYERS_BY_PUUID";
       export const GET_PLAYERS_BY_SUMMONER = "CLASH.GET_PLAYERS_BY_SUMMONER";
       export const GET_TEAM = "CLASH.GET_TEAM";
       export const GET_TOURNAMENTS = "CLASH.GET_TOURNAMENTS";
@@ -130,6 +138,29 @@ export namespace RiotAPITypes {
       export const GET_GRANDMASTER_BY_QUEUE = "LEAGUE.GET_GRANDMASTER_BY_QUEUE";
       export const GET_LEAGUE_BY_ID = "LEAGUE.GET_LEAGUE_BY_ID";
       export const GET_MASTER_BY_QUEUE = "LEAGUE.GET_MASTER_BY_QUEUE";
+    }
+
+    export namespace LOL_CHALLENGES {
+      export const GET_CONFIG = "LOL_CHALLENGES.GET_CONFIG";
+      export const GET_PERCENTILES = "LOL_CHALLENGES.GET_PERCENTILES";
+      export const GET_CONFIG_BY_ID = "LOL_CHALLENGES.GET_CONFIG_BY_ID";
+      export const GET_LEADERBOARD_BY_ID =
+        "LOL_CHALLENGES.GET_LEADERBOARD_BY_ID";
+      export const GET_PERCENTILES_BY_ID =
+        "LOL_CHALLENGES.GET_PERCENTILES_BY_ID";
+      export const GET_PLAYER_DATA_BY_PUUID =
+        "LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID";
+    }
+
+    export namespace LOR_DECK {
+      export const GET_DECKS_FOR_PLAYER = "LOR_DECK.GET_DECKS_FOR_PLAYER";
+      export const POST_CREATE_DECK_FOR_PLAYER =
+        "LOR_DECK.POST_CREATE_DECK_FOR_PLAYER";
+    }
+
+    export namespace LOR_INVENTORY {
+      export const GET_CARDS_OWNED_BY_PLAYER =
+        "LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER";
     }
 
     export namespace LOR_MATCH {
@@ -160,6 +191,7 @@ export namespace RiotAPITypes {
       export const GET_FEATURED_GAMES = "SPECTATOR.GET_FEATURED_GAMES";
     }
     export namespace SUMMONER {
+      export const GET_BY_RSO_PUUID = "SUMMONER.GET_BY_RSO_PUUID";
       export const GET_BY_ACCOUNT_ID = "SUMMONER.GET_BY_ACCOUNT_ID";
       export const GET_BY_SUMMONER_NAME = "SUMMONER.GET_BY_SUMMONER_NAME";
       export const GET_BY_PUUID = "SUMMONER.GET_BY_PUUID";
@@ -174,6 +206,8 @@ export namespace RiotAPITypes {
       export const GET_GRANDMASTER = "TFT_LEAGUE.GET_GRANDMASTER";
       export const GET_LEAGUE_BY_ID = "TFT_LEAGUE.GET_LEAGUE_BY_ID";
       export const GET_MASTER = "TFT_LEAGUE.GET_MASTER";
+      export const GET_TOP_RATED_LADDER_BY_QUEUE =
+        "TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE";
     }
     export namespace TFT_MATCH {
       export const GET_MATCH_IDS_BY_PUUID = "TFT_MATCH.GET_MATCH_IDS_BY_PUUID";
@@ -182,6 +216,7 @@ export namespace RiotAPITypes {
     export namespace TFT_SUMMONER {
       export const GET_BY_ACCOUNT_ID = "TFT_SUMMONER.GET_BY_ACCOUNT_ID";
       export const GET_BY_SUMMONER_NAME = "TFT_SUMMONER.GET_BY_SUMMONER_NAME";
+      export const GET_BY_ACCESS_TOKEN = "TFT_SUMMONER.GET_BY_ACCESS_TOKEN";
       export const GET_BY_PUUID = "TFT_SUMMONER.GET_BY_PUUID";
       export const GET_BY_SUMMONER_ID = "TFT_SUMMONER.GET_BY_SUMMONER_ID";
     }
@@ -214,6 +249,11 @@ export namespace RiotAPITypes {
       export const GET_MATCHLIST_BY_PUUID = "VAL_MATCH.GET_MATCHLIST_BY_PUUID";
       export const GET_RECENT_MATCHES_BY_QUEUE =
         "VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE";
+    }
+
+    export namespace VAL_RANKED {
+      export const GET_LEADERBOARD_BY_QUEUE =
+        "VAL_RANKED.GET_LEADERBOARD_BY_QUEUE";
     }
   }
 
@@ -340,6 +380,99 @@ export namespace RiotAPITypes {
       tier: string;
       name: string;
       queue: string;
+    }
+  }
+
+  export namespace LolChallenges {
+    export enum lolChallengeState {
+      DISABLED = "DISABLED", // Not visible and not calculated
+      HIDDEN = "HIDDEN", // visible but calculated
+      ENABLED = "ENABLED", // visible and calculated
+      ARCHIVED = "ARCHIVED", // visible, but not calculated
+    }
+
+    export enum lolChallengeTracking {
+      LIFETIME = "LIFETIME", // stats are incremented without reset
+      SEASON = "SEASON", // stats are accumulated by season and reset at the beginning of new season
+    }
+
+    export enum lolChallengeCategory {
+      VETERANCY = "VETERANCY",
+      IMAGINATION = "IMAGINATION",
+      COLLECTION = "COLLECTION",
+      EXPERTISE = "EXPERTISE",
+      TEAMWORK = "TEAMWORK",
+    }
+
+    export interface ChallengePoints {
+      level: TIER;
+      current: number;
+      max: number;
+      percentile: number;
+    }
+
+    export interface ChallengeInfo {
+      challengeId: number;
+      percentile: number;
+      level: TIER;
+      value: number;
+      achievedTime: number;
+    }
+
+    export interface PlayerClientPreferences {
+      bannerAccent: string;
+      title: string;
+      challengeIds: number[];
+      crestBorder: string;
+      prestigeCrestBorderLevel: number;
+    }
+
+    export interface ChallengeConfigInfoDTO {
+      id: number;
+      localizedNames: Record<string, Record<string, string>>;
+      state: lolChallengeState;
+      tracking: lolChallengeTracking;
+      startTimestamp: number;
+      endTimestamp: number;
+      leaderboard: boolean;
+      thresholds: Record<string, number>;
+    }
+
+    export type ChallengePercentiles = Record<TIER, number>;
+
+    export type ChallengePercentilesMap = Record<number, ChallengePercentiles>;
+
+    export interface ApexPlayerInfoDTO {
+      puuid: string;
+      value: number;
+      position: number;
+    }
+
+    export interface PlayerInfoDTO {
+      totalPoints: ChallengePoints;
+      categoryPoints: Record<lolChallengeCategory, ChallengePoints>;
+      challenges: ChallengeInfo[];
+      preferences: PlayerClientPreferences;
+    }
+  }
+
+  export namespace LorDeck {
+    export interface DeckDTO {
+      id: string;
+      name: string;
+      code: string;
+    }
+
+    export interface NewDeckDTO {
+      name: string;
+      code: string;
+    }
+  }
+
+  export namespace LorInventory {
+    export interface CardDTO {
+      code: string;
+      count: string;
     }
   }
 
@@ -1195,6 +1328,13 @@ export namespace RiotAPITypes {
   }
 
   export namespace TftLeague {
+    export enum RatedTier {
+      ORANGE = "ORANGE",
+      PURPLE = "PURPLE",
+      BLUE = "BLUE",
+      GREEN = "GREEN",
+      GRAY = "GRAY",
+    }
     export interface LeagueListDTO {
       leagueId: string;
       entries: TftLeague.LeagueItemDTO[];
@@ -1245,6 +1385,15 @@ export namespace RiotAPITypes {
       freshBlood: boolean;
       inactive: boolean;
       miniSeries?: TftLeague.MiniSeriesDTO | null;
+    }
+
+    export interface TopRatedLadderEntryDTO {
+      summonerId: string;
+      summonerName: string;
+      ratedTier: RatedTier;
+      ratedRating: number;
+      wins: number; // first placement
+      previousUpdateLadderPosition: number;
     }
   }
 
@@ -1512,6 +1661,14 @@ export namespace RiotAPITypes {
       assetPath?: string | null;
     }
 
+    export interface ActDTO {
+      name: string;
+      /** This field is excluded from the response when a locale is set */
+      localizedNames?: ValContent.LocalizedNamesDTO | null;
+      id: string;
+      isActive: string;
+    }
+
     export interface LocalizedNamesDTO {
       "ar-AE": string;
       "de-DE": string;
@@ -1533,12 +1690,31 @@ export namespace RiotAPITypes {
       "zh-CN": string;
       "zh-TW": string;
     }
+
+    export interface ContentDTO {
+      version: string;
+      characters: ContentItemDTO[];
+      maps: ContentItemDTO[];
+      chromas: ContentItemDTO[];
+      skins: ContentItemDTO[];
+      skinLevels: ContentItemDTO[];
+      equips: ContentItemDTO[];
+      gameModes: ContentItemDTO[];
+      sprays: ContentItemDTO[];
+      sprayLevels: ContentItemDTO[];
+      charms: ContentItemDTO[];
+      charmLevels: ContentItemDTO[];
+      playerCards: ContentItemDTO[];
+      playerTitles: ContentItemDTO[];
+      acts: ActDTO[];
+    }
   }
 
   export namespace ValMatch {
     export interface MatchDTO {
       matchInfo: ValMatch.MatchInfoDTO;
       players: ValMatch.PlayerDTO[];
+      coaches: ValMatch.CoachDTO[];
       teams: ValMatch.TeamDTO[];
       roundResults: ValMatch.RoundResultDTO[];
     }
@@ -1583,6 +1759,11 @@ export namespace RiotAPITypes {
       ability1Casts: number;
       ability2Casts: number;
       ultimateCasts: number;
+    }
+
+    export interface CoachDTO {
+      puuid: string;
+      teamId: string;
     }
 
     export interface TeamDTO {
@@ -1698,6 +1879,23 @@ export namespace RiotAPITypes {
     }
   }
 
+  export namespace ValRanked {
+    export interface PlayerDTO {
+      puuid: string; // This field may be omitted if the player has been anonymized.
+      gameName: string; // This field may be omitted if the player has been anonymized.
+      tagLine: string; // This field may be omitted if the player has been anonymized.
+      leaderboardRank: number;
+      rankedRating: number;
+      numberOfWins: number;
+    }
+    export interface LeaderboardDTO {
+      shared: string;
+      actId: string;
+      totalPlayers: number;
+      players: ValRanked.PlayerDTO[];
+    }
+  }
+
   export namespace DDragon {
     export enum REALM {
       NA = "na",
@@ -1754,16 +1952,13 @@ export namespace RiotAPITypes {
       data: { [key: string]: T };
     }
     export interface DDragonImageDTO {
-      id?: number; // Only really used for the ProfileIcon. Should we create an entire interface just for that or leave it here as an optional?
-      image: {
-        full: string;
-        sprite: string;
-        group: string;
-        x: number;
-        y: number;
-        w: number;
-        h: number;
-      };
+      full: string;
+      sprite: string;
+      group: string;
+      x: number;
+      y: number;
+      w: number;
+      h: number;
     }
 
     export interface DDragonMapDTO
@@ -1775,8 +1970,13 @@ export namespace RiotAPITypes {
       image: DDragonImageDTO;
     }
 
+    export interface DDragonImageWrapperDTO {
+      id: number;
+      image: DDragonImageDTO;
+    }
+
     export interface DDragonProfileIconDTO
-      extends DDragonDataWrapper<DDragonImageDTO> {}
+      extends DDragonDataWrapper<DDragonImageWrapperDTO> {}
 
     export interface DDragonSummonerSpellDTO
       extends DDragonDataWrapper<DDragonSummonerSpellDataDTO> {}

@@ -171,6 +171,22 @@ export class RiotAPI {
             priority: 4,
           }
         ),
+      getByAccessToken: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.Cluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.Account.AccountDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: `${region}.account.getByAccessToken`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
       getActiveShardForPlayer: ({
         region,
         game,
@@ -221,6 +237,26 @@ export class RiotAPI {
             id: `${region}.championMastery.getChampion.${championId}.${summonerId}`,
           }
         ),
+      getTopChampions: ({
+        region,
+        summonerId,
+        params,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        summonerId: string;
+        params?: {
+          count?: number;
+        };
+      }): Promise<RiotAPITypes.ChampionMastery.ChampionMasteryDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_TOP_CHAMPIONS,
+          { summonerId },
+          {
+            id: `${region}.championMastery.getTopChampions.${summonerId}`,
+            params,
+          }
+        ),
       getMasteryScore: ({
         region,
         summonerId,
@@ -255,6 +291,19 @@ export class RiotAPI {
 
   get clash() {
     return {
+      getPlayersByPUUID: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        puuid: string;
+      }): Promise<RiotAPITypes.Clash.PlayerDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
+          { puuid },
+          { id: `${region}.clash.getPlayersByPUUID.${puuid}` }
+        ),
       getPlayersBySummonerId: ({
         region,
         summonerId,
@@ -444,6 +493,154 @@ export class RiotAPI {
     };
   }
 
+  get lolChallenges() {
+    return {
+      getConfig: ({
+        region,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
+          {},
+          { id: `${region}.lolChallenges.getConfig` }
+        ),
+      getPercentiles: ({
+        region,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengePercentilesMap> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES,
+          {},
+          { id: `${region}.lolChallenges.getPercentiles` }
+        ),
+      getConfigById: ({
+        region,
+        challengeId,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG_BY_ID,
+          { challengeId },
+          { id: `${region}.lolChallenges.getConfigById.${challengeId}` }
+        ),
+      getLeaderboardById: ({
+        region,
+        challengeId,
+        params,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+        params?: {
+          level?: number;
+        };
+      }): Promise<RiotAPITypes.LolChallenges.ApexPlayerInfoDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_LEADERBOARD_BY_ID,
+          { challengeId },
+          {
+            id: `${region}.lolChallenges.getLeaderboardById.${challengeId}`,
+            params,
+          }
+        ),
+      getPercentilesById: ({
+        region,
+        challengeId,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengePercentiles> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES_BY_ID,
+          { challengeId },
+          { id: `${region}.lolChallenges.getPercentilesById.${challengeId}` }
+        ),
+      getPlayerDataByPUUID: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        puuid: string;
+      }): Promise<RiotAPITypes.LolChallenges.PlayerInfoDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID,
+          { puuid },
+          { id: `${region}.lolChallenges.getPlayerDataByPUUID.${puuid}` }
+        ),
+    };
+  }
+
+  get lorDeck() {
+    return {
+      getDecksForPlayer: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.LorDeck.DeckDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.GET_DECKS_FOR_PLAYER,
+          {},
+          {
+            id: `${region}.lorDeck.getDecksForPlayer`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
+      createDeck: ({
+        region,
+        accessToken,
+        body,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        accessToken: string;
+        body: RiotAPITypes.LorDeck.NewDeckDTO;
+      }): Promise<string> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_DECK.POST_CREATE_DECK_FOR_PLAYER,
+          {},
+          {
+            id: `${region}.lorDeck.createDeck`,
+            body,
+            method: "POST",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
+    };
+  }
+
+  get lorInventory() {
+    return {
+      getCardsOwnedByPlayer: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LORCluster;
+        accessToken: string;
+      }): Promise<RiotAPITypes.LorInventory.CardDTO[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOR_INVENTORY.GET_CARDS_OWNED_BY_PLAYER,
+          {},
+          {
+            id: `${region}.lorInventory.getCardsOwnedByPlayer`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        ),
+    };
+  }
+
   get lorMatch() {
     return {
       getMatchIdsByPUUID: ({
@@ -582,7 +779,7 @@ export class RiotAPI {
 
   get matchV5() {
     return {
-      getIdsbyPuuid: ({
+      getIdsByPuuid: ({
         cluster,
         puuid,
         params,
@@ -594,6 +791,8 @@ export class RiotAPI {
           type?: RiotAPITypes.MatchV5.MatchType;
           start?: number;
           count?: number;
+          startTime?: number;
+          endTime?: number;
         };
       }): Promise<string[]> =>
         this.request(
@@ -669,6 +868,19 @@ export class RiotAPI {
 
   get summoner() {
     return {
+      getByRsoPUUID: ({
+        region,
+        rsoPuuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        rsoPuuid: string;
+      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_RSO_PUUID,
+          { rsoPuuid },
+          { id: `${region}.summoner.getByRsoPUUID.${rsoPuuid}` }
+        ),
       getByAccountId: ({
         region,
         accountId,
@@ -823,6 +1035,19 @@ export class RiotAPI {
           {},
           { id: `${region}.tftLeague.getMaster` }
         ),
+      getTopRatedLadderByQueue: ({
+        region,
+        queue,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        queue: string;
+      }): Promise<RiotAPITypes.TftLeague.TopRatedLadderEntryDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE,
+          { queue },
+          { id: `${region}.tftLeague.getTopRatedLadderByQueue.${queue}` }
+        ),
     };
   }
 
@@ -888,6 +1113,22 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
           { summonerName },
           { id: `${region}.tftSummoner.getBySummonerName.${summonerName}` }
+        ),
+      getByAccessToken: ({
+        region,
+        accessToken,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        accessToken: string;
+      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_ACCESS_TOKEN,
+          {},
+          {
+            id: `${region}.tftSummoner.getByAccessToken`,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
         ),
       getByPUUID: ({
         region,
@@ -1123,7 +1364,7 @@ export class RiotAPI {
         params?: {
           locale?: string;
         };
-      }): Promise<RiotAPITypes.ValContent.ContentItemDTO> =>
+      }): Promise<RiotAPITypes.ValContent.ContentDTO> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.VAL_CONTENT.GET_CONTENT,
@@ -1173,6 +1414,29 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
           { queue },
           { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` }
+        ),
+    };
+  }
+
+  get valRanked() {
+    return {
+      getLeaderboardByQueue: ({
+        region,
+        queue,
+        params,
+      }: {
+        region: RiotAPITypes.VALCluster;
+        queue: string;
+        params?: {
+          size?: number;
+          startIndex?: number;
+        };
+      }): Promise<RiotAPITypes.ValMatch.RecentMatchesDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
+          { actId: queue },
+          { id: `${region}.valRanked.getLeaderboardByQueue.${queue}`, params }
         ),
     };
   }

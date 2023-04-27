@@ -11,7 +11,7 @@ describe("E2E", () => {
     test("getIdsbyPuuid", async () => {
       const rAPI = new RiotAPI(riotAPIKey);
 
-      const resp = await rAPI.matchV5.getIdsbyPuuid({
+      const resp = await rAPI.matchV5.getIdsByPuuid({
         cluster: PlatformId.EUROPE,
         puuid:
           "8bJQbDi6uFIgefQA6Y79yxff_1bCHNopb1eHlq3p7Ic2oeXgYTvNnfGahtWyJ6qqAue3uK6wiZmMWQ",
