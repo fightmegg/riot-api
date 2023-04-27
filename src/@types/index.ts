@@ -135,6 +135,18 @@ export namespace RiotAPITypes {
       export const GET_MASTER_BY_QUEUE = "LEAGUE.GET_MASTER_BY_QUEUE";
     }
 
+    export namespace LOL_CHALLENGES {
+      export const GET_CONFIG = "LOL_CHALLENGES.GET_CONFIG";
+      export const GET_PERCENTILES = "LOL_CHALLENGES.GET_PERCENTILES";
+      export const GET_CONFIG_BY_ID = "LOL_CHALLENGES.GET_CONFIG_BY_ID";
+      export const GET_LEADERBOARD_BY_ID =
+        "LOL_CHALLENGES.GET_LEADERBOARD_BY_ID";
+      export const GET_PERCENTILES_BY_ID =
+        "LOL_CHALLENGES.GET_PERCENTILES_BY_ID";
+      export const GET_PLAYER_DATA_BY_PUUID =
+        "LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID";
+    }
+
     export namespace LOR_MATCH {
       export const GET_MATCH_IDS_BY_PUUID = "LOR_RANKED.GET_MATCH_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "LOR_RANKED.GET_MATCH_BY_ID";
@@ -343,6 +355,79 @@ export namespace RiotAPITypes {
       tier: string;
       name: string;
       queue: string;
+    }
+  }
+
+  export namespace LolChallenges {
+    export enum lolChallengeState {
+      DISABLED = "DISABLED", // Not visible and not calculated
+      HIDDEN = "HIDDEN", // visible but calculated
+      ENABLED = "ENABLED", // visible and calculated
+      ARCHIVED = "ARCHIVED", // visible, but not calculated
+    }
+
+    export enum lolChallengeTracking {
+      LIFETIME = "LIFETIME", // stats are incremented without reset
+      SEASON = "SEASON", // stats are accumulated by season and reset at the beginning of new season
+    }
+
+    export enum lolChallengeCategory {
+      VETERANCY = "VETERANCY",
+      IMAGINATION = "IMAGINATION",
+      COLLECTION = "COLLECTION",
+      EXPERTISE = "EXPERTISE",
+      TEAMWORK = "TEAMWORK",
+    }
+
+    export interface ChallengePoints {
+      level: TIER;
+      current: number;
+      max: number;
+      percentile: number;
+    }
+
+    export interface ChallengeInfo {
+      challengeId: number;
+      percentile: number;
+      level: TIER;
+      value: number;
+      achievedTime: number;
+    }
+
+    export interface PlayerClientPreferences {
+      bannerAccent: string;
+      title: string;
+      challengeIds: number[];
+      crestBorder: string;
+      prestigeCrestBorderLevel: number;
+    }
+
+    export interface ChallengeConfigInfoDto {
+      id: number;
+      localizedNames: Record<string, Record<string, string>>;
+      state: lolChallengeState;
+      tracking: lolChallengeTracking;
+      startTimestamp: number;
+      endTimestamp: number;
+      leaderboard: boolean;
+      thresholds: Record<string, number>;
+    }
+
+    export type ChallengePercentiles = Record<TIER, number>;
+
+    export type ChallengePercentilesMap = Record<number, ChallengePercentiles>;
+
+    export interface ApexPlayerInfoDto {
+      puuid: string;
+      value: number;
+      position: number;
+    }
+
+    export interface PlayerInfoDto {
+      totalPoints: ChallengePoints;
+      categoryPoints: Record<lolChallengeCategory, ChallengePoints>;
+      challenges: ChallengeInfo[];
+      preferences: PlayerClientPreferences;
     }
   }
 

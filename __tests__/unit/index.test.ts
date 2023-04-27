@@ -621,6 +621,31 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("lolChallenges", () => {
+    test.each([
+      [
+        "getConfig",
+        { region: PlatformId.EUW1 },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
+          {},
+          { id: "euw1.lolChallenges.getConfig" },
+        ],
+      ],
+      [
+        "getPercentiles",
+        { region: PlatformId.EUW1 },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES,
+          {},
+          { id: "euw1.lolChallenges.getPercentiles" },
+        ],
+      ],
+    ]);
+  });
+
   describe("lorMatch", () => {
     test.each([
       [

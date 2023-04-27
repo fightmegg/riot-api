@@ -480,6 +480,92 @@ export class RiotAPI {
     };
   }
 
+  get lolChallenges() {
+    return {
+      getConfig: ({
+        region,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDto[]> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
+          {},
+          { id: `${region}.lolChallenges.getConfig` }
+        ),
+      getPercentiles: ({
+        region,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengePercentilesMap> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES,
+          {},
+          { id: `${region}.lolChallenges.getPercentiles` }
+        ),
+      getConfigById: ({
+        region,
+        challengeId,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengeConfigInfoDto> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG_BY_ID,
+          { challengeId },
+          { id: `${region}.lolChallenges.getConfigById.${challengeId}` }
+        ),
+      getLeaderboardById: ({
+        region,
+        challengeId,
+        params,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+        params?: {
+          level?: number;
+        };
+      }): Promise<RiotAPITypes.LolChallenges.ApexPlayerInfoDto> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_LEADERBOARD_BY_ID,
+          { challengeId },
+          {
+            id: `${region}.lolChallenges.getLeaderboardById.${challengeId}`,
+            params,
+          }
+        ),
+      getPercentilesById: ({
+        region,
+        challengeId,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        challengeId: number;
+      }): Promise<RiotAPITypes.LolChallenges.ChallengePercentiles> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES_BY_ID,
+          { challengeId },
+          { id: `${region}.lolChallenges.getPercentilesById.${challengeId}` }
+        ),
+      getPlayerDataByPUUID: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        puuid: string;
+      }): Promise<RiotAPITypes.LolChallenges.PlayerInfoDto> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID,
+          { puuid },
+          { id: `${region}.lolChallenges.getPlayerDataByPUUID.${puuid}` }
+        ),
+    };
+  }
+
   get lorMatch() {
     return {
       getMatchIdsByPUUID: ({
