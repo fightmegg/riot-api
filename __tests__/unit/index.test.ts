@@ -1726,4 +1726,41 @@ describe("RiotAPI", () => {
       }
     );
   });
+
+  describe("valRanked", () => {
+    test.each([
+      [
+        "getLeaderboardByQueue",
+        {
+          region: PlatformId.EU,
+          queue: "1",
+          params: {
+            size: 200,
+            startIndex: 1,
+          },
+        },
+        [
+          PlatformId.EU,
+          RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
+          { actId: "1" },
+          {
+            id: "eu.valRanked.getLeaderboardByQueue.1",
+            params: {
+              size: 200,
+              startIndex: 1,
+            },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.valRanked)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
 });

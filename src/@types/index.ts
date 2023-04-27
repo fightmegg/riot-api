@@ -62,6 +62,10 @@ export namespace RiotAPITypes {
     COMPETITIVE = "competitive",
     UNRATED = "unrated",
     SPIKERUSH = "spikerush",
+    TOURNAMENTMODE = "tournamentmode",
+    DEATHMATCH = "deathmatch",
+    ONEFA = "onefa",
+    GGTEAM = "ggteam",
   }
 
   export type VALCluster =
@@ -245,6 +249,11 @@ export namespace RiotAPITypes {
       export const GET_MATCHLIST_BY_PUUID = "VAL_MATCH.GET_MATCHLIST_BY_PUUID";
       export const GET_RECENT_MATCHES_BY_QUEUE =
         "VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE";
+    }
+
+    export namespace VAL_RANKED {
+      export const GET_LEADERBOARD_BY_QUEUE =
+        "VAL_RANKED.GET_LEADERBOARD_BY_QUEUE";
     }
   }
 
@@ -1652,6 +1661,14 @@ export namespace RiotAPITypes {
       assetPath?: string | null;
     }
 
+    export interface ActDTO {
+      name: string;
+      /** This field is excluded from the response when a locale is set */
+      localizedNames?: ValContent.LocalizedNamesDTO | null;
+      id: string;
+      isActive: string;
+    }
+
     export interface LocalizedNamesDTO {
       "ar-AE": string;
       "de-DE": string;
@@ -1673,12 +1690,31 @@ export namespace RiotAPITypes {
       "zh-CN": string;
       "zh-TW": string;
     }
+
+    export interface ContentDTO {
+      version: string;
+      characters: ContentItemDTO[];
+      maps: ContentItemDTO[];
+      chromas: ContentItemDTO[];
+      skins: ContentItemDTO[];
+      skinLevels: ContentItemDTO[];
+      equips: ContentItemDTO[];
+      gameModes: ContentItemDTO[];
+      sprays: ContentItemDTO[];
+      sprayLevels: ContentItemDTO[];
+      charms: ContentItemDTO[];
+      charmLevels: ContentItemDTO[];
+      playerCards: ContentItemDTO[];
+      playerTitles: ContentItemDTO[];
+      acts: ActDTO[];
+    }
   }
 
   export namespace ValMatch {
     export interface MatchDTO {
       matchInfo: ValMatch.MatchInfoDTO;
       players: ValMatch.PlayerDTO[];
+      coaches: ValMatch.CoachDTO[];
       teams: ValMatch.TeamDTO[];
       roundResults: ValMatch.RoundResultDTO[];
     }
@@ -1723,6 +1759,11 @@ export namespace RiotAPITypes {
       ability1Casts: number;
       ability2Casts: number;
       ultimateCasts: number;
+    }
+
+    export interface CoachDTO {
+      puuid: string;
+      teamId: string;
     }
 
     export interface TeamDTO {
@@ -1835,6 +1876,23 @@ export namespace RiotAPITypes {
     export interface RecentMatchesDTO {
       currentTime: number;
       matchIds: string[];
+    }
+  }
+
+  export namespace ValRanked {
+    export interface PlayerDTO {
+      puuid: string; // This field may be omitted if the player has been anonymized.
+      gameName: string; // This field may be omitted if the player has been anonymized.
+      tagLine: string; // This field may be omitted if the player has been anonymized.
+      leaderboardRank: number;
+      rankedRating: number;
+      numberOfWins: number;
+    }
+    export interface LeaderboardDTO {
+      shared: string;
+      actId: string;
+      totalPlayers: number;
+      players: ValRanked.PlayerDTO[];
     }
   }
 

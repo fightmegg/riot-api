@@ -1364,7 +1364,7 @@ export class RiotAPI {
         params?: {
           locale?: string;
         };
-      }): Promise<RiotAPITypes.ValContent.ContentItemDTO> =>
+      }): Promise<RiotAPITypes.ValContent.ContentDTO> =>
         this.request(
           region,
           RiotAPITypes.METHOD_KEY.VAL_CONTENT.GET_CONTENT,
@@ -1414,6 +1414,29 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
           { queue },
           { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` }
+        ),
+    };
+  }
+
+  get valRanked() {
+    return {
+      getLeaderboardByQueue: ({
+        region,
+        queue,
+        params,
+      }: {
+        region: RiotAPITypes.VALCluster;
+        queue: string;
+        params?: {
+          size?: number;
+          startIndex?: number;
+        };
+      }): Promise<RiotAPITypes.ValMatch.RecentMatchesDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
+          { actId: queue },
+          { id: `${region}.valRanked.getLeaderboardByQueue.${queue}`, params }
         ),
     };
   }
