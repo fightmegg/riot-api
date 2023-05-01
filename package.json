@@ -37,7 +37,7 @@
     "path-to-regexp": "^6.2.1"
   },
   "devDependencies": {
-    "@types/ioredis": "^4.28.10",
+    "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.16.1",
     "@types/node-fetch": "^2.6.3",
