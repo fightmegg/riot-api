@@ -1884,7 +1884,7 @@ export namespace RiotAPITypes {
     export interface MatchlistEntryDTO {
       matchId: string;
       gameStartTimeMillis: number;
-      teamId: string;
+      queueId: string;
     }
 
     export interface RecentMatchesDTO {
