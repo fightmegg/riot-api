@@ -1382,22 +1382,24 @@ export namespace RiotAPITypes {
     }
 
     export interface LeagueEntryDTO {
-      leagueId: string;
+      leagueId?: string;
       /** Player's encrypted summonerId. */
       summonerId: string;
       summonerName: string;
       queueType: string;
-      tier: string;
-      rank: string;
-      leaguePoints: number;
+      ratedTier?: RatedTier;
+      ratedRating?: number;
+      tier?: string;
+      rank?: string;
+      leaguePoints?: number;
       /** First placement. */
       wins: number;
       /** Second through eighth placement. */
       losses: number;
-      hotStreak: boolean;
-      veteran: boolean;
-      freshBlood: boolean;
-      inactive: boolean;
+      hotStreak?: boolean;
+      veteran?: boolean;
+      freshBlood?: boolean;
+      inactive?: boolean;
       miniSeries?: TftLeague.MiniSeriesDTO | null;
     }
 
