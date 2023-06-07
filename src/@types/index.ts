@@ -1443,11 +1443,17 @@ export namespace RiotAPITypes {
       participants: TftMatch.ParticipantDTO[];
       /** Please refer to the League of Legends documentation. */
       queue_id: number;
+      /** Teamfight Tactics game type. */
+      tft_game_type: string;
+      /** Teamfight Tactics set core name. */
+      tft_set_core_name: string;
       /** Teamfight Tactics set number. */
       tft_set_number: number;
     }
 
     export interface ParticipantDTO {
+      /** Participant's augments. */
+      augments: string[];
       /** Participant's companion. */
       companion: TftMatch.CompanionDTO;
       /** Gold left after participant was eliminated. */
@@ -1456,6 +1462,8 @@ export namespace RiotAPITypes {
       last_round: number;
       /** Participant Little Legend level. Note: This is not the number of active units. */
       level: number;
+      /** Partner group id. */
+      partner_group_id: number;
       /** Participant placement upon elimination. */
       placement: number;
       /** Number of players the participant eliminated. */
