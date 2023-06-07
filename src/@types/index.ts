@@ -1486,8 +1486,8 @@ export namespace RiotAPITypes {
     }
 
     export interface UnitDTO {
-      /** A list of the unit's items. Please refer to the Teamfight Tactics documentation for item ids. */
-      items: number[];
+      /** A list of the unit's items names. */
+      itemNames: string[];
       /** This field was introduced in patch 9.22 with data_version 2. */
       character_id: string;
       /** Unit name. */
