@@ -75,6 +75,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-npm-cache
+      - run: *authenticate-github-registry
       - run:
           name: Installing dependencies
           command: npm install
