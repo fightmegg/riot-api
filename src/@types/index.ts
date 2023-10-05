@@ -1619,26 +1619,6 @@ export namespace RiotAPITypes {
       spectatorType: SPECTATORTYPE;
     }
 
-    // export interface TournamentV5CodeParametersDTO {
-    //   /** Optional list of encrypted puuids in order to validate the players eligible to join the lobby. NOTE: We currently do not enforce participants at the team level, but rather the aggregate of teamOne and teamTwo. We may add the ability to enforce at the team level in the future. */
-    //   allowedParticipants?: string[] | null;
-    //   /** Optional string that may contain any data in any format, if specified at all. Used to denote any custom information about the game. */
-    //   metadata?: string | null;
-    //   /** The team size of the game. Valid values are 1-5. */
-    //   teamSize: number;
-    //   /** The pick type of the game.
-    //        (Legal values:  BLIND_PICK,  DRAFT_MODE,  ALL_RANDOM,  TOURNAMENT_DRAFT) */
-    //   pickType: PICKTYPE;
-    //   /** The map type of the game.
-    //        (Legal values:  SUMMONERS_RIFT,  TWISTED_TREELINE,  HOWLING_ABYSS) */
-    //   mapType: MAPTYPE;
-    //   /** The spectator type of the game.
-    //        (Legal values:  NONE,  LOBBYONLY,  ALL) */
-    //   spectatorType: SPECTATORTYPE;
-    //   /** Checks if allowed participants are enough to make full teams */
-    //   enoughPlayers: boolean;
-    // }
-
     export interface LobbyEventDTO {
       /** The summonerId that triggered the event (Encrypted) */
       summonerId: string;
@@ -1701,36 +1681,6 @@ export namespace RiotAPITypes {
       participants: string[];
     }
 
-    // export interface TournamentCodeV5DTO {
-    //   /** The tournament code. */
-    //   code: string;
-    //   /** The spectator mode for the tournament code game. */
-    //   spectators: string;
-    //   /** The lobby name for the tournament code game. */
-    //   lobbyName: string;
-    //   /** The metadata for tournament code. */
-    //   metaData: string;
-    //   /** The password for the tournament code game. */
-    //   password: string;
-    //   /** The team size for the tournament code game. */
-    //   teamSize: number;
-    //   /** The provider's ID. */
-    //   providerId: number;
-    //   /** The pick mode for tournament code game. */
-    //   pickType: string;
-    //   /** The tournament's ID. */
-    //   tournamentId: number;
-    //   /** The tournament code's ID. */
-    //   id: number;
-    //   /** The tournament code's region.
-    //        (Legal values:  BR,  EUNE,  EUW,  JP,  LAN,  LAS,  NA,  OCE,  PBE,  RU,  TR) */
-    //   region: REGION;
-    //   /** The game map for the tournament code game */
-    //   map: string;
-    //   /** The puuids of the participants (Encrypted) */
-    //   participants: string[];
-    // }
-
     export interface TournamentCodeUpdateParametersDTO {
       /** Optional list of encrypted summonerIds in order to validate the players eligible to join the lobby. NOTE: We currently do not enforce participants at the team level, but rather the aggregate of teamOne and teamTwo. We may add the ability to enforce at the team level in the future. */
       allowedSummonerIds?: string[] | null;
@@ -1757,19 +1707,6 @@ export namespace RiotAPITypes {
       /** The summonerId that triggered the event (Encrypted) */
       summonerId: string;
     }
-
-    // export interface LobbyEventV5DTOWrapper {
-    //   eventList: Tournament.LobbyEventV5DTO[];
-    // }
-
-    // export interface LobbyEventV5DTO {
-    //   /** Timestamp from the event */
-    //   timestamp: string;
-    //   /** The type of event that was triggered */
-    //   eventType: string;
-    //   /** The puuid that triggered the event (Encrypted) */
-    //   puuid: string;
-    // }
   }
 
   export namespace TournamentV5 {
