@@ -16,12 +16,36 @@ const debugCache = require("debug")("riotapi:cache");
 
 const createHost = compile(HOST, { encode: encodeURIComponent });
 
-const getPath = (key: string): any => {
-  let path = METHODS;
+// type Paths<T> = T extends object
+//   ? {
+//       [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Paths<T[K]>}`}`;
+//     }[keyof T]
+//   : never;
 
-  key.split(".").forEach((p: string) => {
-    path = path[p];
-  });
+type Leaves<T> = T extends object
+  ? {
+      [K in keyof T]: `${Exclude<K, symbol>}${Leaves<T[K]> extends never
+        ? ""
+        : `.${Leaves<T[K]>}`}`;
+    }[keyof T]
+  : never;
+
+const getPath = (key: Leaves<METHODS>): string => {
+  // key.split(".").forEach((p: string) => {
+  //   path = path[p];
+  // });
+
+  let path: METHODS | METHODS[keyof METHODS] | string = METHODS;
+  const keys = key.split(".");
+
+  for (const subKey of keys) {
+    if (typeof path === "string") break;
+    // @ts-expect-error typing for path[subkey] is hard
+    path = path[subKey];
+  }
+
+  if (typeof path !== "string")
+    throw new Error(`Incorrect path: ${key} results in ${path}`);
 
   return path;
 };
@@ -116,7 +140,7 @@ export class RiotAPI {
 
   async request<T>(
     platformId: PlatformId,
-    methodKey: string,
+    methodKey: Leaves<METHODS>,
     pathData: { [key: string]: string | number },
     options?: RiotAPITypes.RequestOptions
   ): Promise<T> {
@@ -1358,6 +1382,197 @@ export class RiotAPI {
           {},
           {
             id: `${PlatformId.AMERICAS}.tournament.createTournament`,
+            priority: 0,
+            body,
+            method: "POST",
+          }
+        ),
+    };
+  }
+
+  get tournamentStubV5() {
+    return {
+      createCodes: ({
+        params,
+        body,
+      }: {
+        params: {
+          count: number;
+          tournamentId: number;
+        };
+        body: RiotAPITypes.TournamentV5.TournamentCodeParametersV5DTO;
+      }): Promise<string[]> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_CODES,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentStubV5.createCodes.${params.tournamentId}`,
+            params,
+            body,
+            method: "POST",
+          }
+        ),
+      getByTournamentCode: ({
+        tournamentCode,
+      }: {
+        tournamentCode: string;
+      }): Promise<RiotAPITypes.TournamentV5.TournamentCodeV5DTO> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentStubV5.getByTournamentCode.${tournamentCode}`,
+            priority: 0,
+          }
+        ),
+      getLobbyEventsByTournamentCode: ({
+        tournamentCode,
+      }: {
+        tournamentCode: string;
+      }): Promise<RiotAPITypes.TournamentV5.LobbyEventV5DTOWrapper> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5
+            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentStubV5.getLobbyEventsByTournamentCode.${tournamentCode}`,
+          }
+        ),
+      createProvider: ({
+        body,
+      }: {
+        body: RiotAPITypes.TournamentV5.ProviderRegistrationParametersV5DTO;
+      }): Promise<number> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_PROVIDER,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentStubV5.createProvider`,
+
+            body,
+            method: "POST",
+          }
+        ),
+      createTournament: ({
+        body,
+      }: {
+        body: RiotAPITypes.TournamentV5.TournamentRegistrationParametersV5DTO;
+      }): Promise<number> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_TOURNAMENT,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentStubV5.createTournament`,
+            body,
+            method: "POST",
+          }
+        ),
+    };
+  }
+
+  get tournamentV5() {
+    return {
+      createCodes: ({
+        params,
+        body,
+      }: {
+        params: {
+          count: number;
+          tournamentId: number;
+        };
+        body: RiotAPITypes.TournamentV5.TournamentCodeParametersV5DTO;
+      }): Promise<string[]> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_CODES,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.createCodes.${params.tournamentId}`,
+            priority: 0,
+            params,
+            body,
+            method: "POST",
+          }
+        ),
+      getByTournamentCode: ({
+        tournamentCode,
+      }: {
+        tournamentCode: string;
+      }): Promise<RiotAPITypes.TournamentV5.TournamentCodeV5DTO> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.getByTournamentCode.${tournamentCode}`,
+            priority: 0,
+          }
+        ),
+      updateByTournamentCode: ({
+        tournamentCode,
+        body,
+      }: {
+        tournamentCode: string;
+        body: RiotAPITypes.TournamentV5.TournamentCodeUpdateParametersV5DTO;
+      }): Promise<any> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.updateByTournamentCode.${tournamentCode}`,
+            priority: 0,
+            body,
+            method: "POST",
+          }
+        ),
+      getLobbyEventsByTournamentCode: ({
+        tournamentCode,
+      }: {
+        tournamentCode: string;
+      }): Promise<RiotAPITypes.TournamentV5.LobbyEventV5DTOWrapper> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5
+            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.getLobbyEventsByTournamentCode.${tournamentCode}`,
+            priority: 0,
+          }
+        ),
+      createProvider: ({
+        body,
+      }: {
+        body: RiotAPITypes.TournamentV5.ProviderRegistrationParametersV5DTO;
+      }): Promise<number> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_PROVIDER,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.createProvider`,
+            priority: 0,
+            body,
+            method: "POST",
+          }
+        ),
+      createTournament: ({
+        body,
+      }: {
+        body: RiotAPITypes.TournamentV5.TournamentRegistrationParametersV5DTO;
+      }): Promise<number> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_TOURNAMENT,
+          {},
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.createTournament`,
             priority: 0,
             body,
             method: "POST",
