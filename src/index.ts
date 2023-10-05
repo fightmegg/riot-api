@@ -95,7 +95,7 @@ export class RiotAPI {
       id: string;
       priority?: number;
       expiration?: number;
-    } = { id: new Date().toString() }
+    } = { id: new Date().toString() },
   ) {
     return { id, priority, expiration };
   }
@@ -112,7 +112,7 @@ export class RiotAPI {
   private async setCache(
     key: string,
     url: string,
-    data: object
+    data: object,
   ): Promise<void> {
     if (this.cache && this.config.cache?.ttls?.byMethod[key]) {
       debugCache("Setting", key, url, this.config.cache.ttls.byMethod[key]);
@@ -124,7 +124,7 @@ export class RiotAPI {
     platformId: PlatformId,
     methodKey: Leaves<METHODS>,
     pathData: { [key: string]: string | number },
-    options?: RiotAPITypes.RequestOptions
+    options?: RiotAPITypes.RequestOptions,
   ): Promise<T> {
     const path = getPath(methodKey);
     const createPath = compile(path, { encode: encodeURIComponent });
@@ -137,7 +137,7 @@ export class RiotAPI {
 
     const resp = await this.riotRateLimiter.execute(
       { url, options: this.getOptions(options) },
-      this.getJobOptions(options)
+      this.getJobOptions(options),
     );
 
     await this.setCache(methodKey, url, resp);
@@ -157,7 +157,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_PUUID,
           { puuid },
-          { id: `${region}.account.getByPUUID.${puuid}`, priority: 4 }
+          { id: `${region}.account.getByPUUID.${puuid}`, priority: 4 },
         ),
       getByRiotId: ({
         region,
@@ -175,7 +175,7 @@ export class RiotAPI {
           {
             id: `${region}.account.getByRiotId.${gameName}.${tagLine}`,
             priority: 4,
-          }
+          },
         ),
       getByAccessToken: ({
         region,
@@ -191,7 +191,7 @@ export class RiotAPI {
           {
             id: `${region}.account.getByAccessToken`,
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
       getActiveShardForPlayer: ({
         region,
@@ -206,7 +206,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_ACTIVE_SHARD_FOR_PLAYER,
           { game, puuid },
-          { id: `${region}.account.getActiveShardForPlayer.${game}.${puuid}` }
+          { id: `${region}.account.getActiveShardForPlayer.${game}.${puuid}` },
         ),
     };
   }
@@ -224,7 +224,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_ALL_CHAMPIONS,
           { summonerId },
-          { id: `${region}.championMastery.getAllChampions.${summonerId}` }
+          { id: `${region}.championMastery.getAllChampions.${summonerId}` },
         ),
       getChampion: ({
         region,
@@ -241,7 +241,7 @@ export class RiotAPI {
           { championId, summonerId },
           {
             id: `${region}.championMastery.getChampion.${championId}.${summonerId}`,
-          }
+          },
         ),
       getTopChampions: ({
         region,
@@ -261,7 +261,7 @@ export class RiotAPI {
           {
             id: `${region}.championMastery.getTopChampions.${summonerId}`,
             params,
-          }
+          },
         ),
       getMasteryScore: ({
         region,
@@ -274,7 +274,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CHAMPION_MASTERY.GET_CHAMPION_MASTERY_SCORE,
           { summonerId },
-          { id: `${region}.championMastery.getMasteryScore.${summonerId}` }
+          { id: `${region}.championMastery.getMasteryScore.${summonerId}` },
         ),
     };
   }
@@ -290,7 +290,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CHAMPION.GET_CHAMPION_ROTATIONS,
           {},
-          { id: `${region}.champion.getRotations` }
+          { id: `${region}.champion.getRotations` },
         ),
     };
   }
@@ -308,7 +308,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
           { puuid },
-          { id: `${region}.clash.getPlayersByPUUID.${puuid}` }
+          { id: `${region}.clash.getPlayersByPUUID.${puuid}` },
         ),
       getPlayersBySummonerId: ({
         region,
@@ -321,7 +321,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_SUMMONER,
           { summonerId },
-          { id: `${region}.clash.getPlayersBySummonerId.${summonerId}` }
+          { id: `${region}.clash.getPlayersBySummonerId.${summonerId}` },
         ),
       getTeamById: ({
         region,
@@ -334,7 +334,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_TEAM,
           { teamId },
-          { id: `${region}.clash.getTeamById.${teamId}` }
+          { id: `${region}.clash.getTeamById.${teamId}` },
         ),
       getTournaments: ({
         region,
@@ -345,7 +345,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_TOURNAMENTS,
           {},
-          { id: `${region}.clash.getTournaments` }
+          { id: `${region}.clash.getTournaments` },
         ),
       getTournamentById: ({
         region,
@@ -358,7 +358,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_TOURNAMENT,
           { tournamentId },
-          { id: `${region}.clash.getTournamentById.${tournamentId}` }
+          { id: `${region}.clash.getTournamentById.${tournamentId}` },
         ),
       getTournamentByTeamId: ({
         region,
@@ -371,7 +371,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.CLASH.GET_TOURNAMENT_TEAM,
           { teamId },
-          { id: `${region}.clash.getTournamentByTeamId.${teamId}` }
+          { id: `${region}.clash.getTournamentByTeamId.${teamId}` },
         ),
     };
   }
@@ -395,7 +395,7 @@ export class RiotAPI {
           { queue, tier, division },
           {
             id: `${region}.leagueExp.getLeagueEntries.${queue}.${tier}.${division}`,
-          }
+          },
         ),
     };
   }
@@ -415,7 +415,7 @@ export class RiotAPI {
           { queue },
           {
             id: `${region}.league.getChallengerByQueue.${queue}`,
-          }
+          },
         ),
       getEntriesBySummonerId: ({
         region,
@@ -430,7 +430,7 @@ export class RiotAPI {
           { summonerId },
           {
             id: `${region}.league.getEntriesBySummonerId.${summonerId}`,
-          }
+          },
         ),
       getAllEntries: ({
         region,
@@ -449,7 +449,7 @@ export class RiotAPI {
           { queue, tier, division },
           {
             id: `${region}.league.getAllEntries.${queue}.${tier}.${division}`,
-          }
+          },
         ),
       getGrandmasterByQueue: ({
         region,
@@ -464,7 +464,7 @@ export class RiotAPI {
           { queue },
           {
             id: `${region}.league.getGrandmasterByQueue.${queue}`,
-          }
+          },
         ),
       getById: ({
         region,
@@ -479,7 +479,7 @@ export class RiotAPI {
           { leagueId },
           {
             id: `${region}.league.getById.${leagueId}`,
-          }
+          },
         ),
       getMasterByQueue: ({
         region,
@@ -494,7 +494,7 @@ export class RiotAPI {
           { queue },
           {
             id: `${region}.league.getMasterByQueue.${queue}`,
-          }
+          },
         ),
     };
   }
@@ -510,7 +510,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG,
           {},
-          { id: `${region}.lolChallenges.getConfig` }
+          { id: `${region}.lolChallenges.getConfig` },
         ),
       getPercentiles: ({
         region,
@@ -521,7 +521,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES,
           {},
-          { id: `${region}.lolChallenges.getPercentiles` }
+          { id: `${region}.lolChallenges.getPercentiles` },
         ),
       getConfigById: ({
         region,
@@ -534,7 +534,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_CONFIG_BY_ID,
           { challengeId },
-          { id: `${region}.lolChallenges.getConfigById.${challengeId}` }
+          { id: `${region}.lolChallenges.getConfigById.${challengeId}` },
         ),
       getLeaderboardById: ({
         region,
@@ -554,7 +554,7 @@ export class RiotAPI {
           {
             id: `${region}.lolChallenges.getLeaderboardById.${challengeId}`,
             params,
-          }
+          },
         ),
       getPercentilesById: ({
         region,
@@ -567,7 +567,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PERCENTILES_BY_ID,
           { challengeId },
-          { id: `${region}.lolChallenges.getPercentilesById.${challengeId}` }
+          { id: `${region}.lolChallenges.getPercentilesById.${challengeId}` },
         ),
       getPlayerDataByPUUID: ({
         region,
@@ -580,7 +580,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID,
           { puuid },
-          { id: `${region}.lolChallenges.getPlayerDataByPUUID.${puuid}` }
+          { id: `${region}.lolChallenges.getPlayerDataByPUUID.${puuid}` },
         ),
     };
   }
@@ -604,7 +604,7 @@ export class RiotAPI {
           {
             id: `${region}.lorDeck.getDecksForPlayer`,
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
       createDeck: ({
         region,
@@ -624,7 +624,7 @@ export class RiotAPI {
             body,
             method: "POST",
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
     };
   }
@@ -648,7 +648,7 @@ export class RiotAPI {
           {
             id: `${region}.lorInventory.getCardsOwnedByPlayer`,
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
     };
   }
@@ -666,7 +666,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_IDS_BY_PUUID,
           { puuid },
-          { id: `${region}.lorMatch.getMatchIdsByPUUID.${puuid}` }
+          { id: `${region}.lorMatch.getMatchIdsByPUUID.${puuid}` },
         ),
       getById: ({
         region,
@@ -679,7 +679,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOR_MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.lorMatch.getById.${matchId}` }
+          { id: `${region}.lorMatch.getById.${matchId}` },
         ),
     };
   }
@@ -698,7 +698,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.LOR_RANKED.GET_MASTER_TIER,
           {},
-          { id: `${region}.lorRanked.getMasterTier` }
+          { id: `${region}.lorRanked.getMasterTier` },
         ),
     };
   }
@@ -716,7 +716,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.MATCH.GET_IDS_BY_TOURNAMENT_CODE,
           { tournamentCode },
-          { id: `${region}.match.getIdsByTournamentCode.${tournamentCode}` }
+          { id: `${region}.match.getIdsByTournamentCode.${tournamentCode}` },
         ),
       getById: ({
         region,
@@ -729,7 +729,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.match.getById.${matchId}` }
+          { id: `${region}.match.getById.${matchId}` },
         ),
       getByIdAndTournamentCode: ({
         region,
@@ -746,7 +746,7 @@ export class RiotAPI {
           { matchId, tournamentCode },
           {
             id: `${region}.match.getByIdAndTournamentCode.${matchId}.${tournamentCode}`,
-          }
+          },
         ),
       getMatchlistByAccount: ({
         region,
@@ -772,7 +772,7 @@ export class RiotAPI {
           {
             id: `${region}.match.getMatchlistByAccount.${accountId}`,
             params,
-          }
+          },
         ),
       getTimelineById: ({
         region,
@@ -787,7 +787,7 @@ export class RiotAPI {
           { matchId },
           {
             id: `${region}.match.getTimelineById.${matchId}`,
-          }
+          },
         ),
     };
   }
@@ -817,7 +817,7 @@ export class RiotAPI {
           {
             id: `${cluster}.matchv5.getIdsByPuuid.${puuid}`,
             params,
-          }
+          },
         ),
       getMatchById: ({
         cluster,
@@ -832,7 +832,7 @@ export class RiotAPI {
           { matchId },
           {
             id: `${cluster}.matchv5.getMatchById.${matchId}`,
-          }
+          },
         ),
       getMatchTimelineById: ({
         cluster,
@@ -847,7 +847,7 @@ export class RiotAPI {
           { matchId },
           {
             id: `${cluster}.matchv5.getMatchTimelineById.${matchId}`,
-          }
+          },
         ),
     };
   }
@@ -865,7 +865,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SPECTATOR.GET_GAME_BY_SUMMONER_ID,
           { summonerId },
-          { id: `${region}.spectator.getBySummonerId.${summonerId}` }
+          { id: `${region}.spectator.getBySummonerId.${summonerId}` },
         ),
       getFeaturedGames: ({
         region,
@@ -876,7 +876,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SPECTATOR.GET_FEATURED_GAMES,
           {},
-          { id: `${region}.spectator.getFeaturedGames` }
+          { id: `${region}.spectator.getFeaturedGames` },
         ),
     };
   }
@@ -894,7 +894,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_RSO_PUUID,
           { rsoPuuid },
-          { id: `${region}.summoner.getByRsoPUUID.${rsoPuuid}` }
+          { id: `${region}.summoner.getByRsoPUUID.${rsoPuuid}` },
         ),
       getByAccountId: ({
         region,
@@ -907,7 +907,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_ACCOUNT_ID,
           { accountId },
-          { id: `${region}.summoner.getByAccountId.${accountId}` }
+          { id: `${region}.summoner.getByAccountId.${accountId}` },
         ),
       getBySummonerName: ({
         region,
@@ -920,7 +920,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
           { summonerName },
-          { id: `${region}.summoner.getBySummonerName.${summonerName}` }
+          { id: `${region}.summoner.getBySummonerName.${summonerName}` },
         ),
       getByPUUID: ({
         region,
@@ -933,7 +933,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
           { puuid },
-          { id: `${region}.summoner.getByPUUID.${puuid}` }
+          { id: `${region}.summoner.getByPUUID.${puuid}` },
         ),
       getBySummonerId: ({
         region,
@@ -946,7 +946,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_ID,
           { summonerId },
-          { id: `${region}.summoner.getBySummonerId.${summonerId}` }
+          { id: `${region}.summoner.getBySummonerId.${summonerId}` },
         ),
       getByAccessToken: ({
         region,
@@ -962,7 +962,7 @@ export class RiotAPI {
           {
             id: `${region}.summoner.getByAccessToken`,
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
     };
   }
@@ -978,7 +978,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_CHALLENGER,
           {},
-          { id: `${region}.tftLeague.getChallenger` }
+          { id: `${region}.tftLeague.getChallenger` },
         ),
       getEntriesBySummonerId: ({
         region,
@@ -991,7 +991,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_ENTRIES_BY_SUMMONER,
           { summonerId },
-          { id: `${region}.tftLeague.getEntriesBySummonerId.${summonerId}` }
+          { id: `${region}.tftLeague.getEntriesBySummonerId.${summonerId}` },
         ),
       getAllEntries: ({
         region,
@@ -1013,7 +1013,7 @@ export class RiotAPI {
           {
             id: `${region}.tftLeague.getAllEntries.${tier}.${division}`,
             params,
-          }
+          },
         ),
       getGrandmaster: ({
         region,
@@ -1024,7 +1024,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_GRANDMASTER,
           {},
-          { id: `${region}.tftLeague.getGrandmaster` }
+          { id: `${region}.tftLeague.getGrandmaster` },
         ),
       getLeagueById: ({
         region,
@@ -1037,7 +1037,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_LEAGUE_BY_ID,
           { leagueId },
-          { id: `${region}.tftLeague.getLeagueById.${leagueId}` }
+          { id: `${region}.tftLeague.getLeagueById.${leagueId}` },
         ),
       getMaster: ({
         region,
@@ -1048,7 +1048,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_MASTER,
           {},
-          { id: `${region}.tftLeague.getMaster` }
+          { id: `${region}.tftLeague.getMaster` },
         ),
       getTopRatedLadderByQueue: ({
         region,
@@ -1061,7 +1061,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_LEAGUE.GET_TOP_RATED_LADDER_BY_QUEUE,
           { queue },
-          { id: `${region}.tftLeague.getTopRatedLadderByQueue.${queue}` }
+          { id: `${region}.tftLeague.getTopRatedLadderByQueue.${queue}` },
         ),
     };
   }
@@ -1086,7 +1086,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_MATCH.GET_MATCH_IDS_BY_PUUID,
           { puuid },
-          { id: `${region}.tftMatch.getMatchIdsByPUUID.${puuid}`, params }
+          { id: `${region}.tftMatch.getMatchIdsByPUUID.${puuid}`, params },
         ),
       getById: ({
         region,
@@ -1099,7 +1099,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.tftMatch.getById.${matchId}` }
+          { id: `${region}.tftMatch.getById.${matchId}` },
         ),
     };
   }
@@ -1117,7 +1117,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_ACCOUNT_ID,
           { accountId },
-          { id: `${region}.tftSummoner.getByAccountId.${accountId}` }
+          { id: `${region}.tftSummoner.getByAccountId.${accountId}` },
         ),
       getBySummonerName: ({
         region,
@@ -1130,7 +1130,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
           { summonerName },
-          { id: `${region}.tftSummoner.getBySummonerName.${summonerName}` }
+          { id: `${region}.tftSummoner.getBySummonerName.${summonerName}` },
         ),
       getByAccessToken: ({
         region,
@@ -1146,7 +1146,7 @@ export class RiotAPI {
           {
             id: `${region}.tftSummoner.getByAccessToken`,
             headers: { Authorization: `Bearer ${accessToken}` },
-          }
+          },
         ),
       getByPUUID: ({
         region,
@@ -1159,7 +1159,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_PUUID,
           { puuid },
-          { id: `${region}.tftSummoner.getByPUUID.${puuid}` }
+          { id: `${region}.tftSummoner.getByPUUID.${puuid}` },
         ),
       getBySummonerId: ({
         region,
@@ -1172,7 +1172,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_ID,
           { summonerId },
-          { id: `${region}.tftSummoner.getBySummonerId.${summonerId}` }
+          { id: `${region}.tftSummoner.getBySummonerId.${summonerId}` },
         ),
     };
   }
@@ -1190,7 +1190,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.THIRD_PARTY_CODE.GET_BY_SUMMONER_ID,
           { summonerId },
-          { id: `${region}.thirdPartyCode.getBySummonerId.${summonerId}` }
+          { id: `${region}.thirdPartyCode.getBySummonerId.${summonerId}` },
         ),
     };
   }
@@ -1216,7 +1216,7 @@ export class RiotAPI {
             params,
             body,
             method: "POST",
-          }
+          },
         ),
       getLobbyEventsByTournamentCode: ({
         tournamentCode,
@@ -1230,7 +1230,7 @@ export class RiotAPI {
           { tournamentCode },
           {
             id: `${PlatformId.AMERICAS}.tournamentStub.getLobbyEventsByTournamentCode.${tournamentCode}`,
-          }
+          },
         ),
       createProvider: ({
         body,
@@ -1246,7 +1246,7 @@ export class RiotAPI {
 
             body,
             method: "POST",
-          }
+          },
         ),
       createTournament: ({
         body,
@@ -1261,7 +1261,7 @@ export class RiotAPI {
             id: `${PlatformId.AMERICAS}.tournamentStub.createTournament`,
             body,
             method: "POST",
-          }
+          },
         ),
     };
   }
@@ -1288,7 +1288,7 @@ export class RiotAPI {
             params,
             body,
             method: "POST",
-          }
+          },
         ),
       getByTournamentCode: ({
         tournamentCode,
@@ -1302,7 +1302,7 @@ export class RiotAPI {
           {
             id: `${PlatformId.AMERICAS}.tournament.getByTournamentCode.${tournamentCode}`,
             priority: 0,
-          }
+          },
         ),
       updateByTournamentCode: ({
         tournamentCode,
@@ -1320,7 +1320,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
       getLobbyEventsByTournamentCode: ({
         tournamentCode,
@@ -1335,7 +1335,7 @@ export class RiotAPI {
           {
             id: `${PlatformId.AMERICAS}.tournament.getLobbyEventsByTournamentCode.${tournamentCode}`,
             priority: 0,
-          }
+          },
         ),
       createProvider: ({
         body,
@@ -1351,7 +1351,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
       createTournament: ({
         body,
@@ -1367,7 +1367,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
     };
   }
@@ -1393,7 +1393,7 @@ export class RiotAPI {
             params,
             body,
             method: "POST",
-          }
+          },
         ),
       getByTournamentCode: ({
         tournamentCode,
@@ -1407,7 +1407,7 @@ export class RiotAPI {
           {
             id: `${PlatformId.AMERICAS}.tournamentStubV5.getByTournamentCode.${tournamentCode}`,
             priority: 0,
-          }
+          },
         ),
       getLobbyEventsByTournamentCode: ({
         tournamentCode,
@@ -1421,7 +1421,7 @@ export class RiotAPI {
           { tournamentCode },
           {
             id: `${PlatformId.AMERICAS}.tournamentStubV5.getLobbyEventsByTournamentCode.${tournamentCode}`,
-          }
+          },
         ),
       createProvider: ({
         body,
@@ -1437,7 +1437,7 @@ export class RiotAPI {
 
             body,
             method: "POST",
-          }
+          },
         ),
       createTournament: ({
         body,
@@ -1452,7 +1452,7 @@ export class RiotAPI {
             id: `${PlatformId.AMERICAS}.tournamentStubV5.createTournament`,
             body,
             method: "POST",
-          }
+          },
         ),
     };
   }
@@ -1479,7 +1479,7 @@ export class RiotAPI {
             params,
             body,
             method: "POST",
-          }
+          },
         ),
       getByTournamentCode: ({
         tournamentCode,
@@ -1493,7 +1493,7 @@ export class RiotAPI {
           {
             id: `${PlatformId.AMERICAS}.tournamentV5.getByTournamentCode.${tournamentCode}`,
             priority: 0,
-          }
+          },
         ),
       updateByTournamentCode: ({
         tournamentCode,
@@ -1511,7 +1511,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
       getLobbyEventsByTournamentCode: ({
         tournamentCode,
@@ -1526,7 +1526,7 @@ export class RiotAPI {
           {
             id: `${PlatformId.AMERICAS}.tournamentV5.getLobbyEventsByTournamentCode.${tournamentCode}`,
             priority: 0,
-          }
+          },
         ),
       createProvider: ({
         body,
@@ -1542,7 +1542,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
       createTournament: ({
         body,
@@ -1558,7 +1558,7 @@ export class RiotAPI {
             priority: 0,
             body,
             method: "POST",
-          }
+          },
         ),
     };
   }
@@ -1578,7 +1578,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.VAL_CONTENT.GET_CONTENT,
           {},
-          { id: `${region}.valContent.getContent`, params }
+          { id: `${region}.valContent.getContent`, params },
         ),
     };
   }
@@ -1596,7 +1596,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.valMatch.getById.${matchId}` }
+          { id: `${region}.valMatch.getById.${matchId}` },
         ),
       getMatchlistByPUUID: ({
         region,
@@ -1609,7 +1609,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_MATCHLIST_BY_PUUID,
           { puuid },
-          { id: `${region}.valMatch.getMatchlistByPUUID.${puuid}` }
+          { id: `${region}.valMatch.getMatchlistByPUUID.${puuid}` },
         ),
       getRecentMatchesByQueue: ({
         region,
@@ -1622,7 +1622,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
           { queue },
-          { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` }
+          { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` },
         ),
     };
   }
@@ -1645,7 +1645,7 @@ export class RiotAPI {
           region,
           RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
           { actId: queue },
-          { id: `${region}.valRanked.getLeaderboardByQueue.${queue}`, params }
+          { id: `${region}.valRanked.getLeaderboardByQueue.${queue}`, params },
         ),
     };
   }
