@@ -1638,6 +1638,216 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("tournamentStub_V5", () => {
+    test.each([
+      [
+        "createCodes",
+        {
+          params: { tournamentId: 22, count: 1 },
+          body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_CODES,
+          {},
+          {
+            id: "americas.tournamentStubV5.createCodes.22",
+            params: { tournamentId: 22, count: 1 },
+            method: "POST",
+            body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+          },
+        ],
+      ],
+      [
+        "getByTournamentCode",
+        {
+          tournamentCode: "1",
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentStubV5.getByTournamentCode.1",
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "getLobbyEventsByTournamentCode",
+        {
+          tournamentCode: "1",
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5
+            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentStubV5.getLobbyEventsByTournamentCode.1",
+          },
+        ],
+      ],
+      [
+        "createProvider",
+        {
+          body: { region: PlatformId.EUW1 },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_PROVIDER,
+          {},
+          {
+            id: "americas.tournamentStubV5.createProvider",
+            method: "POST",
+            body: { region: PlatformId.EUW1 },
+          },
+        ],
+      ],
+      [
+        "createTournament",
+        {
+          body: { name: "test" },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB_V5.POST_CREATE_TOURNAMENT,
+          {},
+          {
+            id: "americas.tournamentStubV5.createTournament",
+            method: "POST",
+            body: { name: "test" },
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.tournamentStubV5)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
+  describe("tournament_V5", () => {
+    test.each([
+      [
+        "createCodes",
+        {
+          params: { tournamentId: 22, count: 1 },
+          body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_CODES,
+          {},
+          {
+            id: "americas.tournamentV5.createCodes.22",
+            params: { tournamentId: 22, count: 1 },
+            method: "POST",
+            body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "getByTournamentCode",
+        {
+          tournamentCode: "1",
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentV5.getByTournamentCode.1",
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "updateByTournamentCode",
+        {
+          tournamentCode: "1",
+          body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentV5.updateByTournamentCode.1",
+            method: "POST",
+            body: { mapType: RiotAPITypes.TournamentV5.MAPTYPE.SUMMONERS_RIFT },
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "getLobbyEventsByTournamentCode",
+        {
+          tournamentCode: "1",
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5
+            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentV5.getLobbyEventsByTournamentCode.1",
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "createProvider",
+        {
+          body: { region: PlatformId.EUW1 },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_PROVIDER,
+          {},
+          {
+            id: "americas.tournamentV5.createProvider",
+            method: "POST",
+            body: { region: PlatformId.EUW1 },
+            priority: 0,
+          },
+        ],
+      ],
+      [
+        "createTournament",
+        {
+          body: { name: "test" },
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.POST_CREATE_TOURNAMENT,
+          {},
+          {
+            id: "americas.tournamentV5.createTournament",
+            method: "POST",
+            body: { name: "test" },
+            priority: 0,
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.tournamentV5)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
   describe("valContent", () => {
     test.each([
       [
