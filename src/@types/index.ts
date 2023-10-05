@@ -1111,6 +1111,7 @@ export namespace RiotAPITypes {
       gameId: number;
       gameMode: string;
       gameName: string;
+      gameEndTimestamp: number;
       gameStartTimestamp: number;
       gameType: string;
       gameVersion: string;

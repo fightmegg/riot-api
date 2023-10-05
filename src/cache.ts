@@ -17,7 +17,7 @@ export class RedisCache {
     return await this.client.setex(
       this.keyPrefix + key,
       ttl / 1000,
-      JSON.stringify(value)
+      JSON.stringify(value),
     );
   }
 
