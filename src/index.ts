@@ -8,7 +8,7 @@ import Bottleneck from "bottleneck";
 import { RedisOptions } from "ioredis";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
-import { RiotAPITypes } from "./@types";
+import { RiotAPITypes, Leaves } from "./@types";
 import { MemoryCache, RedisCache } from "./cache";
 import { DDragon } from "./ddragon";
 
@@ -16,25 +16,7 @@ const debugCache = require("debug")("riotapi:cache");
 
 const createHost = compile(HOST, { encode: encodeURIComponent });
 
-// type Paths<T> = T extends object
-//   ? {
-//       [K in keyof T]: `${Exclude<K, symbol>}${"" | `.${Paths<T[K]>}`}`;
-//     }[keyof T]
-//   : never;
-
-type Leaves<T> = T extends object
-  ? {
-      [K in keyof T]: `${Exclude<K, symbol>}${Leaves<T[K]> extends never
-        ? ""
-        : `.${Leaves<T[K]>}`}`;
-    }[keyof T]
-  : never;
-
 const getPath = (key: Leaves<METHODS>): string => {
-  // key.split(".").forEach((p: string) => {
-  //   path = path[p];
-  // });
-
   let path: METHODS | METHODS[keyof METHODS] | string = METHODS;
   const keys = key.split(".");
 
