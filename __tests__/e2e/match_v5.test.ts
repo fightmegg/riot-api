@@ -47,6 +47,7 @@ describe("E2E", () => {
         "gameId",
         "gameMode",
         "gameName",
+        "gameEndTimestamp",
         "gameStartTimestamp",
         "gameType",
         "gameVersion",
