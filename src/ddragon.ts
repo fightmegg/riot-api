@@ -55,7 +55,7 @@ export class DDragon {
         if (!championName) throw new Error("championName is required");
         const v = version || (await this.versions.latest());
         return await this.request(
-          `/cdn/${v}/data/${locale}/champion/${championName}.json`,
+          `/cdn/${v}/data/${locale}/champion/${championName}.json`
         );
       },
     };
