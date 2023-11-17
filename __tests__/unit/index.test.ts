@@ -1787,6 +1787,21 @@ describe("RiotAPI", () => {
         ],
       ],
       [
+        "getTournamentGameDetailsByTournamentCode",
+        {
+          tournamentCode: "1",
+        },
+        [
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_GAME_DETAILS,
+          { tournamentCode: "1" },
+          {
+            id: "americas.tournamentV5.getTournamentGameDetailsByTournamentCode.1",
+            priority: 0,
+          },
+        ],
+      ],
+      [
         "getLobbyEventsByTournamentCode",
         {
           tournamentCode: "1",
