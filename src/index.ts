@@ -1513,6 +1513,20 @@ export class RiotAPI {
             method: "POST",
           }
         ),
+      getTournamentGameDetailsByTournamentCode: ({
+        tournamentCode,
+      }: {
+        tournamentCode: string;
+      }): Promise<RiotAPITypes.TournamentV5.TournanmentGamesV5DTO> =>
+        this.request(
+          PlatformId.AMERICAS,
+          RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_GAME_DETAILS,
+          { tournamentCode },
+          {
+            id: `${PlatformId.AMERICAS}.tournamentV5.getTournamentGameDetailsByTournamentCode.${tournamentCode}`,
+            priority: 0,
+          }
+        ),
       getLobbyEventsByTournamentCode: ({
         tournamentCode,
       }: {

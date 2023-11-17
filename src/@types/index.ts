@@ -283,6 +283,8 @@ export namespace RiotAPITypes {
       export const GET_TOURNAMENT_BY_CODE =
         "TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE";
       export const PUT_TOURNAMENT_CODE = "TOURNAMENT_V5.PUT_TOURNAMENT_CODE";
+      export const GET_TOURNAMENT_GAME_DETAILS =
+        "TOURNAMENT_V5.GET_TOURNAMENT_GAME_DETAILS";
       export const GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE =
         "TOURNAMENT_V5.GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE";
       export const POST_CREATE_PROVIDER = "TOURNAMENT_V5.POST_CREATE_PROVIDER";
@@ -1835,6 +1837,37 @@ export namespace RiotAPITypes {
       /** The puuid that triggered the event (Encrypted) */
       puuid: string;
     }
+
+    export interface TournamentTeamV5DTO {
+      /** Player unique UUID (Encrypted) */
+      puuid: string;
+    }
+
+    export interface TournanmentGamesV5DTO {
+      winningTeam: TournamentV5.TournamentTeamV5DTO[];
+      losingTeam: TournamentV5.TournamentTeamV5DTO[];
+      /** Tournament Code */
+      shortCode: string;
+      metaData: string;
+      gameId: number;
+      gameName: string;
+      gameType: string;
+      gameMap: number;
+      gameMode: string;
+      region: LoLRegion;
+    }
+
+    /** Server Callback DTO */
+    export interface TournamentGamesServerCallbackV5DTO {
+      startTime: number;
+      shortCode: string;
+      metaData: string;
+      gameId: number;
+      gameName: string;
+      gameType: string;
+      gameMode: string;
+      region: LoLRegion;
+    }
   }
 
   export namespace ValContent {
@@ -2087,7 +2120,7 @@ export namespace RiotAPITypes {
     export enum REALM {
       NA = "na",
       EUW = "euw",
-      EUNE = "EUNE",
+      EUNE = "eune",
       BR = "br",
       JP = "jp",
       KR = "kr",
@@ -2122,7 +2155,7 @@ export namespace RiotAPITypes {
       en_PH = "en_PH", // English (Republic of the Philippines)
       en_SG = "en_SG", // English (Singapore)
       th_TH = "th_TH", // Thai (Thailand)
-      vn_VN = "vn_VN", // Vietnamese (Viet Nam)
+      vi_VN = "vi_VN", // Vietnamese (Viet Nam)
       id_ID = "id_ID", // Indonesian (Indonesia)
       zh_MY = "zh_MY", // Chinese (Malaysia)
       zh_CN = "zh_CN", // Chinese (China)
