@@ -44,8 +44,8 @@ import { RiotAPI, RiotAPITypes, PlatformId } from '@fightmegg/riot-api'
 const config: RiotAPITypes.Config = {
     debug: false,
     cache: {
-        cacheType: 'local', // local or ioredis
-        client: 'redis://localhost:6739', // leave null if client is local
+        cacheType: 'ioredis', // local or ioredis
+        client: 'redis://localhost:6379', // leave null if client is local
         ttls: {
             byMethod: {
                 [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 5000, // ms
