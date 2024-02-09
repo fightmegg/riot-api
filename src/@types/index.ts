@@ -979,7 +979,7 @@ export namespace RiotAPITypes {
       abilityUses: number;
       acesBefore15Minutes: number;
       alliedJungleMonsterKills: number;
-      baronBuffGoldAdvantageOverThreshold:number;
+      baronBuffGoldAdvantageOverThreshold: number;
       baronTakedowns: number;
       blastConeOppositeOpponentCount: number;
       bountyGold: number;
@@ -1013,7 +1013,7 @@ export namespace RiotAPITypes {
       getTakedownsInAllLanesEarlyJungleAsLaner: number;
       goldPerMinute: number;
       hadOpenNexus: number;
-      immobilizeAndKillWithAlly:number;
+      immobilizeAndKillWithAlly: number;
       initialBuffCount: number;
       initialCrabCount: number;
       jungleCsBefore10Minutes: number;
@@ -1034,7 +1034,7 @@ export namespace RiotAPITypes {
       laneMinionsFirst10Minutes: number;
       laningPhaseGoldExpAdvantage: number;
       legendaryCount: number;
-      legendaryItemUsed: number[],
+      legendaryItemUsed: number[];
       lostAnInhibitor: number;
       maxCsAdvantageOnLaneOpponent: number;
       maxKillDeficit: number;
