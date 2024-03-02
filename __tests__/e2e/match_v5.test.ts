@@ -42,6 +42,7 @@ describe("E2E", () => {
 
       expect(resp).toContainAllKeys(["metadata", "info"]);
       expect(resp.info).toContainAllKeys([
+        "endOfGameResult",
         "gameCreation",
         "gameDuration",
         "gameId",
