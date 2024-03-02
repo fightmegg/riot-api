@@ -1517,7 +1517,7 @@ export class RiotAPI {
         tournamentCode,
       }: {
         tournamentCode: string;
-      }): Promise<RiotAPITypes.TournamentV5.TournanmentGamesV5DTO> =>
+      }): Promise<RiotAPITypes.TournamentV5.TournanmentGamesV5DTO[]> =>
         this.request(
           PlatformId.AMERICAS,
           RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_GAME_DETAILS,

@@ -1108,6 +1108,7 @@ export namespace RiotAPITypes {
     }
 
     export interface MatchInfoDTO {
+      endOfGameResult: string;
       gameCreation: number;
       gameDuration: number;
       gameId: number;
