@@ -4,6 +4,7 @@ import { PlatformId, RiotAPI } from "../../src/index";
 jest.unmock("@fightmegg/riot-rate-limiter");
 
 const riotAPIKey = process.env.X_RIOT_API_KEY || "";
+const puuid = process.env.PUUID || "";
 
 describe("E2E", () => {
   describe("Match V5", () => {
@@ -12,8 +13,7 @@ describe("E2E", () => {
 
       const resp = await rAPI.matchV5.getIdsByPuuid({
         cluster: PlatformId.EUROPE,
-        puuid:
-          "8bJQbDi6uFIgefQA6Y79yxff_1bCHNopb1eHlq3p7Ic2oeXgYTvNnfGahtWyJ6qqAue3uK6wiZmMWQ",
+        puuid: puuid,
         params: {
           start: 0,
           count: 5,
@@ -27,8 +27,7 @@ describe("E2E", () => {
 
       const matchIds = await rAPI.matchV5.getIdsByPuuid({
         cluster: PlatformId.EUROPE,
-        puuid:
-          "8bJQbDi6uFIgefQA6Y79yxff_1bCHNopb1eHlq3p7Ic2oeXgYTvNnfGahtWyJ6qqAue3uK6wiZmMWQ",
+        puuid: puuid,
         params: {
           start: 0,
           count: 5,
@@ -67,8 +66,7 @@ describe("E2E", () => {
 
       const matchIds = await rAPI.matchV5.getIdsByPuuid({
         cluster: PlatformId.EUROPE,
-        puuid:
-          "8bJQbDi6uFIgefQA6Y79yxff_1bCHNopb1eHlq3p7Ic2oeXgYTvNnfGahtWyJ6qqAue3uK6wiZmMWQ",
+        puuid: puuid,
         params: {
           start: 0,
           count: 5,

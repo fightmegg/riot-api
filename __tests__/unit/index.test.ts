@@ -86,14 +86,14 @@ describe("RiotAPI", () => {
       await expect(
         rAPI.request(
           PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" }
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+          { puuid: "1234" }
         )
       ).resolves.toEqual({ name: "Demos Kratos" });
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
             body: undefined,
             headers: { "X-Riot-Token": "1234" },
@@ -111,14 +111,14 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
-        { id: "10", params: { name: "kratos" } }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
+        { id: "10", params: { name: "5678" } }
       );
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234?name=5678",
           options: expect.anything(),
         },
         {
@@ -133,16 +133,16 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
-        { id: "10", body: { name: "kratos" }, method: "POST" }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
+        { id: "10", body: { name: "5678" }, method: "POST" }
       );
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
-            body: JSON.stringify({ name: "kratos" }),
+            body: JSON.stringify({ name: "5678" }),
             method: "POST",
             headers: expect.anything(),
           },
@@ -159,11 +159,11 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
         {
           id: "10",
-          body: { name: "kratos" },
+          body: { name: "5678" },
           method: "POST",
           headers: { Authorization: "me" },
         }
@@ -171,9 +171,9 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
-            body: JSON.stringify({ name: "kratos" }),
+            body: JSON.stringify({ name: "5678" }),
             method: "POST",
             headers: {
               Authorization: "me",
@@ -192,8 +192,8 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
         { id: "10", priority: 0, expiration: 10 }
       );
 
@@ -210,7 +210,7 @@ describe("RiotAPI", () => {
           cacheType: "local",
           ttls: {
             byMethod: {
-              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 10,
+              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID]: 10,
             },
           },
         },
@@ -222,14 +222,14 @@ describe("RiotAPI", () => {
       await expect(
         rAPI.request(
           PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" }
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+          { puuid: "1234" }
         )
       ).resolves.toEqual({ name: "Demos Kratos" });
 
       expect(mockExecute).not.toHaveBeenCalled();
       expect(mockCacheGet).toHaveBeenCalledWith(
-        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos"
+        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234"
       );
     });
 
@@ -239,7 +239,7 @@ describe("RiotAPI", () => {
           cacheType: "local",
           ttls: {
             byMethod: {
-              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 10,
+              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID]: 10,
             },
           },
         },
@@ -253,13 +253,13 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" }
       );
 
       expect(mockCacheGet).toHaveBeenCalled();
       expect(mockCacheSet).toHaveBeenCalledWith(
-        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
         { name: "Demos Kratos" },
         10
       );
@@ -1080,21 +1080,6 @@ describe("RiotAPI", () => {
         ],
       ],
       [
-        "getBySummonerName",
-        {
-          region: PlatformId.EUW1,
-          summonerName: "Demos",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" },
-          {
-            id: "euw1.summoner.getBySummonerName.Demos",
-          },
-        ],
-      ],
-      [
         "getByPUUID",
         {
           region: PlatformId.EUW1,
@@ -1338,21 +1323,6 @@ describe("RiotAPI", () => {
           { accountId: "1" },
           {
             id: "euw1.tftSummoner.getByAccountId.1",
-          },
-        ],
-      ],
-      [
-        "getBySummonerName",
-        {
-          region: PlatformId.EUW1,
-          summonerName: "Demos",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" },
-          {
-            id: "euw1.tftSummoner.getBySummonerName.Demos",
           },
         ],
       ],

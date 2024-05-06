@@ -909,19 +909,6 @@ export class RiotAPI {
           { accountId },
           { id: `${region}.summoner.getByAccountId.${accountId}` }
         ),
-      getBySummonerName: ({
-        region,
-        summonerName,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        summonerName: string;
-      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName },
-          { id: `${region}.summoner.getBySummonerName.${summonerName}` }
-        ),
       getByPUUID: ({
         region,
         puuid,
