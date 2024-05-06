@@ -1396,14 +1396,12 @@ export namespace RiotAPITypes {
       perks: Spectator.PerksDTO;
       /** The ID of the profile icon used by this participant */
       profileIconId: number;
-      /** Flag indicating whether or not this participant is a bot */
-      bot: boolean;
       /** The team ID of this participant, indicating the participant's team */
       teamId: number;
-      /** The summoner name of this participant */
-      summonerName: string;
       /** The encrypted summoner ID of this participant */
       summonerId: string;
+      /** The encrypted puuid of this participant */
+      puuid: string;
       /** The ID of the first summoner spell used by this participant */
       spell1Id: number;
       /** The ID of the second summoner spell used by this participant */
@@ -1471,14 +1469,12 @@ export namespace RiotAPITypes {
     }
 
     export interface ParticipantDTO {
-      /** Flag indicating whether or not this participant is a bot */
-      bot: boolean;
       /** The ID of the second summoner spell used by this participant */
       spell2Id: number;
       /** The ID of the profile icon used by this participant */
       profileIconId: number;
-      /** The summoner name of this participant */
-      summonerName: string;
+      /** The encrypted puuid of this participant */
+      puuid: string;
       /** The ID of the champion played by this participant */
       championId: number;
       /** The team ID of this participant, indicating the participant's team */
@@ -1491,7 +1487,6 @@ export namespace RiotAPITypes {
   export namespace Summoner {
     export interface SummonerDTO {
       profileIconId: number;
-      name: string;
       puuid: string;
       summonerLevel: number;
       revisionDate: number;
