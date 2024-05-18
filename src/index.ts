@@ -1,17 +1,18 @@
 import {
-  RiotRateLimiter,
-  METHODS,
   HOST,
+  METHODS,
   PlatformId,
+  RiotRateLimiter,
 } from "@fightmegg/riot-rate-limiter";
 import Bottleneck from "bottleneck";
+import debug from "debug";
 import { RedisOptions } from "ioredis";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
-import { RiotAPITypes, Leaves } from "./@types";
+import { Leaves, RiotAPITypes } from "./@types";
 import { MemoryCache, RedisCache } from "./cache";
 import { DDragon } from "./ddragon";
-import debug from "debug";
+import { regionToCluster } from "./utils";
 
 const debugCache = debug("riotapi:cache");
 
@@ -33,7 +34,7 @@ const getPath = (key: Leaves<METHODS>): string => {
   return path;
 };
 
-export { RiotAPITypes, PlatformId, DDragon };
+export { DDragon, PlatformId, RiotAPITypes, regionToCluster };
 
 export class RiotAPI {
   readonly cache?: MemoryCache | RedisCache;

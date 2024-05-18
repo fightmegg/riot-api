@@ -6,16 +6,14 @@
 
 > Node.JS minimal Riot API client written in Typescript
 
-
 ### Features
 
-* Rate limiting through [@fightmegg/riot-rate-limiter](https://github.com/fightmegg/riot-rate-limiter)
-* Automatic retries
-* TypeScript typings
-* 100% endpoint coverage (incl. DDragon)
-* Caching with custom ttls per endpoint
-* Request prioritization
-
+- Rate limiting through [@fightmegg/riot-rate-limiter](https://github.com/fightmegg/riot-rate-limiter)
+- Automatic retries
+- TypeScript typings
+- 100% endpoint coverage (incl. DDragon)
+- Caching with custom ttls per endpoint
+- Request prioritization
 
 ## Installation
 
@@ -26,35 +24,35 @@ $ npm install @fightmegg/riot-api
 ## Usage
 
 ```ts
-import { RiotAPI, RiotAPITypes, PlatformId } from '@fightmegg/riot-api'
+import { RiotAPI, RiotAPITypes, PlatformId } from "@fightmegg/riot-api";
 
 (async () => {
-    const rAPI = new RiotAPI('RGAPI-KEY');
+  const rAPI = new RiotAPI("RGAPI-KEY");
 
-    const summoner = await rAPI.summoner.getBySummonerName({
-        region: PlatformId.EUW1,
-        summonerName: "Demos Kratos",
-      });
-})()
+  const summoner = await rAPI.summoner.getBySummonerName({
+    region: PlatformId.EUW1,
+    summonerName: "Demos Kratos",
+  });
+})();
 ```
 
 ## Config
 
 ```ts
 const config: RiotAPITypes.Config = {
-    debug: false,
-    cache: {
-        cacheType: 'ioredis', // local or ioredis
-        client: 'redis://localhost:6379', // leave null if client is local
-        ttls: {
-            byMethod: {
-                [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 5000, // ms
-            }
-        }
-    }
-}
+  debug: false,
+  cache: {
+    cacheType: "ioredis", // local or ioredis
+    client: "redis://localhost:6379", // leave null if client is local
+    ttls: {
+      byMethod: {
+        [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 5000, // ms
+      },
+    },
+  },
+};
 
-const rAPI = new RiotAPI('RGAPI-TOKEN', config);
+const rAPI = new RiotAPI("RGAPI-TOKEN", config);
 ```
 
 ## Error handling
@@ -69,14 +67,13 @@ Caching is turned off by default, but with the cache property in the config you 
 
 When setting up the cache, you can change the `ttl` of each method / endpoint individually. This is done through the `METHOD_KEY` type which can be found in the [typings file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
 
-
 ## DDragon
 
 We also fully support [DataDragon](https://developer.riotgames.com/docs/lol#data-dragon) which can be accessed in two ways:
 
 ```ts
 // ...
-const rAPI = new RiotAPI('RGAPI-KEY');
+const rAPI = new RiotAPI("RGAPI-KEY");
 
 const latestV = await rAPI.ddragon.versions.latest();
 const champs = await rAPI.ddragon.champion.all();
@@ -85,13 +82,23 @@ const champs = await rAPI.ddragon.champion.all();
 If you want to just use static data only, then you can do the following:
 
 ```ts
-import { DDragon } from '@fightmegg/riot-api';
+import { DDragon } from "@fightmegg/riot-api";
 
 const ddragon = new DDragon();
 const champs = await ddragon.champion.all();
 ```
 
 Just like the main API, we have full TypeScript typings for DDragon endpoints. Please note we **do not** support caching for DDragon endpoints.
+
+## regionToCluster
+
+A helper method to make it easier to determing which cluster you want to hit based on the users region
+
+```ts
+import { regionToCluster } from "@fightmegg/riot-api";
+
+const cluster = regionToCluster("EUW1"); // outputs "EUROPE"
+```
 
 ## TypeScript typing
 
@@ -111,13 +118,11 @@ If you want to see want the rate-limiter is currently doing, we use the [debug](
 DEBUG=riotapi* node ...
 ```
 
-
 ## Testing
 
 Unit tests: `npm test`
 
 E2E tests: `npm run test:e2e`
-
 
 ## Planned features
 
