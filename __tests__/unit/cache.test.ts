@@ -64,7 +64,7 @@ describe("Cache", () => {
 
   describe("RedisCache", () => {
     let redCache: RedisCache;
-    let mockedRedis = jest.mocked(Redis);
+    const mockedRedis = jest.mocked(Redis);
 
     beforeEach(() => {
       jest.clearAllMocks();

@@ -81,19 +81,19 @@ describe("RiotAPI", () => {
     test("should call rrl.execute with URL & default options", async () => {
       const rAPI = new RiotAPI("1234");
       const mockExecute = rAPI.riotRateLimiter.execute as jest.Mock;
-      mockExecute.mockResolvedValue({ name: "Demos Kratos" });
+      mockExecute.mockResolvedValue({ puuid: "1234" });
 
       await expect(
         rAPI.request(
           PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" }
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+          { puuid: "1234" }
         )
-      ).resolves.toEqual({ name: "Demos Kratos" });
+      ).resolves.toEqual({ puuid: "1234" });
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
             body: undefined,
             headers: { "X-Riot-Token": "1234" },
@@ -111,14 +111,14 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
-        { id: "10", params: { name: "kratos" } }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
+        { id: "10", params: { name: "5678" } }
       );
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos?name=kratos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234?name=5678",
           options: expect.anything(),
         },
         {
@@ -133,16 +133,16 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
-        { id: "10", body: { name: "kratos" }, method: "POST" }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
+        { id: "10", body: { name: "5678" }, method: "POST" }
       );
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
-            body: JSON.stringify({ name: "kratos" }),
+            body: JSON.stringify({ name: "5678" }),
             method: "POST",
             headers: expect.anything(),
           },
@@ -159,11 +159,11 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
         {
           id: "10",
-          body: { name: "kratos" },
+          body: { name: "5678" },
           method: "POST",
           headers: { Authorization: "me" },
         }
@@ -171,9 +171,9 @@ describe("RiotAPI", () => {
 
       expect(mockExecute).toHaveBeenCalledWith(
         {
-          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+          url: "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
           options: {
-            body: JSON.stringify({ name: "kratos" }),
+            body: JSON.stringify({ name: "5678" }),
             method: "POST",
             headers: {
               Authorization: "me",
@@ -192,8 +192,8 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" },
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" },
         { id: "10", priority: 0, expiration: 10 }
       );
 
@@ -210,26 +210,26 @@ describe("RiotAPI", () => {
           cacheType: "local",
           ttls: {
             byMethod: {
-              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 10,
+              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID]: 10,
             },
           },
         },
       });
       const mockExecute = rAPI.riotRateLimiter.execute as jest.Mock;
       const mockCacheGet = (rAPI.cache?.get as jest.Mock) ?? jest.fn();
-      mockCacheGet.mockResolvedValue({ name: "Demos Kratos" });
+      mockCacheGet.mockResolvedValue({ puuid: "1234" });
 
       await expect(
         rAPI.request(
           PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" }
+          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+          { puuid: "1234" }
         )
-      ).resolves.toEqual({ name: "Demos Kratos" });
+      ).resolves.toEqual({ puuid: "1234" });
 
       expect(mockExecute).not.toHaveBeenCalled();
       expect(mockCacheGet).toHaveBeenCalledWith(
-        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos"
+        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234"
       );
     });
 
@@ -239,7 +239,7 @@ describe("RiotAPI", () => {
           cacheType: "local",
           ttls: {
             byMethod: {
-              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME]: 10,
+              [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID]: 10,
             },
           },
         },
@@ -253,13 +253,13 @@ describe("RiotAPI", () => {
 
       await rAPI.request(
         PlatformId.EUW1,
-        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-        { summonerName: "Demos" }
+        RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID,
+        { puuid: "1234" }
       );
 
       expect(mockCacheGet).toHaveBeenCalled();
       expect(mockCacheSet).toHaveBeenCalledWith(
-        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-name/Demos",
+        "https://euw1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/1234",
         { name: "Demos Kratos" },
         10
       );
@@ -406,16 +406,6 @@ describe("RiotAPI", () => {
 
   describe("clash", () => {
     test.each([
-      [
-        "getPlayersByPUUID",
-        { region: PlatformId.EUW1, puuid: "2" },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
-          { puuid: "2" },
-          { id: "euw1.clash.getPlayersByPUUID.2" },
-        ],
-      ],
       [
         "getPlayersBySummonerId",
         { region: PlatformId.EUW1, summonerId: "1" },
@@ -822,98 +812,6 @@ describe("RiotAPI", () => {
     );
   });
 
-  describe("match", () => {
-    test.each([
-      [
-        "getIdsByTournamentCode",
-        {
-          region: PlatformId.EUW1,
-          tournamentCode: "11",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_IDS_BY_TOURNAMENT_CODE,
-          { tournamentCode: "11" },
-          {
-            id: "euw1.match.getIdsByTournamentCode.11",
-          },
-        ],
-      ],
-      [
-        "getById",
-        {
-          region: PlatformId.EUW1,
-          matchId: 1,
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCH_BY_ID,
-          { matchId: 1 },
-          {
-            id: "euw1.match.getById.1",
-          },
-        ],
-      ],
-      [
-        "getByIdAndTournamentCode",
-        {
-          region: PlatformId.EUW1,
-          matchId: 1,
-          tournamentCode: "11",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCH_BY_ID_AND_TOURNAMENT_CODE,
-          { matchId: 1, tournamentCode: "11" },
-          {
-            id: "euw1.match.getByIdAndTournamentCode.1.11",
-          },
-        ],
-      ],
-      [
-        "getMatchlistByAccount",
-        {
-          region: PlatformId.EUW1,
-          accountId: 1,
-          params: { champion: 1 },
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCHLIST_BY_ACCOUNT,
-          { accountId: 1 },
-          {
-            id: "euw1.match.getMatchlistByAccount.1",
-            params: { champion: 1 },
-          },
-        ],
-      ],
-      [
-        "getTimelineById",
-        {
-          region: PlatformId.EUW1,
-          matchId: 1,
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_TIMELINE_BY_MATCH_ID,
-          { matchId: 1 },
-          {
-            id: "euw1.match.getTimelineById.1",
-          },
-        ],
-      ],
-    ])(
-      "%s - calls request with correct params",
-      async (name, input, params) => {
-        const rAPI = new RiotAPI("1234");
-        rAPI.request = jest.fn().mockResolvedValue(null);
-
-        await getKeyValue(rAPI.match)(name as any)(input as any);
-        expect(rAPI.request).toHaveBeenCalledWith(...params);
-      }
-    );
-  });
-
   describe("match_v5", () => {
     test.each([
       [
@@ -1076,21 +974,6 @@ describe("RiotAPI", () => {
           { accountId: "1" },
           {
             id: "euw1.summoner.getByAccountId.1",
-          },
-        ],
-      ],
-      [
-        "getBySummonerName",
-        {
-          region: PlatformId.EUW1,
-          summonerName: "Demos",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" },
-          {
-            id: "euw1.summoner.getBySummonerName.Demos",
           },
         ],
       ],
@@ -1342,21 +1225,6 @@ describe("RiotAPI", () => {
         ],
       ],
       [
-        "getBySummonerName",
-        {
-          region: PlatformId.EUW1,
-          summonerName: "Demos",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName: "Demos" },
-          {
-            id: "euw1.tftSummoner.getBySummonerName.Demos",
-          },
-        ],
-      ],
-      [
         "getByAccessToken",
         {
           region: PlatformId.EUW1,
@@ -1409,230 +1277,6 @@ describe("RiotAPI", () => {
         rAPI.request = jest.fn().mockResolvedValue(null);
 
         await getKeyValue(rAPI.tftSummoner)(name as any)(input as any);
-        expect(rAPI.request).toHaveBeenCalledWith(...params);
-      }
-    );
-  });
-
-  describe("thirdPartyCode", () => {
-    test.each([
-      [
-        "getBySummonerId",
-        {
-          region: PlatformId.EUW1,
-          summonerId: "1",
-        },
-        [
-          PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.THIRD_PARTY_CODE.GET_BY_SUMMONER_ID,
-          { summonerId: "1" },
-          {
-            id: "euw1.thirdPartyCode.getBySummonerId.1",
-          },
-        ],
-      ],
-    ])(
-      "%s - calls request with correct params",
-      async (name, input, params) => {
-        const rAPI = new RiotAPI("1234");
-        rAPI.request = jest.fn().mockResolvedValue(null);
-
-        await getKeyValue(rAPI.thirdPartyCode)(name as any)(input as any);
-        expect(rAPI.request).toHaveBeenCalledWith(...params);
-      }
-    );
-  });
-
-  describe("tournamentStub", () => {
-    test.each([
-      [
-        "createCodes",
-        {
-          params: { tournamentId: 22, count: 1 },
-          body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_CODES,
-          {},
-          {
-            id: "americas.tournamentStub.createCodes.22",
-            params: { tournamentId: 22, count: 1 },
-            method: "POST",
-            body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-          },
-        ],
-      ],
-      [
-        "getLobbyEventsByTournamentCode",
-        {
-          tournamentCode: "1",
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB
-            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
-          { tournamentCode: "1" },
-          {
-            id: "americas.tournamentStub.getLobbyEventsByTournamentCode.1",
-          },
-        ],
-      ],
-      [
-        "createProvider",
-        {
-          body: { region: PlatformId.EUW1 },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_PROVIDER,
-          {},
-          {
-            id: "americas.tournamentStub.createProvider",
-            method: "POST",
-            body: { region: PlatformId.EUW1 },
-          },
-        ],
-      ],
-      [
-        "createTournament",
-        {
-          body: { name: "test" },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_TOURNAMENT,
-          {},
-          {
-            id: "americas.tournamentStub.createTournament",
-            method: "POST",
-            body: { name: "test" },
-          },
-        ],
-      ],
-    ])(
-      "%s - calls request with correct params",
-      async (name, input, params) => {
-        const rAPI = new RiotAPI("1234");
-        rAPI.request = jest.fn().mockResolvedValue(null);
-
-        await getKeyValue(rAPI.tournamentStub)(name as any)(input as any);
-        expect(rAPI.request).toHaveBeenCalledWith(...params);
-      }
-    );
-  });
-
-  describe("tournament", () => {
-    test.each([
-      [
-        "createCodes",
-        {
-          params: { tournamentId: 22, count: 1 },
-          body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_CODES,
-          {},
-          {
-            id: "americas.tournament.createCodes.22",
-            params: { tournamentId: 22, count: 1 },
-            method: "POST",
-            body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-            priority: 0,
-          },
-        ],
-      ],
-      [
-        "getByTournamentCode",
-        {
-          tournamentCode: "1",
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.GET_TOURNAMENT_BY_CODE,
-          { tournamentCode: "1" },
-          {
-            id: "americas.tournament.getByTournamentCode.1",
-            priority: 0,
-          },
-        ],
-      ],
-      [
-        "updateByTournamentCode",
-        {
-          tournamentCode: "1",
-          body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.GET_TOURNAMENT_BY_CODE,
-          { tournamentCode: "1" },
-          {
-            id: "americas.tournament.updateByTournamentCode.1",
-            method: "POST",
-            body: { mapType: RiotAPITypes.Tournament.MAPTYPE.SUMMONERS_RIFT },
-            priority: 0,
-          },
-        ],
-      ],
-      [
-        "getLobbyEventsByTournamentCode",
-        {
-          tournamentCode: "1",
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT
-            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
-          { tournamentCode: "1" },
-          {
-            id: "americas.tournament.getLobbyEventsByTournamentCode.1",
-            priority: 0,
-          },
-        ],
-      ],
-      [
-        "createProvider",
-        {
-          body: { region: PlatformId.EUW1 },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_PROVIDER,
-          {},
-          {
-            id: "americas.tournament.createProvider",
-            method: "POST",
-            body: { region: PlatformId.EUW1 },
-            priority: 0,
-          },
-        ],
-      ],
-      [
-        "createTournament",
-        {
-          body: { name: "test" },
-        },
-        [
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_TOURNAMENT,
-          {},
-          {
-            id: "americas.tournament.createTournament",
-            method: "POST",
-            body: { name: "test" },
-            priority: 0,
-          },
-        ],
-      ],
-    ])(
-      "%s - calls request with correct params",
-      async (name, input, params) => {
-        const rAPI = new RiotAPI("1234");
-        rAPI.request = jest.fn().mockResolvedValue(null);
-
-        await getKeyValue(rAPI.tournament)(name as any)(input as any);
         expect(rAPI.request).toHaveBeenCalledWith(...params);
       }
     );
