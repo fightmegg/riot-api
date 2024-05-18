@@ -15,7 +15,7 @@ describe("E2E", () => {
         region: PlatformId.EUW1,
         puuid,
       });
-      expect(resp.name).toEqual(puuid);
+      expect(resp.puuid).toEqual(puuid);
       expect(resp).toContainAllKeys([
         "id",
         "accountId",
