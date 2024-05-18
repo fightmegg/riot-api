@@ -174,6 +174,10 @@ export namespace RiotAPITypes {
         "LOL_CHALLENGES.GET_PLAYER_DATA_BY_PUUID";
     }
 
+    export namespace LOL_STATUS {
+      export const GET_PLATFORM_DATA = "LOL_STATUS.GET_PLATFORM_DATA";
+    }
+
     export namespace LOR_DECK {
       export const GET_DECKS_FOR_PLAYER = "LOR_DECK.GET_DECKS_FOR_PLAYER";
       export const POST_CREATE_DECK_FOR_PLAYER =
@@ -193,12 +197,22 @@ export namespace RiotAPITypes {
       export const GET_MASTER_TIER = "LOR_RANKED.GET_MASTER_TIER";
     }
 
+    export namespace LOR_STATUS_V1 {
+      export const GET_PLATFORM_DATA = "LOR_STATUS_V1.GET_PLATFORM_DATA";
+    }
+
     export namespace MATCH_V5 {
       export const GET_IDS_BY_PUUID = "MATCH_V5.GET_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "MATCH_V5.GET_MATCH_BY_ID";
       export const GET_MATCH_TIMELINE_BY_ID =
         "MATCH_V5.GET_MATCH_TIMELINE_BY_ID";
     }
+
+    export namespace SPECTATOR_TFT_V5 {
+      export const GET_GAME_BY_PUUID = "SPECTATOR_TFT_V5.GET_GAME_BY_PUUID";
+      export const GET_FEATURED_GAMES = "SPECTATOR_TFT_V5.GET_FEATURED_GAMES";
+    }
+
     export namespace SPECTATOR {
       export const GET_GAME_BY_SUMMONER_ID =
         "SPECTATOR.GET_GAME_BY_SUMMONER_ID";
@@ -226,6 +240,11 @@ export namespace RiotAPITypes {
       export const GET_MATCH_IDS_BY_PUUID = "TFT_MATCH.GET_MATCH_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "TFT_MATCH.GET_MATCH_BY_ID";
     }
+
+    export namespace TFT_STATUS_V1 {
+      export const GET_PLATFORM_DATA = "TFT_STATUS_V1.GET_PLATFORM_DATA";
+    }
+
     export namespace TFT_SUMMONER {
       export const GET_BY_ACCOUNT_ID = "TFT_SUMMONER.GET_BY_ACCOUNT_ID";
       export const GET_BY_ACCESS_TOKEN = "TFT_SUMMONER.GET_BY_ACCESS_TOKEN";
@@ -272,6 +291,10 @@ export namespace RiotAPITypes {
     export namespace VAL_RANKED {
       export const GET_LEADERBOARD_BY_QUEUE =
         "VAL_RANKED.GET_LEADERBOARD_BY_QUEUE";
+    }
+
+    export namespace VAL_STATUS_V1 {
+      export const GET_PLATFORM_DATA = "VAL_STATUS_V1.GET_PLATFORM_DATA";
     }
   }
 
@@ -364,7 +387,6 @@ export namespace RiotAPITypes {
     export interface LeagueEntryDTO {
       leagueId: string;
       summonerId: string;
-      summonerName: string;
       queueType: string;
       tier: string;
       rank: string;
@@ -381,7 +403,6 @@ export namespace RiotAPITypes {
     export interface LeagueItemDTO {
       freshBlood: boolean;
       wins: number;
-      summonerName: string;
       miniSeries?: League.MiniSeriesDTO | null;
       inactive: boolean;
       veteran: boolean;
@@ -474,6 +495,51 @@ export namespace RiotAPITypes {
     }
   }
 
+  export namespace LolStatus {
+    export interface PlatformDataDTO {
+      id: string;
+      name: string;
+      locales: string[];
+      maintenances: LolStatus.StatusDTO[];
+      incidents: LolStatus.StatusDTO[];
+    }
+
+    export interface StatusDTO {
+      id: number;
+      maintenance_status: "scheduled" | "in_progress" | "complete";
+      incident_severity: "info" | "warning" | "critical";
+      titles: LolStatus.ContentDTO[];
+      updates: LolStatus.UpdateDTO[];
+      created_at: string;
+      archive_at: string;
+      updated_at: string;
+      platforms: (
+        | "windows"
+        | "macos"
+        | "android"
+        | "ios"
+        | "ps4"
+        | "xbone"
+        | "switch"
+      )[];
+    }
+
+    export interface ContentDTO {
+      locale: string;
+      content: string;
+    }
+
+    export interface UpdateDTO {
+      id: number;
+      author: string;
+      publish: boolean;
+      publish_locations: ("riotclient" | "riotstatus" | "game")[];
+      translations: LolStatus.ContentDTO[];
+      created_at: string;
+      updated_at: string;
+    }
+  }
+
   export namespace LorDeck {
     export interface DeckDTO {
       id: string;
@@ -536,376 +602,6 @@ export namespace RiotAPITypes {
     export interface LeaderboardDTO {
       /** A list of players in Master tier. */
       players: LorRanked.PlayerDTO[];
-    }
-  }
-
-  export namespace Match {
-    export interface MatchDTO {
-      gameId: number;
-      participantIdentities: Match.ParticipantIdentityDTO[];
-      queueId: number;
-      gameType: string;
-      gameDuration: number;
-      teams: Match.TeamStatsDTO[];
-      platformId: string;
-      gameCreation: number;
-      seasonId: number;
-      gameVersion: string;
-      mapId: number;
-      gameMode: string;
-      participants: Match.ParticipantDTO[];
-    }
-
-    export interface ParticipantIdentityDTO {
-      participantId: number;
-      /** Player information not included in the response for custom matches. Custom matches are considered private unless a tournament code was used to create the match. */
-      player: Match.PlayerDTO;
-    }
-
-    export interface PlayerDTO {
-      profileIcon: number;
-      /** Player's original accountId. */
-      accountId: string;
-      matchHistoryUri: string;
-      /** Player's current accountId when the match was played. */
-      currentAccountId: string;
-      /** Player's current platformId when the match was played. */
-      currentPlatformId: string;
-      summonerName: string;
-      /** Player's summonerId (Encrypted) */
-      summonerId?: string | null;
-      /** Player's original platformId. */
-      platformId: string;
-    }
-
-    export interface TeamStatsDTO {
-      /** Number of towers the team destroyed. */
-      towerKills: number;
-      /** Number of times the team killed Rift Herald. */
-      riftHeraldKills: number;
-      /** Flag indicating whether or not the team scored the first blood. */
-      firstBlood: boolean;
-      /** Number of inhibitors the team destroyed. */
-      inhibitorKills: number;
-      /** If match queueId has a draft, contains banned champion data, otherwise empty. */
-      bans: Match.TeamBansDTO[];
-      /** Flag indicating whether or not the team scored the first Baron kill. */
-      firstBaron: boolean;
-      /** Flag indicating whether or not the team scored the first Dragon kill. */
-      firstDragon: boolean;
-      /** For Dominion matches, specifies the points the team had at game end. */
-      dominionVictoryScore: number;
-      /** Number of times the team killed Dragon. */
-      dragonKills: number;
-      /** Number of times the team killed Baron. */
-      baronKills: number;
-      /** Flag indicating whether or not the team destroyed the first inhibitor. */
-      firstInhibitor: boolean;
-      /** Flag indicating whether or not the team destroyed the first tower. */
-      firstTower: boolean;
-      /** Number of times the team killed Vilemaw. */
-      vilemawKills: number;
-      /** Flag indicating whether or not the team scored the first Rift Herald kill. */
-      firstRiftHerald: boolean;
-      /** 100 for blue side. 200 for red side. */
-      teamId: number;
-      /** String indicating whether or not the team won. There are only two values visibile in public match history.
-           (Legal values:  Fail,  Win) */
-      win?: "Fail" | "Win" | null;
-    }
-
-    export interface TeamBansDTO {
-      /** Banned championId. */
-      championId: number;
-      /** Turn during which the champion was banned. */
-      pickTurn: number;
-    }
-
-    export interface ParticipantDTO {
-      participantId: number;
-      championId: number;
-      /** List of legacy Rune information. Not included for matches played with Runes Reforged. */
-      runes?: Match.RuneDTO[] | null;
-      /** Participant statistics. */
-      stats: Match.ParticipantStatsDTO;
-      /** 100 for blue side. 200 for red side. */
-      teamId: number;
-      /** Participant timeline data. */
-      timeline: Match.ParticipantTimelineDTO;
-      /** First Summoner Spell id. */
-      spell1Id: number;
-      /** Second Summoner Spell id. */
-      spell2Id: number;
-      /** Highest ranked tier achieved for the previous season in a specific subset of queueIds, if any, otherwise null. Used to display border in game loading screen. Please refer to the Ranked Info documentation.
-           (Legal values:  CHALLENGER,  MASTER,  DIAMOND,  PLATINUM,  GOLD,  SILVER,  BRONZE,  UNRANKED) */
-      highestAchievedSeasonTier?: TIER | "UNRANKED" | null;
-      /** List of legacy Mastery information. Not included for matches played with Runes Reforged. */
-      masteries?: Match.MasteryDTO[] | null;
-    }
-
-    export interface RuneDTO {
-      runeId: number;
-      rank: number;
-    }
-
-    export interface ParticipantStatsDTO {
-      item0: number;
-      item2: number;
-      totalUnitsHealed: number;
-      item1: number;
-      largestMultiKill: number;
-      goldEarned: number;
-      firstInhibitorKill?: boolean | null;
-      physicalDamageTaken: number;
-      nodeNeutralizeAssist?: number | null;
-      totalPlayerScore?: number | null;
-      champLevel: number;
-      damageDealtToObjectives: number;
-      totalDamageTaken: number;
-      neutralMinionsKilled: number;
-      deaths: number;
-      tripleKills: number;
-      magicDamageDealtToChampions: number;
-      wardsKilled: number;
-      pentaKills: number;
-      damageSelfMitigated: number;
-      largestCriticalStrike: number;
-      nodeNeutralize?: number | null;
-      totalTimeCrowdControlDealt: number;
-      firstTowerKill?: boolean | null;
-      magicDamageDealt: number;
-      totalScoreRank?: number | null;
-      nodeCapture?: number | null;
-      wardsPlaced?: number | null;
-      totalDamageDealt: number;
-      timeCCingOthers: number;
-      magicalDamageTaken: number;
-      largestKillingSpree: number;
-      totalDamageDealtToChampions: number;
-      physicalDamageDealtToChampions: number;
-      neutralMinionsKilledTeamJungle: number;
-      totalMinionsKilled: number;
-      firstInhibitorAssist?: boolean | null;
-      visionWardsBoughtInGame: number;
-      objectivePlayerScore?: number | null;
-      kills: number;
-      firstTowerAssist?: boolean | null;
-      combatPlayerScore?: number | null;
-      inhibitorKills?: number | null;
-      turretKills?: number | null;
-      participantId: number;
-      trueDamageTaken: number;
-      firstBloodAssist?: boolean | null;
-      nodeCaptureAssist?: number | null;
-      assists: number;
-      teamObjective?: number | null;
-      altarsNeutralized?: number | null;
-      goldSpent: number;
-      damageDealtToTurrets: number;
-      altarsCaptured?: number | null;
-      win: boolean;
-      totalHeal: number;
-      unrealKills: number;
-      visionScore?: number | null;
-      physicalDamageDealt: number;
-      firstBloodKill?: boolean | null;
-      longestTimeSpentLiving: number;
-      killingSprees: number;
-      sightWardsBoughtInGame?: number | null;
-      trueDamageDealtToChampions: number;
-      neutralMinionsKilledEnemyJungle: number;
-      doubleKills: number;
-      trueDamageDealt: number;
-      quadraKills: number;
-      item4: number;
-      item3: number;
-      item6: number;
-      item5: number;
-      playerScore0?: number | null;
-      playerScore1?: number | null;
-      playerScore2?: number | null;
-      playerScore3?: number | null;
-      playerScore4?: number | null;
-      playerScore5?: number | null;
-      playerScore6?: number | null;
-      playerScore7?: number | null;
-      playerScore8?: number | null;
-      playerScore9?: number | null;
-      /** Primary path keystone rune. */
-      perk0?: number | null;
-      /** Post game rune stats. */
-      perk0Var1?: number | null;
-      /** Post game rune stats. */
-      perk0Var2?: number | null;
-      /** Post game rune stats. */
-      perk0Var3?: number | null;
-      /** Primary path rune. */
-      perk1?: number | null;
-      /** Post game rune stats. */
-      perk1Var1?: number | null;
-      /** Post game rune stats. */
-      perk1Var2?: number | null;
-      /** Post game rune stats. */
-      perk1Var3?: number | null;
-      /** Primary path rune. */
-      perk2?: number | null;
-      /** Post game rune stats. */
-      perk2Var1?: number | null;
-      /** Post game rune stats. */
-      perk2Var2?: number | null;
-      /** Post game rune stats. */
-      perk2Var3?: number | null;
-      /** Primary path rune. */
-      perk3?: number | null;
-      /** Post game rune stats. */
-      perk3Var1?: number | null;
-      /** Post game rune stats. */
-      perk3Var2?: number | null;
-      /** Post game rune stats. */
-      perk3Var3?: number | null;
-      /** Secondary path rune. */
-      perk4?: number | null;
-      /** Post game rune stats. */
-      perk4Var1?: number | null;
-      /** Post game rune stats. */
-      perk4Var2?: number | null;
-      /** Post game rune stats. */
-      perk4Var3?: number | null;
-      /** Secondary path rune. */
-      perk5?: number | null;
-      /** Post game rune stats. */
-      perk5Var1?: number | null;
-      /** Post game rune stats. */
-      perk5Var2?: number | null;
-      /** Post game rune stats. */
-      perk5Var3?: number | null;
-      /** Primary rune path */
-      perkPrimaryStyle?: number | null;
-      /** Secondary rune path */
-      perkSubStyle?: number | null;
-      /** First stat rune. */
-      statPerk0?: number | null;
-      /** Second stat rune. */
-      statPerk1?: number | null;
-      /** Third stat rune. */
-      statPerk2?: number | null;
-    }
-
-    export interface ParticipantTimelineDTO {
-      participantId?: number | null;
-      /** Creep score difference versus the calculated lane opponent(s) for a specified period. */
-      csDiffPerMinDeltas?: { [key: string]: number } | null;
-      /** Damage taken for a specified period. */
-      damageTakenPerMinDeltas?: { [key: string]: number } | null;
-      /** Participant's calculated role.
-           (Legal values:  DUO,  NONE,  SOLO,  DUO_CARRY,  DUO_SUPPORT) */
-      role?: "DUO" | "NONE" | "SOLO" | "DUO_CARRY" | "DUO_SUPPORT" | null;
-      /** Damage taken difference versus the calculated lane opponent(s) for a specified period. */
-      damageTakenDiffPerMinDeltas?: { [key: string]: number } | null;
-      /** Experience change for a specified period. */
-      xpPerMinDeltas?: { [key: string]: number } | null;
-      /** Experience difference versus the calculated lane opponent(s) for a specified period. */
-      xpDiffPerMinDeltas?: { [key: string]: number } | null;
-      /** Participant's calculated lane. MID and BOT are legacy values.
-           (Legal values:  MID,  MIDDLE,  TOP,  JUNGLE,  BOT,  BOTTOM) */
-      lane?: "MID" | "MIDDLE" | "TOP" | "JUNGLE" | "BOT" | "BOTTOM" | null;
-      /** Creeps for a specified period. */
-      creepsPerMinDeltas?: { [key: string]: number } | null;
-      /** Gold for a specified period. */
-      goldPerMinDeltas?: { [key: string]: number } | null;
-    }
-
-    export interface MasteryDTO {
-      rank: number;
-      masteryId: number;
-    }
-
-    export interface MatchlistDTO {
-      startIndex: number;
-      /** There is a known issue that this field doesn't correctly return the total number of games that match the parameters of the request. Please paginate using beginIndex until you reach the end of a player's matchlist. */
-      totalGames: number;
-      endIndex: number;
-      matches: Match.MatchReferenceDTO[];
-    }
-
-    export interface MatchReferenceDTO {
-      gameId: number;
-      role: string;
-      season: number;
-      platformId: string;
-      champion: number;
-      queue: number;
-      lane: string;
-      timestamp: number;
-    }
-
-    export interface MatchTimelineDTO {
-      frames: Match.MatchFrameDTO[];
-      frameInterval: number;
-    }
-
-    export interface MatchFrameDTO {
-      participantFrames: { [key: string]: Match.MatchParticipantFrameDTO };
-      events: Match.MatchEventDTO[];
-      timestamp: number;
-    }
-
-    export interface MatchParticipantFrameDTO {
-      participantId: number;
-      minionsKilled: number;
-      teamScore?: number | null;
-      dominionScore?: number | null;
-      totalGold: number;
-      level: number;
-      xp: number;
-      currentGold: number;
-      position?: Match.MatchPositionDTO | null;
-      jungleMinionsKilled: number;
-    }
-
-    export interface MatchPositionDTO {
-      x: number;
-      y: number;
-    }
-
-    export interface MatchEventDTO {
-      laneType?: string | null;
-      skillSlot?: number | null;
-      ascendedType?: string | null;
-      creatorId?: number | null;
-      afterId?: number | null;
-      eventType?: string | null;
-      /** (Legal values:  CHAMPION_KILL,  WARD_PLACED,  WARD_KILL,  BUILDING_KILL,  ELITE_MONSTER_KILL,  ITEM_PURCHASED,  ITEM_SOLD,  ITEM_DESTROYED,  ITEM_UNDO,  SKILL_LEVEL_UP,  ASCENDED_EVENT,  CAPTURE_POINT,  PORO_KING_SUMMON) */
-      type:
-        | "CHAMPION_KILL"
-        | "WARD_PLACED"
-        | "WARD_KILL"
-        | "BUILDING_KILL"
-        | "ELITE_MONSTER_KILL"
-        | "ITEM_PURCHASED"
-        | "ITEM_SOLD"
-        | "ITEM_DESTROYED"
-        | "ITEM_UNDO"
-        | "SKILL_LEVEL_UP"
-        | "ASCENDED_EVENT"
-        | "CAPTURE_POINT"
-        | "PORO_KING_SUMMON";
-      levelUpType?: string | null;
-      wardType?: string | null;
-      participantId?: number | null;
-      towerType?: string | null;
-      itemId?: number | null;
-      beforeId?: number | null;
-      pointCaptured?: string | null;
-      monsterType?: string | null;
-      monsterSubType?: string | null;
-      teamId?: number | null;
-      position?: Match.MatchPositionDTO | null;
-      killerId?: number | null;
-      timestamp: number;
-      assistingParticipantIds?: number[] | null;
-      buildingType?: string | null;
-      victimId?: number | null;
     }
   }
 
@@ -1316,6 +1012,61 @@ export namespace RiotAPITypes {
     }
   }
 
+  export namespace SpectatorTftV5 {
+    export interface CurrentGameInfoDTO extends Spectator.CurrentGameInfoDTO {}
+
+    export interface FeaturedGamesDTO {
+      /** The list of featured games */
+      gameList: SpectatorTftV5.FeaturedGameInfoDTO[];
+      /** The suggested interval to wait before requesting FeaturedGames again */
+      clientRefreshInterval: number;
+    }
+
+    export interface FeaturedGameInfoDTO {
+      /** The game mode
+       (Legal values: TFT) */
+      gameMode: "TFT";
+      /** The amount of time in seconds that has passed since the game started */
+      gameLength: number;
+      /** The ID of the map */
+      mapId: number;
+      /** The game type
+       (Legal values:  MATCHED) */
+      gameType: "MATCHED";
+      /** Banned champion information */
+      bannedChampions: Spectator.BannedChampionDTO[];
+      /** The ID of the game */
+      gameId: number;
+      /** The observer information */
+      observers: Spectator.ObserverDTO;
+      /** The queue type (queue types are documented on the Game Constants page) */
+      gameQueueConfigId: number;
+      /** The game start time represented in epoch milliseconds */
+      gameStartTime: number;
+      /** The participant information */
+      participants: SpectatorTftV5.ParticipantDTO[];
+      /** The ID of the platform on which the game is being played */
+      platformId: string;
+    }
+
+    export interface ParticipantDTO {
+      /** The ID of the second summoner spell used by this participant */
+      spell2Id: number;
+      /** The ID of the profile icon used by this participant */
+      profileIconId: number;
+      /** The encrypted summonerId of this participant */
+      summonerId: string;
+      /** The encrypted puuid of this participant */
+      puuid: string;
+      /** The ID of the champion played by this participant */
+      championId: number;
+      /** The team ID of this participant, indicating the participant's team */
+      teamId: number;
+      /** The ID of the first summoner spell used by this participant */
+      spell1Id: number;
+    }
+  }
+
   export namespace Spectator {
     export interface CurrentGameInfoDTO {
       /** The ID of the game */
@@ -1367,8 +1118,8 @@ export namespace RiotAPITypes {
       bot: boolean;
       /** The team ID of this participant, indicating the participant's team */
       teamId: number;
-      /** The summoner name of this participant */
-      summonerName: string;
+      /** The encrypted puuid of this participant */
+      puuid: string;
       /** The encrypted summoner ID of this participant */
       summonerId: string;
       /** The ID of the first summoner spell used by this participant */
@@ -1444,8 +1195,8 @@ export namespace RiotAPITypes {
       spell2Id: number;
       /** The ID of the profile icon used by this participant */
       profileIconId: number;
-      /** The summoner name of this participant */
-      summonerName: string;
+      /** The encrypted puuid of this participant */
+      puuid: string;
       /** The ID of the champion played by this participant */
       championId: number;
       /** The team ID of this participant, indicating the participant's team */
@@ -1458,7 +1209,6 @@ export namespace RiotAPITypes {
   export namespace Summoner {
     export interface SummonerDTO {
       profileIconId: number;
-      name: string;
       puuid: string;
       summonerLevel: number;
       revisionDate: number;
@@ -1487,7 +1237,6 @@ export namespace RiotAPITypes {
       freshBlood: boolean;
       /** First placement. */
       wins: number;
-      summonerName: string;
       miniSeries?: TftLeague.MiniSeriesDTO | null;
       inactive: boolean;
       veteran: boolean;
@@ -1511,7 +1260,6 @@ export namespace RiotAPITypes {
       leagueId?: string;
       /** Player's encrypted summonerId. */
       summonerId: string;
-      summonerName: string;
       queueType: string;
       ratedTier?: RatedTier;
       ratedRating?: number;
@@ -1531,7 +1279,6 @@ export namespace RiotAPITypes {
 
     export interface TopRatedLadderEntryDTO {
       summonerId: string;
-      summonerName: string;
       ratedTier: RatedTier;
       ratedRating: number;
       wins: number; // first placement
@@ -1639,6 +1386,16 @@ export namespace RiotAPITypes {
     }
   }
 
+  export namespace TftStatusV1 {
+    export interface PlatformDataDTO extends LolStatus.PlatformDataDTO {}
+
+    export interface StatusDTO extends LolStatus.StatusDTO {}
+
+    export interface ContentDTO extends LolStatus.ContentDTO {}
+
+    export interface UpdateDTO extends LolStatus.UpdateDTO {}
+  }
+
   export namespace TftSummoner {
     export interface SummonerDTO {
       /** Encrypted account ID. Max length 56 characters. */
@@ -1655,148 +1412,6 @@ export namespace RiotAPITypes {
       puuid: string;
       /** Summoner level associated with the summoner. */
       summonerLevel: number;
-    }
-  }
-
-  export namespace Tournament {
-    export enum REGION {
-      BR = "BR",
-      EUNE = "EUNE",
-      EUW = "EUW",
-      JP = "JP",
-      LAN = "LAN",
-      LAS = "LAS",
-      NA = "NA",
-      OCE = "OCE",
-      PBE = "PBE",
-      RU = "RU",
-      TR = "TR",
-    }
-
-    export enum PICKTYPE {
-      BLIND_PICK = "BLIND_PICK",
-      DRAFT_MODE = "DRAFT_MODE",
-      ALL_RANDOM = "ALL_RANDOM",
-      TOURNAMENT_DRAFT = "TOURNAMENT_DRAFT",
-    }
-
-    export enum MAPTYPE {
-      SUMMONERS_RIFT = "SUMMONERS_RIFT",
-      TWISTED_TREELINE = "TWISTED_TREELINE",
-      HOWLING_ABYSS = "HOWLING_ABYSS",
-    }
-
-    export enum SPECTATORTYPE {
-      NONE = "NONE",
-      LOBBYONLY = "LOBBYONLY",
-      ALL = "ALL",
-    }
-
-    export interface TournamentCodeParametersDTO {
-      /** Optional list of encrypted summonerIds in order to validate the players eligible to join the lobby. NOTE: We currently do not enforce participants at the team level, but rather the aggregate of teamOne and teamTwo. We may add the ability to enforce at the team level in the future. */
-      allowedSummonerIds?: string[] | null;
-      /** Optional string that may contain any data in any format, if specified at all. Used to denote any custom information about the game. */
-      metadata?: string | null;
-      /** The team size of the game. Valid values are 1-5. */
-      teamSize: number;
-      /** The pick type of the game.
-           (Legal values:  BLIND_PICK,  DRAFT_MODE,  ALL_RANDOM,  TOURNAMENT_DRAFT) */
-      pickType: PICKTYPE;
-      /** The map type of the game.
-           (Legal values:  SUMMONERS_RIFT,  TWISTED_TREELINE,  HOWLING_ABYSS) */
-      mapType: MAPTYPE;
-      /** The spectator type of the game.
-           (Legal values:  NONE,  LOBBYONLY,  ALL) */
-      spectatorType: SPECTATORTYPE;
-    }
-
-    export interface LobbyEventDTO {
-      /** The summonerId that triggered the event (Encrypted) */
-      summonerId: string;
-      /** The type of event that was triggered */
-      eventType: string;
-      /** Timestamp from the event */
-      timestamp: string;
-    }
-
-    export interface ProviderRegistrationParametersDTO {
-      /** The region in which the provider will be running tournaments.
-           (Legal values:  BR,  EUNE,  EUW,  JP,  LAN,  LAS,  NA,  OCE,  PBE,  RU,  TR) */
-      region: REGION;
-      /** The provider's callback URL to which tournament game results in this region should be posted. The URL must be well-formed, use the http or https protocol, and use the default port for the protocol (http URLs must use port 80, https URLs must use port 443). */
-      url: string;
-    }
-
-    export interface TournamentRegistrationParametersDTO {
-      /** The provider ID to specify the regional registered provider data to associate this tournament. */
-      providerId: number;
-      /** The optional name of the tournament. */
-      name?: string | null;
-    }
-
-    export interface ProviderRegistrationParametersDTO {
-      /** The region in which the provider will be running tournaments.
-           (Legal values:  BR,  EUNE,  EUW,  JP,  LAN,  LAS,  NA,  OCE,  PBE,  RU,  TR) */
-      region: REGION;
-      /** The provider's callback URL to which tournament game results in this region should be posted. The URL must be well-formed, use the http or https protocol, and use the default port for the protocol (http URLs must use port 80, https URLs must use port 443). */
-      url: string;
-    }
-
-    export interface TournamentCodeDTO {
-      /** The tournament code. */
-      code: string;
-      /** The spectator mode for the tournament code game. */
-      spectators: string;
-      /** The lobby name for the tournament code game. */
-      lobbyName: string;
-      /** The metadata for tournament code. */
-      metaData: string;
-      /** The password for the tournament code game. */
-      password: string;
-      /** The team size for the tournament code game. */
-      teamSize: number;
-      /** The provider's ID. */
-      providerId: number;
-      /** The pick mode for tournament code game. */
-      pickType: string;
-      /** The tournament's ID. */
-      tournamentId: number;
-      /** The tournament code's ID. */
-      id: number;
-      /** The tournament code's region.
-           (Legal values:  BR,  EUNE,  EUW,  JP,  LAN,  LAS,  NA,  OCE,  PBE,  RU,  TR) */
-      region: REGION;
-      /** The game map for the tournament code game */
-      map: string;
-      /** The summonerIds of the participants (Encrypted) */
-      participants: string[];
-    }
-
-    export interface TournamentCodeUpdateParametersDTO {
-      /** Optional list of encrypted summonerIds in order to validate the players eligible to join the lobby. NOTE: We currently do not enforce participants at the team level, but rather the aggregate of teamOne and teamTwo. We may add the ability to enforce at the team level in the future. */
-      allowedSummonerIds?: string[] | null;
-      /** The pick type
-           (Legal values:  BLIND_PICK,  DRAFT_MODE,  ALL_RANDOM,  TOURNAMENT_DRAFT) */
-      pickType: PICKTYPE;
-      /** The map type
-           (Legal values:  SUMMONERS_RIFT,  TWISTED_TREELINE,  HOWLING_ABYSS) */
-      mapType: MAPTYPE;
-      /** The spectator type
-           (Legal values:  NONE,  LOBBYONLY,  ALL) */
-      spectatorType: SPECTATORTYPE;
-    }
-
-    export interface LobbyEventDTOWrapper {
-      eventList: Tournament.LobbyEventDTO[];
-    }
-
-    export interface LobbyEventDTO {
-      /** Timestamp from the event */
-      timestamp: string;
-      /** The type of event that was triggered */
-      eventType: string;
-      /** The summonerId that triggered the event (Encrypted) */
-      summonerId: string;
     }
   }
 
@@ -2202,6 +1817,16 @@ export namespace RiotAPITypes {
       totalPlayers: number;
       players: ValRanked.PlayerDTO[];
     }
+  }
+
+  export namespace ValStatusV1 {
+    export interface PlatformDataDTO extends LolStatus.PlatformDataDTO {}
+
+    export interface StatusDTO extends LolStatus.StatusDTO {}
+
+    export interface ContentDTO extends LolStatus.ContentDTO {}
+
+    export interface UpdateDTO extends LolStatus.UpdateDTO {}
   }
 
   export namespace DDragon {
