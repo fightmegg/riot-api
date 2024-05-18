@@ -4,22 +4,22 @@ import "jest-extended";
 import { PlatformId, RiotAPI } from "../../src/index";
 
 const riotAPIKey = process.env.X_RIOT_API_KEY || "";
+const puuid = process.env.PUUID || "";
 
 describe("E2E", () => {
   describe("Summoner", () => {
-    test("getBySummonerName", async () => {
+    test("getByPUUID", async () => {
       const rAPI = new RiotAPI(riotAPIKey);
 
-      const resp = await rAPI.summoner.getBySummonerName({
+      const resp = await rAPI.summoner.getByPUUID({
         region: PlatformId.EUW1,
-        summonerName: "Demos Kratos",
+        puuid,
       });
-      expect(resp.name).toEqual("Demos Kratos");
+      expect(resp.name).toEqual(puuid);
       expect(resp).toContainAllKeys([
         "id",
         "accountId",
         "puuid",
-        "name",
         "profileIconId",
         "revisionDate",
         "summonerLevel",

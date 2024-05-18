@@ -11,8 +11,9 @@ import qs from "querystring";
 import { RiotAPITypes, Leaves } from "./@types";
 import { MemoryCache, RedisCache } from "./cache";
 import { DDragon } from "./ddragon";
+import debug from "debug";
 
-const debugCache = require("debug")("riotapi:cache");
+const debugCache = debug("riotapi:cache");
 
 const createHost = compile(HOST, { encode: encodeURIComponent });
 
@@ -297,19 +298,6 @@ export class RiotAPI {
 
   get clash() {
     return {
-      getPlayersByPUUID: ({
-        region,
-        puuid,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        puuid: string;
-      }): Promise<RiotAPITypes.Clash.PlayerDTO[]> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.CLASH.GET_PLAYERS_BY_PUUID,
-          { puuid },
-          { id: `${region}.clash.getPlayersByPUUID.${puuid}` }
-        ),
       getPlayersBySummonerId: ({
         region,
         summonerId,
@@ -703,95 +691,6 @@ export class RiotAPI {
     };
   }
 
-  get match() {
-    return {
-      getIdsByTournamentCode: ({
-        region,
-        tournamentCode,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        tournamentCode: string;
-      }): Promise<number[]> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_IDS_BY_TOURNAMENT_CODE,
-          { tournamentCode },
-          { id: `${region}.match.getIdsByTournamentCode.${tournamentCode}` }
-        ),
-      getById: ({
-        region,
-        matchId,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        matchId: number;
-      }): Promise<RiotAPITypes.Match.MatchDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCH_BY_ID,
-          { matchId },
-          { id: `${region}.match.getById.${matchId}` }
-        ),
-      getByIdAndTournamentCode: ({
-        region,
-        matchId,
-        tournamentCode,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        matchId: number;
-        tournamentCode: string;
-      }): Promise<RiotAPITypes.Match.MatchDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCH_BY_ID_AND_TOURNAMENT_CODE,
-          { matchId, tournamentCode },
-          {
-            id: `${region}.match.getByIdAndTournamentCode.${matchId}.${tournamentCode}`,
-          }
-        ),
-      getMatchlistByAccount: ({
-        region,
-        accountId,
-        params,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        accountId: string;
-        params?: {
-          champion?: number[];
-          queue?: number[];
-          season?: number[];
-          endTime?: number;
-          beginTime?: number;
-          endIndex?: number;
-          beginIndex?: number;
-        };
-      }): Promise<RiotAPITypes.Match.MatchlistDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_MATCHLIST_BY_ACCOUNT,
-          { accountId },
-          {
-            id: `${region}.match.getMatchlistByAccount.${accountId}`,
-            params,
-          }
-        ),
-      getTimelineById: ({
-        region,
-        matchId,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        matchId: number;
-      }): Promise<RiotAPITypes.Match.MatchTimelineDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.MATCH.GET_TIMELINE_BY_MATCH_ID,
-          { matchId },
-          {
-            id: `${region}.match.getTimelineById.${matchId}`,
-          }
-        ),
-    };
-  }
-
   get matchV5() {
     return {
       getIdsByPuuid: ({
@@ -908,19 +807,6 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_ACCOUNT_ID,
           { accountId },
           { id: `${region}.summoner.getByAccountId.${accountId}` }
-        ),
-      getBySummonerName: ({
-        region,
-        summonerName,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        summonerName: string;
-      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName },
-          { id: `${region}.summoner.getBySummonerName.${summonerName}` }
         ),
       getByPUUID: ({
         region,
@@ -1119,19 +1005,6 @@ export class RiotAPI {
           { accountId },
           { id: `${region}.tftSummoner.getByAccountId.${accountId}` }
         ),
-      getBySummonerName: ({
-        region,
-        summonerName,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        summonerName: string;
-      }): Promise<RiotAPITypes.Summoner.SummonerDTO> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_NAME,
-          { summonerName },
-          { id: `${region}.tftSummoner.getBySummonerName.${summonerName}` }
-        ),
       getByAccessToken: ({
         region,
         accessToken,
@@ -1173,201 +1046,6 @@ export class RiotAPI {
           RiotAPITypes.METHOD_KEY.TFT_SUMMONER.GET_BY_SUMMONER_ID,
           { summonerId },
           { id: `${region}.tftSummoner.getBySummonerId.${summonerId}` }
-        ),
-    };
-  }
-
-  get thirdPartyCode() {
-    return {
-      getBySummonerId: ({
-        region,
-        summonerId,
-      }: {
-        region: RiotAPITypes.LoLRegion;
-        summonerId: string;
-      }): Promise<string> =>
-        this.request(
-          region,
-          RiotAPITypes.METHOD_KEY.THIRD_PARTY_CODE.GET_BY_SUMMONER_ID,
-          { summonerId },
-          { id: `${region}.thirdPartyCode.getBySummonerId.${summonerId}` }
-        ),
-    };
-  }
-
-  get tournamentStub() {
-    return {
-      createCodes: ({
-        params,
-        body,
-      }: {
-        params: {
-          count: number;
-          tournamentId: number;
-        };
-        body: RiotAPITypes.Tournament.TournamentCodeParametersDTO;
-      }): Promise<string[]> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_CODES,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournamentStub.createCodes.${params.tournamentId}`,
-            params,
-            body,
-            method: "POST",
-          }
-        ),
-      getLobbyEventsByTournamentCode: ({
-        tournamentCode,
-      }: {
-        tournamentCode: string;
-      }): Promise<RiotAPITypes.Tournament.LobbyEventDTOWrapper> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB
-            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
-          { tournamentCode },
-          {
-            id: `${PlatformId.AMERICAS}.tournamentStub.getLobbyEventsByTournamentCode.${tournamentCode}`,
-          }
-        ),
-      createProvider: ({
-        body,
-      }: {
-        body: RiotAPITypes.Tournament.ProviderRegistrationParametersDTO;
-      }): Promise<number> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_PROVIDER,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournamentStub.createProvider`,
-
-            body,
-            method: "POST",
-          }
-        ),
-      createTournament: ({
-        body,
-      }: {
-        body: RiotAPITypes.Tournament.TournamentRegistrationParametersDTO;
-      }): Promise<number> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT_STUB.POST_CREATE_TOURNAMENT,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournamentStub.createTournament`,
-            body,
-            method: "POST",
-          }
-        ),
-    };
-  }
-
-  get tournament() {
-    return {
-      createCodes: ({
-        params,
-        body,
-      }: {
-        params: {
-          count: number;
-          tournamentId: number;
-        };
-        body: RiotAPITypes.Tournament.TournamentCodeParametersDTO;
-      }): Promise<string[]> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_CODES,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournament.createCodes.${params.tournamentId}`,
-            priority: 0,
-            params,
-            body,
-            method: "POST",
-          }
-        ),
-      getByTournamentCode: ({
-        tournamentCode,
-      }: {
-        tournamentCode: string;
-      }): Promise<RiotAPITypes.Tournament.TournamentCodeDTO> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.GET_TOURNAMENT_BY_CODE,
-          { tournamentCode },
-          {
-            id: `${PlatformId.AMERICAS}.tournament.getByTournamentCode.${tournamentCode}`,
-            priority: 0,
-          }
-        ),
-      updateByTournamentCode: ({
-        tournamentCode,
-        body,
-      }: {
-        tournamentCode: string;
-        body: RiotAPITypes.Tournament.TournamentCodeUpdateParametersDTO;
-      }): Promise<any> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.GET_TOURNAMENT_BY_CODE,
-          { tournamentCode },
-          {
-            id: `${PlatformId.AMERICAS}.tournament.updateByTournamentCode.${tournamentCode}`,
-            priority: 0,
-            body,
-            method: "POST",
-          }
-        ),
-      getLobbyEventsByTournamentCode: ({
-        tournamentCode,
-      }: {
-        tournamentCode: string;
-      }): Promise<RiotAPITypes.Tournament.LobbyEventDTOWrapper> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT
-            .GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE,
-          { tournamentCode },
-          {
-            id: `${PlatformId.AMERICAS}.tournament.getLobbyEventsByTournamentCode.${tournamentCode}`,
-            priority: 0,
-          }
-        ),
-      createProvider: ({
-        body,
-      }: {
-        body: RiotAPITypes.Tournament.ProviderRegistrationParametersDTO;
-      }): Promise<number> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_PROVIDER,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournament.createProvider`,
-            priority: 0,
-            body,
-            method: "POST",
-          }
-        ),
-      createTournament: ({
-        body,
-      }: {
-        body: RiotAPITypes.Tournament.TournamentRegistrationParametersDTO;
-      }): Promise<number> =>
-        this.request(
-          PlatformId.AMERICAS,
-          RiotAPITypes.METHOD_KEY.TOURNAMENT.POST_CREATE_TOURNAMENT,
-          {},
-          {
-            id: `${PlatformId.AMERICAS}.tournament.createTournament`,
-            priority: 0,
-            body,
-            method: "POST",
-          }
         ),
     };
   }

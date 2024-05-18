@@ -144,7 +144,6 @@ export namespace RiotAPITypes {
       export const GET_CHAMPION_ROTATIONS = "CHAMPION.GET_CHAMPION_ROTATIONS";
     }
     export namespace CLASH {
-      export const GET_PLAYERS_BY_PUUID = "CLASH.GET_PLAYERS_BY_PUUID";
       export const GET_PLAYERS_BY_SUMMONER = "CLASH.GET_PLAYERS_BY_SUMMONER";
       export const GET_TEAM = "CLASH.GET_TEAM";
       export const GET_TOURNAMENTS = "CLASH.GET_TOURNAMENTS";
@@ -193,15 +192,7 @@ export namespace RiotAPITypes {
     export namespace LOR_RANKED {
       export const GET_MASTER_TIER = "LOR_RANKED.GET_MASTER_TIER";
     }
-    export namespace MATCH {
-      export const GET_IDS_BY_TOURNAMENT_CODE =
-        "MATCH.GET_IDS_BY_TOURNAMENT_CODE";
-      export const GET_MATCH_BY_ID = "MATCH.GET_MATCH_BY_ID";
-      export const GET_MATCH_BY_ID_AND_TOURNAMENT_CODE =
-        "MATCH.GET_MATCH_BY_ID_AND_TOURNAMENT_CODE";
-      export const GET_MATCHLIST_BY_ACCOUNT = "MATCH.GET_MATCHLIST_BY_ACCOUNT";
-      export const GET_TIMELINE_BY_MATCH_ID = "MATCH.GET_TIMELINE_BY_MATCH_ID";
-    }
+
     export namespace MATCH_V5 {
       export const GET_IDS_BY_PUUID = "MATCH_V5.GET_IDS_BY_PUUID";
       export const GET_MATCH_BY_ID = "MATCH_V5.GET_MATCH_BY_ID";
@@ -216,7 +207,6 @@ export namespace RiotAPITypes {
     export namespace SUMMONER {
       export const GET_BY_RSO_PUUID = "SUMMONER.GET_BY_RSO_PUUID";
       export const GET_BY_ACCOUNT_ID = "SUMMONER.GET_BY_ACCOUNT_ID";
-      export const GET_BY_SUMMONER_NAME = "SUMMONER.GET_BY_SUMMONER_NAME";
       export const GET_BY_PUUID = "SUMMONER.GET_BY_PUUID";
       export const GET_BY_SUMMONER_ID = "SUMMONER.GET_BY_SUMMONER_ID";
       export const GET_BY_ACCESS_TOKEN = "SUMMONER.GET_BY_ACCESS_TOKEN";
@@ -238,22 +228,9 @@ export namespace RiotAPITypes {
     }
     export namespace TFT_SUMMONER {
       export const GET_BY_ACCOUNT_ID = "TFT_SUMMONER.GET_BY_ACCOUNT_ID";
-      export const GET_BY_SUMMONER_NAME = "TFT_SUMMONER.GET_BY_SUMMONER_NAME";
       export const GET_BY_ACCESS_TOKEN = "TFT_SUMMONER.GET_BY_ACCESS_TOKEN";
       export const GET_BY_PUUID = "TFT_SUMMONER.GET_BY_PUUID";
       export const GET_BY_SUMMONER_ID = "TFT_SUMMONER.GET_BY_SUMMONER_ID";
-    }
-    export namespace THIRD_PARTY_CODE {
-      export const GET_BY_SUMMONER_ID = "THIRD_PARTY_CODE.GET_BY_SUMMONER_ID";
-    }
-    export namespace TOURNAMENT_STUB {
-      export const POST_CREATE_CODES = "TOURNAMENT_STUB.POST_CREATE_CODES";
-      export const GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE =
-        "TOURNAMENT_STUB.GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE";
-      export const POST_CREATE_PROVIDER =
-        "TOURNAMENT_STUB.POST_CREATE_PROVIDER";
-      export const POST_CREATE_TOURNAMENT =
-        "TOURNAMENT_STUB.POST_CREATE_TOURNAMENT";
     }
 
     export namespace TOURNAMENT_STUB_V5 {
@@ -266,16 +243,6 @@ export namespace RiotAPITypes {
         "TOURNAMENT_STUB_V5.POST_CREATE_PROVIDER";
       export const POST_CREATE_TOURNAMENT =
         "TOURNAMENT_STUB_V5.POST_CREATE_TOURNAMENT";
-    }
-
-    export namespace TOURNAMENT {
-      export const POST_CREATE_CODES = "TOURNAMENT.POST_CREATE_CODES";
-      export const GET_TOURNAMENT_BY_CODE = "TOURNAMENT.GET_TOURNAMENT_BY_CODE";
-      export const PUT_TOURNAMENT_CODE = "TOURNAMENT.PUT_TOURNAMENT_CODE";
-      export const GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE =
-        "TOURNAMENT.GET_LOBBY_EVENTS_BY_TOURNAMENT_CODE";
-      export const POST_CREATE_PROVIDER = "TOURNAMENT.POST_CREATE_PROVIDER";
-      export const POST_CREATE_TOURNAMENT = "TOURNAMENT.POST_CREATE_TOURNAMENT";
     }
 
     export namespace TOURNAMENT_V5 {
@@ -533,8 +500,8 @@ export namespace RiotAPITypes {
       deck_id: string;
       deck_code: string;
       factions: string[];
-      game_outcome: "win" | "loss" | string;
-      order_of_play: 1 | 2 | number;
+      game_outcome: string;
+      order_of_play: number;
     }
     export interface MatchDTO {
       metadata: {
@@ -2331,7 +2298,7 @@ export namespace RiotAPITypes {
       cooldown: number[];
       cooldownBurn: string;
       cost: number[];
-      datavalues: {};
+      datavalues: object;
       effect: number[][];
       effectBurn: string[];
       vars: {
@@ -2568,7 +2535,7 @@ export namespace RiotAPITypes {
       cooldown: number[];
       cooldownBurn: string;
       cost: number[];
-      datavalues: {};
+      datavalues: object;
       effect: number[][];
       effectBurn: string[];
       vars: {
