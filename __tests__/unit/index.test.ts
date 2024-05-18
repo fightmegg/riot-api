@@ -902,6 +902,49 @@ describe("RiotAPI", () => {
     );
   });
 
+  describe("spectatorTftV5", () => {
+    test.each([
+      [
+        "getByPuuid",
+        {
+          region: PlatformId.EUW1,
+          puuid: "1",
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.SPECTATOR_TFT_V5.GET_GAME_BY_PUUID,
+          { puuid: "1" },
+          {
+            id: "euw1.spectatorTftV5.getByPuuidId.1",
+          },
+        ],
+      ],
+      [
+        "getFeaturedGames",
+        {
+          region: PlatformId.EUW1,
+        },
+        [
+          PlatformId.EUW1,
+          RiotAPITypes.METHOD_KEY.SPECTATOR_TFT_V5.GET_FEATURED_GAMES,
+          {},
+          {
+            id: "euw1.spectatorTftV5.getFeaturedGames",
+          },
+        ],
+      ],
+    ])(
+      "%s - calls request with correct params",
+      async (name, input, params) => {
+        const rAPI = new RiotAPI("1234");
+        rAPI.request = jest.fn().mockResolvedValue(null);
+
+        await getKeyValue(rAPI.spectatorTftV5)(name as any)(input as any);
+        expect(rAPI.request).toHaveBeenCalledWith(...params);
+      }
+    );
+  });
+
   describe("spectator", () => {
     test.each([
       [

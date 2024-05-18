@@ -751,6 +751,35 @@ export class RiotAPI {
     };
   }
 
+  get spectatorTftV5() {
+    return {
+      getByPuuid: ({
+        region,
+        puuid,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+        puuid: string;
+      }): Promise<RiotAPITypes.SpectatorTftV5.CurrentGameInfoDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.SPECTATOR_TFT_V5.GET_GAME_BY_PUUID,
+          { puuid },
+          { id: `${region}.spectatorTftV5.getByPuuidId.${puuid}` }
+        ),
+      getFeaturedGames: ({
+        region,
+      }: {
+        region: RiotAPITypes.LoLRegion;
+      }): Promise<RiotAPITypes.SpectatorTftV5.FeaturedGamesDTO> =>
+        this.request(
+          region,
+          RiotAPITypes.METHOD_KEY.SPECTATOR_TFT_V5.GET_FEATURED_GAMES,
+          {},
+          { id: `${region}.spectatorTftV5.getFeaturedGames` }
+        ),
+    };
+  }
+
   get spectator() {
     return {
       getBySummonerId: ({
