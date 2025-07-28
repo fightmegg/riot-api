@@ -115,6 +115,7 @@ export namespace RiotAPITypes {
     | PlatformId.LA1
     | PlatformId.LA2
     | PlatformId.NA1
+    | PlatformId.ME1
     | PlatformId.OC1
     | PlatformId.RU
     | PlatformId.TR1
@@ -155,7 +156,7 @@ export namespace RiotAPITypes {
     }
     export namespace LEAGUE {
       export const GET_CHALLENGER_BY_QUEUE = "LEAGUE.GET_CHALLENGER_BY_QUEUE";
-      export const GET_ENTRIES_BY_SUMMONER = "LEAGUE.GET_ENTRIES_BY_SUMMONER";
+      export const GET_ENTRIES_BY_PUUID = "LEAGUE.GET_ENTRIES_BY_PUUID";
       export const GET_ALL_ENTRIES = "LEAGUE.GET_ALL_ENTRIES";
       export const GET_GRANDMASTER_BY_QUEUE = "LEAGUE.GET_GRANDMASTER_BY_QUEUE";
       export const GET_LEAGUE_BY_ID = "LEAGUE.GET_LEAGUE_BY_ID";
@@ -386,7 +387,7 @@ export namespace RiotAPITypes {
 
     export interface LeagueEntryDTO {
       leagueId: string;
-      summonerId: string;
+      puuid: string;
       queueType: string;
       tier: string;
       rank: string;
@@ -1212,8 +1213,6 @@ export namespace RiotAPITypes {
       puuid: string;
       summonerLevel: number;
       revisionDate: number;
-      id: string;
-      accountId: string;
     }
   }
 

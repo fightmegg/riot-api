@@ -406,19 +406,19 @@ export class RiotAPI {
             id: `${region}.league.getChallengerByQueue.${queue}`,
           }
         ),
-      getEntriesBySummonerId: ({
+      getEntriesByPUUID: ({
         region,
-        summonerId,
+        puuid,
       }: {
         region: RiotAPITypes.LoLRegion;
-        summonerId: string;
+        puuid: string;
       }): Promise<RiotAPITypes.League.LeagueEntryDTO[]> =>
         this.request(
           region,
-          RiotAPITypes.METHOD_KEY.LEAGUE.GET_ENTRIES_BY_SUMMONER,
-          { summonerId },
+          RiotAPITypes.METHOD_KEY.LEAGUE.GET_ENTRIES_BY_PUUID,
+          { puuid },
           {
-            id: `${region}.league.getEntriesBySummonerId.${summonerId}`,
+            id: `${region}.league.getEntriesByPUUID.${puuid}`,
           }
         ),
       getAllEntries: ({
