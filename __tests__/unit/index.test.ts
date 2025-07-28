@@ -523,17 +523,17 @@ describe("RiotAPI", () => {
         ],
       ],
       [
-        "getEntriesBySummonerId",
+        "getEntriesByPUUID",
         {
           region: PlatformId.EUW1,
-          summonerId: "1",
+          puuid: "1",
         },
         [
           PlatformId.EUW1,
-          RiotAPITypes.METHOD_KEY.LEAGUE.GET_ENTRIES_BY_SUMMONER,
-          { summonerId: "1" },
+          RiotAPITypes.METHOD_KEY.LEAGUE.GET_ENTRIES_BY_PUUID,
+          { puuid: "1" },
           {
-            id: "euw1.league.getEntriesBySummonerId.1",
+            id: "euw1.league.getEntriesByPUUID.1",
           },
         ],
       ],

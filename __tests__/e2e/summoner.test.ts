@@ -17,8 +17,6 @@ describe("E2E", () => {
       });
       expect(resp.puuid).toEqual(puuid);
       expect(resp).toContainAllKeys([
-        "id",
-        "accountId",
         "puuid",
         "profileIconId",
         "revisionDate",
