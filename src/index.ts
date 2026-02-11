@@ -10,7 +10,7 @@ import { RedisOptions } from "ioredis";
 import { compile } from "path-to-regexp";
 import qs from "querystring";
 import { Leaves, RiotAPITypes } from "./@types";
-import { MemoryCache, RedisCache } from "./cache";
+import { ICache, MemoryCache, MongoCache, RedisCache } from "./cache";
 import { DDragon } from "./ddragon";
 import { regionToCluster } from "./utils";
 
@@ -37,7 +37,7 @@ const getPath = (key: Leaves<METHODS>): string => {
 export { DDragon, PlatformId, RiotAPITypes, regionToCluster };
 
 export class RiotAPI {
-  readonly cache?: MemoryCache | RedisCache;
+  readonly cache?: ICache;
 
   readonly riotRateLimiter: RiotRateLimiter;
 
@@ -57,15 +57,26 @@ export class RiotAPI {
 
     this.riotRateLimiter = new RiotRateLimiter({
       concurrency: 10,
-      datastore: this.config.cache?.cacheType || "local",
+      datastore:
+        this.config.cache?.cacheType === "ioredis" ? "ioredis" : "local",
       redis: this.config.cache?.client as Bottleneck.RedisConnectionOptions,
     });
     this.ddragon = new DDragon();
 
-    if (this.config.cache?.cacheType === "local")
-      this.cache = new MemoryCache();
-    else if (this.config.cache?.cacheType === "ioredis")
-      this.cache = new RedisCache(this.config.cache?.client as RedisOptions);
+    switch (this.config.cache?.cacheType) {
+      case "local":
+        this.cache = new MemoryCache();
+        break;
+      case "ioredis":
+        this.cache = new RedisCache(this.config.cache?.client as RedisOptions);
+        break;
+      case "mongodb":
+        this.cache = new MongoCache(
+          this.config.cache?.client.url,
+          this.config.cache?.client.MongoClientOptions
+        );
+        break;
+    }
   }
 
   private getHeaders(headers?: { [key: string]: string }) {
@@ -149,66 +160,66 @@ export class RiotAPI {
   get account() {
     return {
       getByPUUID: ({
-        region,
+        cluster,
         puuid,
       }: {
-        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         puuid: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_PUUID,
           { puuid },
-          { id: `${region}.account.getByPUUID.${puuid}`, priority: 4 }
+          { id: `${cluster}.account.getByPUUID.${puuid}`, priority: 4 }
         ),
       getByRiotId: ({
-        region,
+        cluster,
         gameName,
         tagLine,
       }: {
-        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         gameName: string;
         tagLine: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_RIOT_ID,
           { gameName, tagLine },
           {
-            id: `${region}.account.getByRiotId.${gameName}.${tagLine}`,
+            id: `${cluster}.account.getByRiotId.${gameName}.${tagLine}`,
             priority: 4,
           }
         ),
       getByAccessToken: ({
-        region,
+        cluster,
         accessToken,
       }: {
-        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         accessToken: string;
       }): Promise<RiotAPITypes.Account.AccountDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
           {},
           {
-            id: `${region}.account.getByAccessToken`,
+            id: `${cluster}.account.getByAccessToken`,
             headers: { Authorization: `Bearer ${accessToken}` },
           }
         ),
       getActiveShardForPlayer: ({
-        region,
+        cluster,
         game,
         puuid,
       }: {
-        region: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
+        cluster: Exclude<RiotAPITypes.Cluster, PlatformId.SEA>;
         game: "val" | "lor";
         puuid: string;
       }): Promise<RiotAPITypes.Account.ActiveShardDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_ACTIVE_SHARD_FOR_PLAYER,
           { game, puuid },
-          { id: `${region}.account.getActiveShardForPlayer.${game}.${puuid}` }
+          { id: `${cluster}.account.getActiveShardForPlayer.${game}.${puuid}` }
         ),
     };
   }
@@ -985,11 +996,11 @@ export class RiotAPI {
   get tftMatch() {
     return {
       getMatchIdsByPUUID: ({
-        region,
+        cluster,
         puuid,
         params,
       }: {
-        region: RiotAPITypes.TFTCluster;
+        cluster: RiotAPITypes.TFTCluster;
         puuid: string;
         params?: {
           start?: number;
@@ -999,23 +1010,23 @@ export class RiotAPI {
         };
       }): Promise<string[]> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.TFT_MATCH.GET_MATCH_IDS_BY_PUUID,
           { puuid },
-          { id: `${region}.tftMatch.getMatchIdsByPUUID.${puuid}`, params }
+          { id: `${cluster}.tftMatch.getMatchIdsByPUUID.${puuid}`, params }
         ),
       getById: ({
-        region,
+        cluster,
         matchId,
       }: {
-        region: RiotAPITypes.TFTCluster;
+        cluster: RiotAPITypes.TFTCluster;
         matchId: string;
       }): Promise<RiotAPITypes.TftMatch.MatchDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.TFT_MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.tftMatch.getById.${matchId}` }
+          { id: `${cluster}.tftMatch.getById.${matchId}` }
         ),
     };
   }
@@ -1209,7 +1220,7 @@ export class RiotAPI {
       }: {
         tournamentCode: string;
         body: RiotAPITypes.TournamentV5.TournamentCodeUpdateParametersV5DTO;
-      }): Promise<any> =>
+      }): Promise<void> =>
         this.request(
           PlatformId.AMERICAS,
           RiotAPITypes.METHOD_KEY.TOURNAMENT_V5.GET_TOURNAMENT_BY_CODE,
@@ -1288,19 +1299,19 @@ export class RiotAPI {
   get valContent() {
     return {
       getContent: ({
-        region,
+        cluster,
         params,
       }: {
-        region: RiotAPITypes.VALCluster;
+        cluster: RiotAPITypes.VALCluster;
         params?: {
           locale?: string;
         };
       }): Promise<RiotAPITypes.ValContent.ContentDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.VAL_CONTENT.GET_CONTENT,
           {},
-          { id: `${region}.valContent.getContent`, params }
+          { id: `${cluster}.valContent.getContent`, params }
         ),
     };
   }
@@ -1308,43 +1319,43 @@ export class RiotAPI {
   get valMatch() {
     return {
       getById: ({
-        region,
+        cluster,
         matchId,
       }: {
-        region: RiotAPITypes.VALCluster;
+        cluster: RiotAPITypes.VALCluster;
         matchId: string;
       }): Promise<RiotAPITypes.ValMatch.MatchDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_MATCH_BY_ID,
           { matchId },
-          { id: `${region}.valMatch.getById.${matchId}` }
+          { id: `${cluster}.valMatch.getById.${matchId}` }
         ),
       getMatchlistByPUUID: ({
-        region,
+        cluster,
         puuid,
       }: {
-        region: RiotAPITypes.VALCluster;
+        cluster: RiotAPITypes.VALCluster;
         puuid: string;
       }): Promise<RiotAPITypes.ValMatch.MatchlistDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_MATCHLIST_BY_PUUID,
           { puuid },
-          { id: `${region}.valMatch.getMatchlistByPUUID.${puuid}` }
+          { id: `${cluster}.valMatch.getMatchlistByPUUID.${puuid}` }
         ),
       getRecentMatchesByQueue: ({
-        region,
+        cluster,
         queue,
       }: {
-        region: RiotAPITypes.VALCluster;
+        cluster: RiotAPITypes.VALCluster;
         queue: RiotAPITypes.VAL_QUEUE;
       }): Promise<RiotAPITypes.ValMatch.RecentMatchesDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.VAL_MATCH.GET_RECENT_MATCHES_BY_QUEUE,
           { queue },
-          { id: `${region}.valMatch.getRecentMatchesByQueue.${queue}` }
+          { id: `${cluster}.valMatch.getRecentMatchesByQueue.${queue}` }
         ),
     };
   }
@@ -1352,11 +1363,11 @@ export class RiotAPI {
   get valRanked() {
     return {
       getLeaderboardByQueue: ({
-        region,
+        cluster,
         queue,
         params,
       }: {
-        region: Exclude<RiotAPITypes.VALCluster, PlatformId.ESPORTS>;
+        cluster: Exclude<RiotAPITypes.VALCluster, PlatformId.ESPORTS>;
         queue: string;
         params?: {
           size?: number;
@@ -1364,10 +1375,10 @@ export class RiotAPI {
         };
       }): Promise<RiotAPITypes.ValMatch.RecentMatchesDTO> =>
         this.request(
-          region,
+          cluster,
           RiotAPITypes.METHOD_KEY.VAL_RANKED.GET_LEADERBOARD_BY_QUEUE,
           { actId: queue },
-          { id: `${region}.valRanked.getLeaderboardByQueue.${queue}`, params }
+          { id: `${cluster}.valRanked.getLeaderboardByQueue.${queue}`, params }
         ),
     };
   }

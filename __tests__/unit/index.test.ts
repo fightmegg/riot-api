@@ -270,7 +270,7 @@ describe("RiotAPI", () => {
     test.each([
       [
         "getByPUUID",
-        { region: PlatformId.EUROPE, puuid: "1" },
+        { cluster: PlatformId.EUROPE, puuid: "1" },
         [
           PlatformId.EUROPE,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_PUUID,
@@ -280,7 +280,11 @@ describe("RiotAPI", () => {
       ],
       [
         "getByRiotId",
-        { region: PlatformId.EUROPE, gameName: "Demos Kratos", tagLine: "EUW" },
+        {
+          cluster: PlatformId.EUROPE,
+          gameName: "Demos Kratos",
+          tagLine: "EUW",
+        },
         [
           PlatformId.EUROPE,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_RIOT_ID,
@@ -290,7 +294,7 @@ describe("RiotAPI", () => {
       ],
       [
         "getByAccessToken",
-        { region: PlatformId.EUROPE, accessToken: "12234" },
+        { cluster: PlatformId.EUROPE, accessToken: "12234" },
         [
           PlatformId.EUROPE,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_ACCESS_TOKEN,
@@ -303,7 +307,7 @@ describe("RiotAPI", () => {
       ],
       [
         "getActiveShardForPlayer",
-        { region: PlatformId.EUROPE, game: "val", puuid: "1" },
+        { cluster: PlatformId.EUROPE, game: "val", puuid: "1" },
         [
           PlatformId.EUROPE,
           RiotAPITypes.METHOD_KEY.ACCOUNT.GET_ACTIVE_SHARD_FOR_PLAYER,
@@ -1209,7 +1213,7 @@ describe("RiotAPI", () => {
       [
         "getMatchIdsByPUUID",
         {
-          region: PlatformId.EUROPE,
+          cluster: PlatformId.EUROPE,
           puuid: "1",
           params: { count: 10, start: 10, endTime: 131311, startTime: 1111 },
         },
@@ -1226,7 +1230,7 @@ describe("RiotAPI", () => {
       [
         "getById",
         {
-          region: PlatformId.EUROPE,
+          cluster: PlatformId.EUROPE,
           matchId: "1",
         },
         [
@@ -1555,7 +1559,7 @@ describe("RiotAPI", () => {
       [
         "getContent",
         {
-          region: PlatformId.EU,
+          cluster: PlatformId.EU,
           params: { locale: "gb-en" },
         },
         [
@@ -1585,7 +1589,7 @@ describe("RiotAPI", () => {
       [
         "getById",
         {
-          region: PlatformId.EU,
+          cluster: PlatformId.EU,
           matchId: "1",
         },
         [
@@ -1600,7 +1604,7 @@ describe("RiotAPI", () => {
       [
         "getMatchlistByPUUID",
         {
-          region: PlatformId.EU,
+          cluster: PlatformId.EU,
           puuid: "1",
         },
         [
@@ -1615,7 +1619,7 @@ describe("RiotAPI", () => {
       [
         "getRecentMatchesByQueue",
         {
-          region: PlatformId.EU,
+          cluster: PlatformId.EU,
           queue: RiotAPITypes.VAL_QUEUE.COMPETITIVE,
         },
         [
@@ -1644,7 +1648,7 @@ describe("RiotAPI", () => {
       [
         "getLeaderboardByQueue",
         {
-          region: PlatformId.EU,
+          cluster: PlatformId.EU,
           queue: "1",
           params: {
             size: 200,

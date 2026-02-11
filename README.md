@@ -12,7 +12,7 @@
 - Automatic retries
 - TypeScript typings
 - 100% endpoint coverage (incl. DDragon)
-- Caching with custom ttls per endpoint
+- Caching with custom TTLs per endpoint
 - Request prioritization
 
 ## Installation
@@ -27,11 +27,28 @@ $ npm install @fightmegg/riot-api
 import { RiotAPI, RiotAPITypes, PlatformId } from "@fightmegg/riot-api";
 
 (async () => {
-  const rAPI = new RiotAPI("RGAPI-KEY");
+  const rAPI = new RiotAPI("RGAPI-KEY" {
+    cache: {
+      cacheType: "local",
+      ttls: {
+        byMethod: {
+          //TTLs are defined in milliseconds
+          [RiotAPITypes.METHOD_KEY.ACCOUNT.GET_BY_RIOT_ID]: 3_600_000, // 1 hour
+          [RiotAPITypes.METHOD_KEY.SUMMONER.GET_BY_PUUID]: 24 * 60 * 60 * 1000, // 24 hours
+        },
+      },
+    },
+  });
 
-  const summoner = await rAPI.summoner.getBySummonerName({
-    region: PlatformId.EUW1,
-    summonerName: "Demos Kratos",
+  const account = await rAPI.account.getByRiotId({
+    cluster: PlatformId.ASIA,
+    gameName: "Hide on bush",
+    tagLine: "KR1",
+  });
+
+  const summoner = await rAPI.summoner.getByPUUID({
+    region: PlatformId.KR,
+    puuid: account.puuid,
   });
 })();
 ```
@@ -42,7 +59,7 @@ import { RiotAPI, RiotAPITypes, PlatformId } from "@fightmegg/riot-api";
 const config: RiotAPITypes.Config = {
   debug: false,
   cache: {
-    cacheType: "ioredis", // local or ioredis
+    cacheType: "ioredis", // local, ioredis or mongodb
     client: "redis://localhost:6379", // leave null if client is local
     ttls: {
       byMethod: {
@@ -52,24 +69,24 @@ const config: RiotAPITypes.Config = {
   },
 };
 
-const rAPI = new RiotAPI("RGAPI-TOKEN", config);
+const rAPI = new RiotAPI("RGAPI-KEY", config);
 ```
 
 ## Error handling
 
-If you use `Promises` then any error will reject the promise, this can either be an error value, or the response from the API.
+If you use `Promises`, any error will reject the promise. This can either be an error value or the response from the API.
 
-Same as above with `async/await`, where the error thrown will be the response from the API if the error occured at that level.
+The same applies to `async/await`, where the error thrown will be the response from the API if the error occurred at that level.
 
 ## Caching
 
-Caching is turned off by default, but with the cache property in the config you can enable it with various settings. For now we only support local (in memory) or [ioredis](https://github.com/luin/ioredis) caches, will potential support for custom caches in future.
+Caching is turned off by default, but you can enable it with various settings using the `cache` property in the config. Currently, we support local (in-memory), [ioredis](https://github.com/redis/ioredis) and [mongodb](https://github.com/mongodb/node-mongodb-native) caches, with potential support for custom caches in the future.
 
-When setting up the cache, you can change the `ttl` of each method / endpoint individually. This is done through the `METHOD_KEY` type which can be found in the [typings file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
+When setting up the cache, you can change the `ttl` of each method/endpoint individually. This is done through the `METHOD_KEY` type, which can be found in the [typings file](https://github.com/fightmegg/riot-api/blob/master/src/%40types/index.ts#L92).
 
 ## DDragon
 
-We also fully support [DataDragon](https://developer.riotgames.com/docs/lol#data-dragon) which can be accessed in two ways:
+We fully support [DataDragon](https://developer.riotgames.com/docs/lol#data-dragon), which can be accessed in two ways:
 
 ```ts
 // ...
@@ -79,7 +96,7 @@ const latestV = await rAPI.ddragon.versions.latest();
 const champs = await rAPI.ddragon.champion.all();
 ```
 
-If you want to just use static data only, then you can do the following:
+If you want to use static data only, you can do the following:
 
 ```ts
 import { DDragon } from "@fightmegg/riot-api";
@@ -92,7 +109,7 @@ Just like the main API, we have full TypeScript typings for DDragon endpoints. P
 
 ## regionToCluster
 
-A helper method to make it easier to determing which cluster you want to hit based on the users region
+A helper method that makes it easier to determine which cluster to target based on the user's region.
 
 ```ts
 import { regionToCluster } from "@fightmegg/riot-api";
@@ -112,7 +129,7 @@ const summoner: RiotAPITypes.Summoner.SummonerDTO = await rAPI.summoner.getBySum
 
 ## Debugging
 
-If you want to see want the rate-limiter is currently doing, we use the [debug](https://github.com/visionmedia/debug) module for logging. Simply run your app with:
+If you want to see what the rate-limiter is currently doing, we use the [debug](https://github.com/visionmedia/debug) module for logging. Simply run your app with:
 
 ```shell
 DEBUG=riotapi* node ...

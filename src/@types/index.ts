@@ -1,5 +1,6 @@
 import { PlatformId } from "@fightmegg/riot-rate-limiter";
 import { RedisOptions } from "ioredis";
+import { MongoClientOptions } from "mongodb";
 
 export type Leaves<T> = T extends object
   ? {
@@ -9,16 +10,36 @@ export type Leaves<T> = T extends object
     }[keyof T]
   : never;
 
+export type MongoOptionsExtended = {
+  url: string;
+  MongoClientOptions: MongoClientOptions | undefined;
+};
+
 export namespace RiotAPITypes {
+  export type TTLConfig = {
+    byMethod: { [key: string]: number };
+  };
+
+  export type CacheConfig =
+    | {
+        cacheType: "local";
+        client?: null | undefined;
+        ttls?: TTLConfig;
+      }
+    | {
+        cacheType: "ioredis";
+        client: RedisOptions | string;
+        ttls?: TTLConfig;
+      }
+    | {
+        cacheType: "mongodb";
+        client: MongoOptionsExtended;
+        ttls?: TTLConfig;
+      };
+
   export interface Config {
     debug?: boolean;
-    cache?: {
-      cacheType: "local" | "ioredis";
-      client?: RedisOptions | string;
-      ttls?: {
-        byMethod: { [key: string]: number };
-      };
-    };
+    cache?: CacheConfig;
   }
 
   export interface RequestOptions {
@@ -824,6 +845,7 @@ export namespace RiotAPITypes {
       riotIdName: string;
       riotIdTagline: string;
       role: string;
+      roleBoundItem: number;
       sightWardsBoughtInGame: number;
       spell1Casts: number;
       spell2Casts: number;

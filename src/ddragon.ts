@@ -17,7 +17,7 @@ export class DDragon {
       },
     });
 
-    if (resp.ok) return resp.json();
+    if (resp.ok) return resp.json() as Promise<T>;
     throw resp;
   }
 

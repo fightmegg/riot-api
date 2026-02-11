@@ -33,6 +33,7 @@
     "@fightmegg/riot-rate-limiter": "^0.0.23",
     "debug": "^4.3.4",
     "ioredis": "^5.4.1",
+    "mongodb": "^7.1.0",
     "node-fetch": "^2.6.1",
     "path-to-regexp": "^6.2.2"
   },
