@@ -845,6 +845,7 @@ export namespace RiotAPITypes {
       riotIdName: string;
       riotIdTagline: string;
       role: string;
+      roleBoundItem: number;
       sightWardsBoughtInGame: number;
       spell1Casts: number;
       spell2Casts: number;
